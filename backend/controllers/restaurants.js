@@ -98,11 +98,41 @@ ORDER BY  rating DESC;`
 };
 
 //function to update restaurant by id
-const updateRestaurantById = (req, res) => {};
+const updateRestaurantById = (req, res) => {
+  const {id} = req.params;
+  const { name, address, category, phone_number, rating } = req.body;
+  pool
+    .query(
+      `UPDATE restaurants SET name = $1, address = $2, category = $3,phone_number = $4, rating = $5 WHERE id = $6 RETURNING *`,
+      [name, address, category, phone_number, rating, id]
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No restaurant found with id: ${id}`,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: "Restaurant updated successfully",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: err.message,
+      });
+    });
+};
 
 module.exports = {
   getAllRestaurant,
   getRestaurantHigherRating,
   getRestaurantById,
   getAllRestaurantByCategory,
+  updateRestaurantById,
 };
