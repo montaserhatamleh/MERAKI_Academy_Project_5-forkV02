@@ -1,6 +1,7 @@
 const express = require("express");
 const restaurantRouter = express.Router();
-const { getAllRestaurant } = require("../controllers/restaurants");
+const { getAllRestaurant , getRestaurantHigherRating} = require("../controllers/restaurants");
 restaurantRouter.get("/", getAllRestaurant);
+restaurantRouter.get("/getByRating", getRestaurantHigherRating)
 
 module.exports = restaurantRouter;

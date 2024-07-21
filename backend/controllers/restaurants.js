@@ -21,7 +21,7 @@ const getAllRestaurant = (req, res) => {
     });
 };
 //get menu item by id for Restaurant
-const getItemsByIdForRestaurant = (req, res)=>{}
+const getItemsByIdForRestaurant = (req, res) => {};
 
 //function to get restaurant by id
 const getRestaurantById = (req, res) => {};
@@ -56,4 +56,4 @@ ORDER BY  rating DESC;`
 //function to update restaurant by id
 const updateRestaurantById = (req, res) => {};
 
-module.exports = {getAllRestaurant}
+module.exports = { getAllRestaurant, getRestaurantHigherRating };
