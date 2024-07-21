@@ -52,7 +52,26 @@ const getRestaurantById = (req, res) => {
 };
 
 //function get Restaurant by category for
-const getAllRestaurantByCategory = (req, res) => {};
+const getAllRestaurantByCategory = (req, res) => {
+  const category_id = req.query.category;
+  pool
+    .query("SELECT * FROM restaurants WHERE category = $1", [category_id])
+    .then((result) => {
+      res.status(200).json({
+        success: true,
+        message: `All restaurants in the category: ${category_id}`,
+        result: result.rows,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: err.message,
+      });
+    });
+};
 
 //function get higher rating
 const getRestaurantHigherRating = (req, res) => {
@@ -85,4 +104,5 @@ module.exports = {
   getAllRestaurant,
   getRestaurantHigherRating,
   getRestaurantById,
+  getAllRestaurantByCategory,
 };
