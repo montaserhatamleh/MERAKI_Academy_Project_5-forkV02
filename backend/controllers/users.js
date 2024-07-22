@@ -13,11 +13,11 @@ const signupCustomer = async (req, res) => {
         email,
         password,
         address,
-        role_id
+        role_id // customer
       } = req.body
       
       try {
-       const emailCheck = await pool.query(
+        const emailCheck = await pool.query(
       `SELECT email FROM users WHERE email = ($1)` , [email]
         )
         if (emailCheck.rows.length > 0){
@@ -36,7 +36,7 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created",new_user:user.rows[0],
+        message: " email created" ,new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
       }
@@ -342,8 +342,7 @@ const getAllResReqForTheAdmin = async (req, res) => {
     }
 };
 
-
-    const rejectReqRider = async (req, res) => {
+const rejectReqRider = async (req, res) => {
         const { id } = req.params;
     
         try {
@@ -368,12 +367,11 @@ const getAllResReqForTheAdmin = async (req, res) => {
                 error: err.stack
             });
         }
-    };
     
+}
 
 
 const rejectReqRes = async (req, res) => {
-    
         const { id } = req.params;
     
         try {
@@ -398,21 +396,17 @@ const rejectReqRes = async (req, res) => {
                 error: err.stack
             });
         }
-    };
     
+}
 
 
 
 const acceptReqRider = async (req, res) => {
 
-const { pool } = require("../models/db");
-const bcryptjs = require("bcryptjs");
 
-const acceptReqRider = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Retrieve the pending rider registration
         const pendingRider = await pool.query('SELECT * FROM pending_registrations_rider WHERE id = $1', [id]);
 
         if (pendingRider.rows.length === 0) {
@@ -455,7 +449,7 @@ const acceptReqRider = async (req, res) => {
             error: err.stack
         });
     }
-};
+
 
 };
 
@@ -482,7 +476,7 @@ const acceptReqRes = async (req, res) =>
             const newUser = await pool.query(
                 `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id]
+                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
             );
     
             const userId = newUser.rows[0].user_id;
@@ -507,10 +501,11 @@ const acceptReqRes = async (req, res) =>
                 message: 'Server error',
                 error: err.stack
             });
-        }
+        
 
     
-}
+        }
+    }
 
 module.exports = {
     login,
