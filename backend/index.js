@@ -17,11 +17,13 @@ app.use(express.json());
 //Routers
 const userRouter = require("./routes/users")
 const roleRouter = require("./routes/roles")
+const riderRouter = require("./routes/riders") 
 
 
 
 app.use("/users",userRouter)
 app.use("/roles",roleRouter)
+app.use("/riders",riderRouter)
 
 
 

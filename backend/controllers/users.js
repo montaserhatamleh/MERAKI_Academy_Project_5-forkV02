@@ -17,7 +17,7 @@ const signupCustomer = async (req, res) => {
       } = req.body
       
       try {
-        const emailCheck = await pool.query(
+       const emailCheck = await pool.query(
       `SELECT email FROM users WHERE email = ($1)` , [email]
         )
         if (emailCheck.rows.length > 0){
@@ -36,7 +36,7 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created" ,new_user:user.rows[0],
+        message: " email created",new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
       }
@@ -342,7 +342,7 @@ const getAllResReqForTheAdmin = async (req, res) => {
     }
 };
 
-const rejectReqRider = async (req, res) => {
+
     const rejectReqRider = async (req, res) => {
         const { id } = req.params;
     
@@ -370,10 +370,10 @@ const rejectReqRider = async (req, res) => {
         }
     };
     
-};
+
 
 const rejectReqRes = async (req, res) => {
-    const rejectReqRes = async (req, res) => {
+    
         const { id } = req.params;
     
         try {
@@ -401,11 +401,11 @@ const rejectReqRes = async (req, res) => {
     };
     
 
-};
+
 
 const acceptReqRider = async (req, res) => {
 
-    const { pool } = require("../models/db");
+const { pool } = require("../models/db");
 const bcryptjs = require("bcryptjs");
 
 const acceptReqRider = async (req, res) => {
