@@ -17,11 +17,17 @@ app.use(express.json());
 //Routers
 const userRouter = require("./routes/users")
 const roleRouter = require("./routes/roles")
+const cartRouter = require("./routes/cart")
+const orderRouter = require("./routes/order")
+const reviewRouter = require("./routes/review")
 
 
 
 app.use("/users",userRouter)
 app.use("/roles",roleRouter)
+app.use("/carts",cartRouter)
+app.use("/orders",orderRouter)
+app.use("/reviews",reviewRouter)
 
 
 
