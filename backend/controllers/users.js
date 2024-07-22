@@ -343,7 +343,6 @@ const getAllResReqForTheAdmin = async (req, res) => {
 };
 
 const rejectReqRider = async (req, res) => {
-    const rejectReqRider = async (req, res) => {
         const { id } = req.params;
     
         try {
@@ -368,12 +367,11 @@ const rejectReqRider = async (req, res) => {
                 error: err.stack
             });
         }
-    };
+    
     
 };
 
 const rejectReqRes = async (req, res) => {
-    const rejectReqRes = async (req, res) => {
         const { id } = req.params;
     
         try {
@@ -398,21 +396,17 @@ const rejectReqRes = async (req, res) => {
                 error: err.stack
             });
         }
-    };
+    
     
 
 };
 
 const acceptReqRider = async (req, res) => {
 
-    const { pool } = require("../models/db");
-const bcryptjs = require("bcryptjs");
 
-const acceptReqRider = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Retrieve the pending rider registration
         const pendingRider = await pool.query('SELECT * FROM pending_registrations_rider WHERE id = $1', [id]);
 
         if (pendingRider.rows.length === 0) {
@@ -507,7 +501,7 @@ const acceptReqRes = async (req, res) =>
                 message: 'Server error',
                 error: err.stack
             });
-        }
+        
 
     
 }
