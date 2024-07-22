@@ -1,10 +1,10 @@
 const express = require ("express")
 const roleRouter = express.Router()
+const {createRole,createPermission,createRolePermission} = require("../controllers/roles")
 
-
-roleRouter.post("/role",)
-roleRouter.post("/permission",)
-roleRouter.post("/rolePermission",)
+roleRouter.post("/role",createRole)
+roleRouter.post("/permission",createPermission)
+roleRouter.post("/rolePermission",createRolePermission)
 
 /*('Admin'),
 ('Customer'),
