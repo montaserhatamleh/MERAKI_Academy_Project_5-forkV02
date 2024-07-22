@@ -6,6 +6,7 @@ const {
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
+  getItemsByIdForRestaurant,
 } = require("../controllers/restaurants");
 
 //Getting All Restaurant
@@ -18,13 +19,7 @@ restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
 restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
 //Update Data For The Restaurant
 restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
-
-// restaurantRouter.get("/", getAllRestaurant);
-
-// restaurantRouter.get("/getByRating", getRestaurantHigherRating);
-
-// restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
-
-// restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
+//Getting items for restaurant 
+restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 
 module.exports = restaurantRouter;
