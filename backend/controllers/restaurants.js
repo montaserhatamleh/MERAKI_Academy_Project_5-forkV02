@@ -3,7 +3,7 @@ const { pool } = require("../models/db");
 //function to get all restaurant
 const getAllRestaurant = (req, res) => {
   pool
-    .query(`SELECT * FROM restaurants`)
+    .query(`SELECT * FROM restaurants`) // momken t5leh order by creation time 
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -78,7 +78,7 @@ const getRestaurantHigherRating = (req, res) => {
   pool
     .query(
       `SELECT * FROM restaurants
-ORDER BY  rating DESC;`
+ORDER BY  rating DESC;`//momken ykon fee limit hoon
     )
     .then((result) => {
       res.status(200).json({
@@ -103,7 +103,13 @@ const updateRestaurantById = (req, res) => {
   const { name, address, category, phone_number, rating } = req.body;
   pool
     .query(
-      `UPDATE restaurants SET name = $1, address = $2, category = $3,phone_number = $4, rating = $5 WHERE id = $6 RETURNING *`,
+      `UPDATE restaurants SET name = COALESCE($1, name), 
+                                     address = COALESCE($2, address), 
+                                     category = COALESCE($3, category), 
+                                     phone_number = COALESCE($4, phone_number), 
+                                      rating = COALESCE($5, rating), 
+                                     updated_at = CURRENT_TIMESTAMP
+            WHERE restaurant_id = $6 RETURNING *`, // use COALESCE
       [name, address, category, phone_number, rating, id]
     )
     .then((result) => {
