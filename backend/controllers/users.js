@@ -13,7 +13,7 @@ const signupCustomer = async (req, res) => {
         email,
         password,
         address,
-        role_id
+        role_id // customer
       } = req.body
       
       try {
@@ -368,8 +368,8 @@ const rejectReqRider = async (req, res) => {
             });
         }
     
-    
-};
+}
+
 
 const rejectReqRes = async (req, res) => {
         const { id } = req.params;
@@ -397,9 +397,9 @@ const rejectReqRes = async (req, res) => {
             });
         }
     
-    
+}
 
-};
+
 
 const acceptReqRider = async (req, res) => {
 
@@ -449,7 +449,7 @@ const acceptReqRider = async (req, res) => {
             error: err.stack
         });
     }
-};
+
 
 };
 
@@ -476,7 +476,7 @@ const acceptReqRes = async (req, res) =>
             const newUser = await pool.query(
                 `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id]
+                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
             );
     
             const userId = newUser.rows[0].user_id;
@@ -504,7 +504,8 @@ const acceptReqRes = async (req, res) =>
         
 
     
-}
+        }
+    }
 
 module.exports = {
     login,
