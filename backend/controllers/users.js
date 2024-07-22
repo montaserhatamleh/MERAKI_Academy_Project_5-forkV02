@@ -368,7 +368,7 @@ const rejectReqRider = async (req, res) => {
             });
         }
     
-    
+}
 
 
 const rejectReqRes = async (req, res) => {
@@ -397,7 +397,7 @@ const rejectReqRes = async (req, res) => {
             });
         }
     
-    
+}
 
 
 
@@ -504,7 +504,8 @@ const acceptReqRes = async (req, res) =>
         
 
     
-}
+        }
+    }
 
 module.exports = {
     login,
