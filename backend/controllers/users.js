@@ -367,7 +367,7 @@ const rejectReqRider = async (req, res) => {
                 error: err.stack
             });
         }
-    };
+    
     
 
 
@@ -396,7 +396,7 @@ const rejectReqRes = async (req, res) => {
                 error: err.stack
             });
         }
-    };
+    
     
 
 
@@ -501,7 +501,7 @@ const acceptReqRes = async (req, res) =>
                 message: 'Server error',
                 error: err.stack
             });
-        }
+        
 
     
 }
