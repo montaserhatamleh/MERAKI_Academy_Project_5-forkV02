@@ -37,6 +37,7 @@ const getItemsById = (req, res) => {
       });
     });
 };
+// function that update any items
 const updateItemsById = (req, res) => {
   const item_id = req.params.id;
   const { name, description, price, sub_category, image_url, available } =
@@ -84,9 +85,9 @@ const updateItemsById = (req, res) => {
       });
     });
 };
+// function can create post
 const addItemsById = (req, res) => {
   const restaurant_id = req.params.id;
-  // console.log(req.params.id);
   const { name, description, price, image_url, sub_category } = req.body;
   const query = `INSERT INTO menu_items (restaurant_id, name, description, price, image_url, sub_category) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
   pool
@@ -114,6 +115,7 @@ const addItemsById = (req, res) => {
       });
     });
 };
+// function can do soft delete
 const deleteItemById = (req, res) => {
   const item_id = req.params.id;
   const query = `UPDATE menu_items SET deleted_at = 1 WHERE id = $1 RETURNING *`;
@@ -135,9 +137,32 @@ const deleteItemById = (req, res) => {
       });
     });
 };
+//this function make value available "from true To false"
+const changeAvailableFromOnToOffById = (req, res) => {
+  const item_id = req.params.id;
+  const query = `UPDATE menu_items SET available = false WHERE id = $1 RETURNING *`;
+  pool
+    .query(query, [item_id])
+    .then((result) => {
+      res.status(200).json({
+        success: true,
+        message: "Item Not available ",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: err.message,
+      });
+    });
+};
 module.exports = {
   getItemsById,
   updateItemsById,
   addItemsById,
   deleteItemById,
+  changeAvailableFromOnToOffById,
 };
