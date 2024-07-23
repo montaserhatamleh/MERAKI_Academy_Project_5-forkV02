@@ -6,6 +6,7 @@ const {
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
+  getRestaurantInfoById
 } = require("../controllers/restaurants");
 
 restaurantRouter.get("/", getAllRestaurant);
@@ -16,5 +17,6 @@ restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
 
 restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
 restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
+// restaurantRouter.get("/allInfo/:id", getRestaurantInfoById);
 
 module.exports = restaurantRouter;
