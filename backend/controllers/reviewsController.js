@@ -1,7 +1,11 @@
 const pool = require("../models/db");
 
 
+
+
 const getReviewsForRestaurant = async (req, res) => {
+
+  //AVG group by restaurant_id
     const restaurant_id = req.params.id;
     const query = `SELECT * FROM reviews WHERE restaurant_id =$1`;
     pool
@@ -32,6 +36,9 @@ const getReviewsForRestaurant = async (req, res) => {
   }
   
   const createReview = async (req, res) => {
+
+    // from 1 star to 5 stars
+    // we can use two params
     const { rating, comment, user_id } = req.body;
     const restaurant_id = req.params.id;
   
