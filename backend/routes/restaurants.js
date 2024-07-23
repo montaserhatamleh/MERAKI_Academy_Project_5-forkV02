@@ -7,6 +7,7 @@ const {
   getAllRestaurantByCategory,
   updateRestaurantById,
   getItemsByIdForRestaurant,
+  deleteRestaurantById,
 } = require("../controllers/restaurants");
 
 //Getting All Restaurant
@@ -19,7 +20,9 @@ restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
 restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
 //Update Data For The Restaurant
 restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
-//Getting items for restaurant 
+//Getting items for restaurant
 restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
+// soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
+restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
 
 module.exports = restaurantRouter;

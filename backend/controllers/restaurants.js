@@ -3,7 +3,12 @@ const { pool } = require("../models/db");
 //function to get all restaurant
 const getAllRestaurant = (req, res) => {
   pool
-    .query(`SELECT * FROM restaurants ORDER BY created_at DESC`) // t5leh order by creation time: change DONE
+    .query(
+      `SELECT * 
+FROM restaurants 
+WHERE deleted_at = 0 
+ORDER BY created_at DESC;`
+    ) // t5leh order by creation time: change DONE
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -22,12 +27,14 @@ const getAllRestaurant = (req, res) => {
 };
 
 //get menu item by id for Restaurant
+//no tested yet
 const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
   pool
-    .query(`SELECT name, price, image_url FROM menu_items WHERE id = $1`, [
-      restaurant_id,
-    ])
+    .query(
+      `SELECT name, price, image_url FROM menu_items WHERE id = $1 AND deleted_at = 0`,
+      [restaurant_id]
+    )
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -49,7 +56,9 @@ const getItemsByIdForRestaurant = (req, res) => {
 const getRestaurantById = (req, res) => {
   const restaurant_id = req.params.id;
   pool
-    .query(`SELECT * FROM restaurants WHERE id = $1`, [restaurant_id])
+    .query(`SELECT * FROM restaurants WHERE id = $1 AND deleted_at = 0;`, [
+      restaurant_id,
+    ])
 
     .then((result) => {
       if (result.rows.length === 0) {
@@ -100,7 +109,7 @@ const getAllRestaurantByCategory = (req, res) => {
 const getRestaurantHigherRating = (req, res) => {
   pool
     .query(
-      `SELECT * FROM restaurants
+      `SELECT * FROM restaurants WHERE deleted_at = 0 
 ORDER BY rating DESC LIMIT 5;`
     )
     .then((result) => {
@@ -188,4 +197,5 @@ module.exports = {
   getAllRestaurantByCategory,
   updateRestaurantById,
   getItemsByIdForRestaurant,
+  deleteRestaurantById,
 };
