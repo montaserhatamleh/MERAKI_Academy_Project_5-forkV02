@@ -1,6 +1,6 @@
 const { query } = require("express");
 const { pool } = require("../models/db");
-
+// function that return items for restaurants with same id
 const getItemsById = (req, res) => {
   const item_id = req.params.id;
   const query = ` SELECT       
@@ -37,4 +37,84 @@ const getItemsById = (req, res) => {
       });
     });
 };
-module.exports = { getItemsById };
+const updateItemsById = (req, res) => {
+  const item_id = req.params.id;
+  const { name, description, price, sub_category, image_url, available } =
+    req.body;
+  const query = `UPDATE menu_items 
+  SET  name = COALESCE($1, name),
+       description = COALESCE($2, description),
+       price = COALESCE($3, price),
+       sub_category = COALESCE($4, sub_category),
+       image_url = COALESCE($5, image_url),
+       available = COALESCE($6, available)
+        WHERE id = $7
+        RETURNING *
+  `;
+  const data = [
+    name,
+    description,
+    price,
+    sub_category,
+    image_url,
+    available,
+    item_id,
+  ];
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rowCount === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No menu item found with id: ${item_id}`,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: `Menu item with id: ${item_id} updated successfully`,
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+const addItemsById = (req, res) => {
+  const restaurant_id = req.params.id;
+  // console.log(req.params.id);
+  const { name, description, price, image_url, sub_category } = req.body;
+  const query = `INSERT INTO menu_items (restaurant_id, name, description, price, image_url, sub_category) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+  pool
+    .query(query, [
+      restaurant_id,
+      name,
+      description,
+      price,
+      image_url,
+      sub_category,
+    ])
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "Item added successfully",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        error: err.message,
+      });
+    });
+};
+const deleteItemById = (req, res) => {
+
+};
+module.exports = { getItemsById, updateItemsById, addItemsById };

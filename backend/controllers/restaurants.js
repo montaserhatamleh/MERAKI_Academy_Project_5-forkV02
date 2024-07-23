@@ -27,7 +27,7 @@ ORDER BY created_at DESC;`
 };
 
 //get menu item by id for Restaurant
-//no tested yet
+// i think no need for this function anymore 
 const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
   pool
