@@ -281,8 +281,6 @@ module.exports = {
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
-
   getItemsByIdForRestaurant,
   deleteRestaurantById,
-
 };
