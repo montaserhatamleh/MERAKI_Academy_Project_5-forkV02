@@ -83,7 +83,8 @@ const login = async (req, res) => {
     const payload = {
       userId : emailCheck.rows[0].user_id,
       username: emailCheck.rows[0].username,
-      role: emailCheck.rows[0].role_id
+      role: emailCheck.rows[0].role_id,
+      //address kman
     }
     console.log(payload);
     const options =  { expiresIn: "60m" }
