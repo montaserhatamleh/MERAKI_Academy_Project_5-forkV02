@@ -1,12 +1,13 @@
 const pool = require("../models/db");
 
 const getCartItems = async (req, res) => {
-    const user_id = req.token.userId;
-    const query = `SELECT * FROM cart_items WHERE user_id = $1`;
+    const cart_id = req.params.cartId; 
+    const query = `SELECT * FROM cart_items WHERE cart_id = $1`;
     pool
-      .query(query, [user_id])
+      .query(query, [cart_id])
       .then((result) => {
         res.status(200).json({
+            
           success: true,
           data: result.rows,
         });

@@ -50,11 +50,30 @@ const getReviewsForRestaurant = async (req, res) => {
       `;
       const values = [rating, comment, user_id, restaurant_id];
       const result = await pool.query(query, values);
-  
+      await updateRestaurantAverageRating();
+
       return res.status(201).json({ success: true, message: "Review created successfully" });
     } catch (err) {
       return res.status(500).json({ success: false, message: "Server error", err });
     }
   };
   
-  module.exports={getReviewsForRestaurant,getReviewById,createReview}
+  const updateRestaurantAverageRating = async () => {
+    try {
+      const query = `
+        UPDATE restaurants
+        SET average_rating = (
+       SELECT AVG(reviews.rating) FROM reviews WHERE reviews.restaurant_id = restaurants.id
+
+        )
+        WHERE id IN (
+          SELECT restaurant_id FROM reviews
+        )
+      `;
+      await pool.query(query);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  module.exports={getReviewsForRestaurant,getReviewById,createReview,updateRestaurantAverageRating}
