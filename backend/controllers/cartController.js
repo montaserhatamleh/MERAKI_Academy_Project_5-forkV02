@@ -1,4 +1,4 @@
-const pool = require("../models/db");
+const {pool} = require("../models/db");
 
 const getCartItems = async (req, res) => {
     const user_id = req.token.userId;
@@ -86,5 +86,64 @@ const getCartItems = async (req, res) => {
         });
       });
   };
+
+  const addItemToCart = async (req, res) => {
+    const id = req.params.id;
+    const { menu_item_id, quantity, restaurant_id } = req.body;
+
+    try {
+        const cartCheck = await pool.query(
+            `SELECT id, restaurant_id FROM carts WHERE user_id = $1`,
+            [id]
+        );
+
+        let cart_id;
+
+        if (cartCheck.rows.length > 0) {
+            if (cartCheck.rows[0].restaurant_id !== restaurant_id) {
+                await pool.query(
+                    `UPDATE carts SET restaurant_id = $1 WHERE user_id = $2`,
+                    [restaurant_id, id]
+                );
+
+                await pool.query(
+                    `DELETE FROM cart_items WHERE id = $1`,
+                    [cartCheck.rows[0].id]
+                );
+            }
+            cart_id = cartCheck.rows[0].id;
+        } else {
+            const cartResult = await pool.query(
+                `INSERT INTO carts (user_id, restaurant_id) 
+                 VALUES ($1, $2) 
+                 RETURNING id`,
+                [id, restaurant_id]
+            );
+            cart_id = cartResult.rows[0].id;
+            
+        }
+       
+        const cartItemResult = await pool.query(
+            `INSERT INTO cart_items (cart_id, menu_item_id, quantity) 
+            VALUES ($1, $2, $3) 
+            ON CONFLICT (cart_id,menu_item_id)
+            DO UPDATE SET quantity = cart_items.quantity + EXCLUDED.quantity
+            RETURNING *`,
+            [cart_id, menu_item_id, quantity]
+        );
+
+        res.status(201).json({
+            success: true,
+            cart_item: cartItemResult.rows[0]
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: err.stack
+        });
+    }
+};
+
   
-  module.exports = { getCartItems, getCartItemById, createCartItem, updateCartItemQuantity };
+  module.exports = { getCartItems, getCartItemById, createCartItem, updateCartItemQuantity, addItemToCart  };

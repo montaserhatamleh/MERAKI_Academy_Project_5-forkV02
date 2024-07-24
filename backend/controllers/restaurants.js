@@ -251,5 +251,4 @@ module.exports = {
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
-  getRestaurantInfoById
 };

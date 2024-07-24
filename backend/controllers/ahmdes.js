@@ -65,6 +65,10 @@ const getCartByUserId = async (req, res) => {
              INNER JOIN cart_items ON carts.cart_id = cart_items.cart_id
              INNER JOIN menu_items ON cart_items.menu_item_id = menu_items.menu_item_id
              WHERE carts.user_id = $1`,
+
+            /*SELECT * FROM cart_items INNER JOIN carts ON cart_items.cart_id = carts.id 
+            INNER JOIN menu_items ON  cart_items.menu_item_id = menu_items.id WHERE carts.user_id = 3
+            */
             [userId]
         );
 
@@ -154,7 +158,7 @@ const removeCartItem = async (req, res) => {
 
 const createOrder = async (req, res) => {
     const userId = req.user.id;
-   const {delivery_address} = req.body
+    const {delivery_address} = req.body
     try {
 
 //hon get all carrt items from user id cart 
@@ -183,7 +187,7 @@ const createOrder = async (req, res) => {
         const orderResult = await pool.query(
             `INSERT INTO orders (user_id, restaurant_id, total_price, status, delivery_address) 
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending',delivery_address ]
+            [userId, cartItems[0].restaurant_id, totalPrice,'Pending',delivery_address ]
         );
         const orderId = orderResult.rows[0].order_id;
 
