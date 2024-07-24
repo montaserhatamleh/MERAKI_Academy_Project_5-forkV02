@@ -7,6 +7,7 @@ const getCartItems = async (req, res) => {
       .query(query, [cart_id])
       .then((result) => {
         res.status(200).json({
+            
           success: true,
           data: result.rows,
         });
