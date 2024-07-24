@@ -11,11 +11,10 @@ roleRouter.post("/rolePermission",createRolePermission)
 ('Rider'),
 ('Restaurant Owner');*/
 
-/*('view_users'),
-('edit_users'),
-('delete_users'),
+
+/*('manage_users'),
+(manage cart)
 ('manage_restaurants'),
-('view_orders'),
 ('manage_orders');*/
 
 

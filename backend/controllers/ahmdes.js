@@ -56,7 +56,7 @@ const addItemToCart = async (req, res) => {
 };
 
 const getCartByUserId = async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.token.id;
 
     try {
         const cartResult = await pool.query(
