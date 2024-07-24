@@ -26,7 +26,7 @@ const updateRider = async (req, res) => {
     });
   }
 };
-
+//for admin
 const findAllRiders = async (req, res) => {
   try {
     const query =
@@ -51,7 +51,7 @@ const findAllRiders = async (req, res) => {
     });
   }
 };
-
+//for admin
 const findRiderById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -77,6 +77,7 @@ const findRiderById = async (req, res) => {
     });
   }
 };
+//admin i guess
 
 const getRidersByUserId = async (req, res) => {
   const { id } = req.params;
@@ -102,7 +103,7 @@ const getRidersByUserId = async (req, res) => {
     });
   }
 };
-
+//not pending "ready to pick up" mn el restuarnt 
 const getAllOrderIsPending = async (req, res) => {
   try {
     const query =
@@ -127,7 +128,7 @@ const getAllOrderIsPending = async (req, res) => {
     });
   }
 };
-
+//momtaz 
 const updateStatusOrder = async (req, res) => {
   const { id_rider, id_order, status } = req.body;
 
@@ -157,6 +158,7 @@ const updateStatusOrder = async (req, res) => {
     });
   }
 };
+// good
 
 const deliveryOfTheOrder = async(req , res )=>{
   const {id} = req.params ;  
