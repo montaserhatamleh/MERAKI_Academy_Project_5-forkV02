@@ -1,7 +1,5 @@
 const express = require ("express")
 const reviewRouter = express.Router()
-
-
 const { getReviewsForRestaurant, getReviewById, createReview } = require('../controllers/reviewsController');
 
 reviewRouter.get('/:restaurant_id', getReviewsForRestaurant);

@@ -21,7 +21,10 @@ const getAllRestaurant = (req, res) => {
     });
 };
 //get menu item by id for Restaurant
-const getItemsByIdForRestaurant = (req, res) => {};
+const getItemsByIdForRestaurant = (req, res) => {
+
+
+};
 
 //function to get restaurant by id
 const getRestaurantById = (req, res) => {
@@ -99,6 +102,7 @@ ORDER BY  rating DESC;`//momken ykon fee limit hoon
 
 //function to update restaurant by id
 const updateRestaurantById = (req, res) => {
+
   const {id} = req.params;
   const { name, address, category, phone_number, rating } = req.body;
   pool
@@ -135,10 +139,117 @@ const updateRestaurantById = (req, res) => {
     });
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
   getAllRestaurant,
   getRestaurantHigherRating,
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
+  getRestaurantInfoById
 };

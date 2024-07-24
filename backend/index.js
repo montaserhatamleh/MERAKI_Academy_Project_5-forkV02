@@ -16,7 +16,7 @@ const orderRouter = require("./routes/order")
 const reviewRouter = require("./routes/review")
 const roleRouter = require("./routes/roles");
 const restaurantRouter = require("./routes/restaurants");
-
+const ridersRouter = require("./routes/riders");
 
 app.use("/carts",cartRouter)
 app.use("/orders",orderRouter)
@@ -24,7 +24,7 @@ app.use("/reviews",reviewRouter)
 app.use("/users", userRouter);
 app.use("/roles", roleRouter);
 app.use("/restaurants", restaurantRouter);
-
+app.use("/riders" , ridersRouter)
 // Handles any other endpoints [unassigned - endpoints]
 app.use("*", (req, res) => res.status(404).json("NO content at this path"));
 

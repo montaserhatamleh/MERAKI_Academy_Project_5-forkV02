@@ -8,4 +8,20 @@ cartRouter.get('/carts/:id', getCartItemById);
 cartRouter.post('/carts', createCartItem);
 cartRouter.put('/carts/:id/quantity', updateCartItemQuantity);
 
+
+
+// ahmad routes
+
+
+cartRouter.post("/", addItemToCart);
+cartRouter.get("/", getCartByUserId);
+cartRouter.put("/:cartItem_id", updateCartItem);
+cartRouter.delete("/:cartItem_id", removeCartItem);
+//after clicking process to checkout , create an order 
+cartRouter.post("/checkout", createOrder);
+getOrderById
+cartRouter.get("/order_id", getOrderById);
+
+
+
 module.exports = cartRouter
