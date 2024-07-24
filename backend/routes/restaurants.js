@@ -21,10 +21,13 @@ restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
 restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
 //Update Data For The Restaurant
 restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
-// restaurantRouter.get("/allInfo/:id", getRestaurantInfoById);
 //Getting items for restaurant
 restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
 restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
+
+//ahmad route 
+restaurantRouter.get("/allInfo/:id",getRestaurantInfoById);
+
 
 module.exports = restaurantRouter;

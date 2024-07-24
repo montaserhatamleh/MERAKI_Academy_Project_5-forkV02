@@ -193,15 +193,94 @@ const deleteRestaurantById = (req, res) => {
     });
 };
 
+const getRestaurantInfoById = async (req, res) => {
+  const { id } = req.params;  
+
+  try {
+      const restaurantResult = await pool.query(
+          `SELECT 
+              r.restaurant_id,
+              r.name,
+              r.user_id,
+              r.image_url,
+              r.address,
+              r.category,
+              r.phone_number,
+              r.created_at,
+              r.updated_at,
+              COALESCE(avg_reviews.average_rating, 0.00) AS average_rating,
+              COALESCE(avg_reviews.rating_count, 0) AS rating_count
+           FROM 
+              restaurants r
+           LEFT JOIN 
+              (SELECT 
+                  restaurant_id, 
+                  AVG(rating) AS average_rating,
+                  COUNT(rating) AS rating_count
+               FROM 
+                  reviews
+               GROUP BY 
+                  restaurant_id) AS avg_reviews
+           ON 
+              r.restaurant_id = avg_reviews.restaurant_id
+           WHERE 
+              r.restaurant_id = $1`,
+          [id]
+      );
+
+      if (restaurantResult.rows.length === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Restaurant not found'
+          });
+      }
+
+      const menuItemsResult = await pool.query(
+          `SELECT 
+              menu_item_id,
+              name,
+              description,
+              price,
+              sub_category,
+              image_url,
+              available,
+              created_at,
+              updated_at
+           FROM 
+              menu_items
+           WHERE 
+              restaurant_id = $1
+           ORDER BY 
+              created_at DESC`,
+          [id]
+      );
+
+      // hon 3mlna include lal items b object wa7ad
+      const restaurant = restaurantResult.rows[0];
+      restaurant.menu_items = menuItemsResult.rows;
+
+      res.status(200).json({
+          success: true,
+          restaurant: restaurant
+      });
+  } catch (err) {
+      res.status(500).json({
+          success: false,
+          message: 'Server error',
+          error: err.stack
+      });
+  }
+}
+
 
 
 module.exports = {
+  getRestaurantInfoById,//ahmad route
   getAllRestaurant,
   getRestaurantHigherRating,
   getRestaurantById,
   getAllRestaurantByCategory,
   updateRestaurantById,
-  getRestaurantInfoById,
   getItemsByIdForRestaurant,
   deleteRestaurantById,
 };
