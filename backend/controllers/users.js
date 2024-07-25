@@ -32,7 +32,7 @@ const signupCustomer = async (req, res) => {
        )
 
        const cart = await pool.query(
-        `INSERT INTO carts (user_id) VALUES($1) RETURNING *`,[user.rows[0].user_id]
+        `INSERT INTO carts (user_id) VALUES($1) RETURNING *`,[user.rows[0].id]
        )
        res.status(201).json({
         success: true,
@@ -56,7 +56,8 @@ const signupCustomer = async (req, res) => {
 const login = async (req, res) => {
     const {email,password,role} = req.body
     try {
-    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.role_id WHERE email = ($1)`,[email])
+    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = 0`,[email])
+    console.log(emailCheck.rows)
     if(!emailCheck.rows.length>0){
      return res.status(403).json({
         success:false,
@@ -72,7 +73,7 @@ const login = async (req, res) => {
       })
     
     }
-    if (user.role_name !== role) {
+    if (emailCheck.rows[0].role !== role) {
         return res.status(403).json({
             success: false,
             message: `Access denied.`
@@ -81,7 +82,7 @@ const login = async (req, res) => {
     
     console.log(emailCheck.rows[0]);
     const payload = {
-      userId : emailCheck.rows[0].user_id,
+      userId : emailCheck.rows[0].id,
       username: emailCheck.rows[0].username,
       role: emailCheck.rows[0].role_id,
       //address kman
@@ -93,7 +94,7 @@ const login = async (req, res) => {
       success:true,
       message:"Valid login credentials",
       token:token,
-      userId: emailCheck.rows[0].user_id
+      userId: emailCheck.rows[0].id
     })
     }
     catch(err){
@@ -110,7 +111,7 @@ const login = async (req, res) => {
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userResult = await pool.query('SELECT * FROM users WHERE user_id = $1', [id]);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=0', [id]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -125,7 +126,7 @@ const getUserInfo = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Server error',
-            error: err.stack
+            error: err.message
         });
     }
 };
@@ -142,10 +143,11 @@ const getAllUsers = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Server error',
-            error: err.stack
+            error: err.message
         });
     }
 };
+
 const updateUserInfo = async (req, res) => {
     const { id } = req.params;
     const { first_name, last_name, username, phone_number, email, address } = req.body;
@@ -158,9 +160,8 @@ const updateUserInfo = async (req, res) => {
                 username = COALESCE($3, username), 
                 phone_number = COALESCE($4, phone_number), 
                 email = COALESCE($5, email), 
-                address = COALESCE($6, address), 
-                updated_at = CURRENT_TIMESTAMP 
-            WHERE user_id = $7 
+                address = COALESCE($6, address)    
+            WHERE id = $7 AND deleted_at ='0'
             RETURNING *`,
             [first_name, last_name, username, phone_number, email, address, id]
         );
@@ -188,9 +189,9 @@ const updateUserInfo = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const { id } = req.params;
-
+    console.log(id)
     try {
-        const deletedUser = await pool.query('DELETE FROM users WHERE user_id = $1 RETURNING *', [id]);
+        const deletedUser = await pool.query("UPDATE users SET deleted_at ='1' WHERE id= $1 RETURNING *", [id]);
 
         if (deletedUser.rows.length === 0) {
             return res.status(404).json({
@@ -419,20 +420,20 @@ const acceptReqRider = async (req, res) => {
 
         const rider = pendingRider.rows[0];
 
-        const password_hash = await bcryptjs.hash(rider.password, 8);
+        const password = await bcryptjs.hash(rider.password, 8);
 
         const newUser = await pool.query(
-            `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
+            `INSERT INTO users (username, email, password, first_name, last_name, address, phone_number, role_id) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [rider.username, rider.email, password_hash, rider.first_name, rider.last_name, rider.address, rider.phone_number, rider.role_id]
+            [rider.username, rider.email, password, rider.first_name, rider.last_name, rider.address, rider.phone_number, rider.role_id]
         );
 
-        const userId = newUser.rows[0].user_id;
+        const userId = newUser.rows[0].id;
 
         const newRider = await pool.query(
-            `INSERT INTO riders (user_id, vehicle_details, status) 
-            VALUES ($1, $2, $3) RETURNING *`,
-            [userId, rider.vehicle_details, 'available']
+            `INSERT INTO riders (user_id, vehicle_details) 
+            VALUES ($1, $2) RETURNING *`,
+            [userId, rider.vehicle_details]
         );
 
         await pool.query('DELETE FROM pending_registrations_rider WHERE id = $1', [id]);
@@ -480,7 +481,7 @@ const acceptReqRes = async (req, res) =>
                 [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
             );
     
-            const userId = newUser.rows[0].user_id;
+            const userId = newUser.rows[0].id;
     
             const newRestaurant = await pool.query(
                 `INSERT INTO restaurants (name, address, category, phone_number, user_id) 
