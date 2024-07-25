@@ -21,17 +21,17 @@ const {
 userRouter.post("/login", login);
 userRouter.post("/signup", signupCustomer);
 userRouter.get("/:id", getUserInfo);
-userRouter.get("/all", getAllUsers); // Get all users (admin only)
+userRouter.get("/find/all", getAllUsers); // Get all users (admin only)
 userRouter.put("/:id", updateUserInfo);
-userRouter.delete("/:id", deleteUser);
+userRouter.put("/delete/:id", deleteUser);
 
 // Registration Requests
 userRouter.post("/riderRegistration", sendRiderRegistrationToAdmin);
 userRouter.post("/restaurantOwnerRegistration", sendResOwnerRegistrationToAdmin);
 
 // Admin: Get All Requests
-userRouter.get("/riderRegistration", getAllRiderReqForTheAdmin); // Get all rider registration requests
-userRouter.get("/restaurantOwnerRegistration", getAllResReqForTheAdmin); // Get all restaurant owner registration requests
+userRouter.get("/all/riders", getAllRiderReqForTheAdmin); // Get all rider registration requests
+userRouter.get("/all/owner", getAllResReqForTheAdmin); // Get all restaurant owner registration requests
 
 // Admin: Manage Requests
 userRouter.delete("/riderRegistration/:id", rejectReqRider); // Reject rider registration request
