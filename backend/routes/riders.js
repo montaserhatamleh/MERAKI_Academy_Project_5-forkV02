@@ -3,7 +3,7 @@ const express = require ("express")
 const ridersRouter = express.Router()
 const {updateRider, findAllRiders  , findRiderById , acceptOrder,setOrderOnTheWay,markOrderAsDelivered,
     getAllOrderIsOnTheWay,
-    getAllOrderIsDelivered
+    getAllOrderIsDelivered,getAllOrderIsAccepted
     ,getRidersByUserId ,getAllOrderIsPending , updateStatusOrder ,deliveryOfTheOrder} = require("../controllers/riders") ;
 
     
@@ -23,6 +23,7 @@ ridersRouter.put("/onTheWay/:id" ,authentication,authorization("manage_orders"),
 ridersRouter.put("/delivered/:id" , authentication,authorization("manage_orders"),markOrderAsDelivered)
 ridersRouter.get("/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
 ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
+ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
 
 
 
