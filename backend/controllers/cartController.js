@@ -1,13 +1,13 @@
-const pool = require("../models/db");
+const {pool} = require("../models/db");
 
 
 const addItemToCart = async (req, res) => {
-  const userId = req.token.userId;
+  const userId = req.params.id;
   const { menu_item_id, quantity, restaurant_id } = req.body;
 
   try {
       const cartCheck = await pool.query(
-          `SELECT cart_id, restaurant_id FROM carts WHERE user_id = $1`,
+          `SELECT id, restaurant_id FROM carts WHERE user_id = $1`,
           [userId]
       );
 
@@ -25,7 +25,7 @@ const addItemToCart = async (req, res) => {
                   [cartCheck.rows[0].cart_id]
               );
           }
-          cart_id = cartCheck.rows[0].cart_id;
+          cart_id = cartCheck.rows[0].id;
       } else {
           const cartResult = await pool.query(
               `INSERT INTO carts (user_id, restaurant_id) 
@@ -33,7 +33,7 @@ const addItemToCart = async (req, res) => {
                RETURNING cart_id`,
               [userId, restaurant_id]
           );
-          cart_id = cartResult.rows[0].cart_id;
+          cart_id = cartResult.rows[0].id;
       }
 
       const cartItemResult = await pool.query(
@@ -59,14 +59,14 @@ const addItemToCart = async (req, res) => {
 };
 
 const getCartByUserId = async (req, res) => {
-  const userId = req.token.userId;
+  const userId = req.params.id;
 
   try {
       const cartResult = await pool.query(
-          `SELECT carts.cart_id, carts.restaurant_id, cart_items.cart_item_id, cart_items.menu_item_id, cart_items.quantity, menu_items.name, menu_items.price, menu_items.description, menu_items.image_url
+          `SELECT carts.id, carts.restaurant_id, cart_items.id, cart_items.menu_item_id, cart_items.quantity, menu_items.name, menu_items.price, menu_items.description, menu_items.image_url
            FROM carts
-           INNER JOIN cart_items ON carts.cart_id = cart_items.cart_id
-           INNER JOIN menu_items ON cart_items.menu_item_id = menu_items.menu_item_id
+           INNER JOIN cart_items ON carts.id = cart_items.cart_id
+           INNER JOIN menu_items ON menu_items.id = cart_items.menu_item_id
            WHERE carts.user_id = $1`,
           [userId]
       );
@@ -91,16 +91,16 @@ const getCartByUserId = async (req, res) => {
   }
 };
 const updateCartItem = async (req, res) => {
-  const { cartItem_id } = req.params;
+  const { id } = req.params;
   const { quantity } = req.body;
 
   try {
       const result = await pool.query(
           `UPDATE cart_items 
            SET quantity = $1 
-           WHERE cart_item_id = $2 
+           WHERE id = $2 
            RETURNING *`,
-          [quantity, cartItem_id]
+          [quantity, id]
       );
 
       if (result.rows.length === 0) {
@@ -123,14 +123,14 @@ const updateCartItem = async (req, res) => {
   }
 };
 const removeCartItem = async (req, res) => {
-  const { cartItem_id } = req.params;
+  const { id } = req.params;
 
   try {
       const result = await pool.query(
           `DELETE FROM cart_items 
-           WHERE cart_item_id = $1 
+           WHERE id = $1 
            RETURNING *`,
-          [cartItem_id]
+          [id]
       );
 
       if (result.rows.length === 0) {
