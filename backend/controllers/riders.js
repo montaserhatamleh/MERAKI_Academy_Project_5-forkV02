@@ -378,6 +378,47 @@ const getAllOrderIsDelivered = async (req, res) => {
     });
   }
 };
+
+const getAllOrderIsOnTheWay = async (req, res) => {
+  const userId = req.token.userId;
+
+
+  try {
+    const riderResult = await pool.query(
+      `SELECT rider_id FROM riders WHERE user_id = $1`,
+      [userId]
+  );
+
+  if (riderResult.rows.length === 0) {
+      return res.status(404).json({
+          success: false,
+          message: 'Rider not found'
+      });
+  }
+
+  const riderId = riderResult.rows[0].rider_id;
+    const query =
+      "SELECT * FROM orders WHERE status='on the way' AND rider_id =$1";
+    const result = await pool.query(query,[riderId]);
+
+    if (result.rows.length === 0)
+      return res.status(200).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    res.status(200).json({
+      success: true,
+      result: result.rows,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
+  }
+};
 module.exports = {
   updateRider,
   findAllRiders,
@@ -388,5 +429,7 @@ module.exports = {
   deliveryOfTheOrder,
   acceptOrder,
   setOrderOnTheWay,
-  markOrderAsDelivered
+  markOrderAsDelivered,
+  getAllOrderIsOnTheWay,
+  getAllOrderIsDelivered
 };

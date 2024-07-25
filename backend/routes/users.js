@@ -16,27 +16,30 @@ const {
     acceptReqRider,
     acceptReqRes
 } = require("../controllers/users");
+const authentication = require("../middleware/authentication")
+const authorization = require("../middleware/authorization")
+
 
 // User login and Information
 userRouter.post("/login", login);
 userRouter.post("/signup", signupCustomer);
-userRouter.get("/:id", getUserInfo);
-userRouter.get("/all", getAllUsers); // Get all users (admin only)
+userRouter.get("/:id", authentication,getUserInfo);
+userRouter.get("/all", authentication,authorization("manage_users"),getAllUsers); // Get all users (admin only)
 userRouter.put("/:id", updateUserInfo);
-userRouter.delete("/:id", deleteUser);
+userRouter.delete("/:id", authentication,authorization("manage_users"),deleteUser);
 
 // Registration Requests
 userRouter.post("/riderRegistration", sendRiderRegistrationToAdmin);
 userRouter.post("/restaurantOwnerRegistration", sendResOwnerRegistrationToAdmin);
 
 // Admin: Get All Requests
-userRouter.get("/riderRegistration", getAllRiderReqForTheAdmin); // Get all rider registration requests
-userRouter.get("/restaurantOwnerRegistration", getAllResReqForTheAdmin); // Get all restaurant owner registration requests
+userRouter.get("/riderRegistration", authentication,authorization("manage_users"),getAllRiderReqForTheAdmin); // Get all rider registration requests
+userRouter.get("/restaurantOwnerRegistration",authentication,authorization("manage_users"), getAllResReqForTheAdmin); // Get all restaurant owner registration requests
 
 // Admin: Manage Requests
-userRouter.delete("/riderRegistration/:id", rejectReqRider); // Reject rider registration request
-userRouter.delete("/restaurantOwnerRegistration/:id", rejectReqRes); // Reject restaurant owner registration request
-userRouter.post("/riderRegistration/:id", acceptReqRider); // Accept rider registration request
-userRouter.post("/restaurantOwnerRegistration/:id", acceptReqRes); // Accept restaurant owner registration request
+userRouter.delete("/riderRegistration/:id",authentication,authorization("manage_users"), rejectReqRider); // Reject rider registration request
+userRouter.delete("/restaurantOwnerRegistration/:id",authentication,authorization("manage_users"), rejectReqRes); // Reject restaurant owner registration request
+userRouter.post("/riderRegistration/:id", authentication,authorization("manage_users"),acceptReqRider); // Accept rider registration request
+userRouter.post("/restaurantOwnerRegistration/:id",authentication,authorization("manage_users"), acceptReqRes); // Accept restaurant owner registration request
 
 module.exports = userRouter;

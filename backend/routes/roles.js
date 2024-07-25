@@ -13,7 +13,7 @@ roleRouter.post("/rolePermission",createRolePermission)
 
 
 /*('manage_users'),
-(manage cart)
+(manage_cart)
 ('manage_restaurants'),
 ('manage_orders');*/
 
