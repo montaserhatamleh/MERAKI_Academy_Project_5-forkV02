@@ -10,10 +10,10 @@ const { addItemToCart,
 // ahmad routes
 
 
-cartRouter.post("/", addItemToCart);
-cartRouter.get("/", getCartByUserId);
-cartRouter.put("/:cartItem_id", updateCartItem);
-cartRouter.delete("/:cartItem_id", removeCartItem);
+cartRouter.post("/:id", addItemToCart); //id user
+cartRouter.get("/:id", getCartByUserId);  // id user
+cartRouter.put("/:id", updateCartItem); 
+cartRouter.delete("/:id", removeCartItem);
 
 
 
