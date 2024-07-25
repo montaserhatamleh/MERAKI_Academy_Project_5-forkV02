@@ -6,14 +6,16 @@ const { addItemToCart,
     updateCartItem,
     removeCartItem  } = require('../controllers/cartController');
 
+    const authentication = require("../middleware/authentication")
+    const authorization = require("../middleware/authorization")
 
 // ahmad routes
 
 
-cartRouter.post("/:id", addItemToCart); //id user
-cartRouter.get("/:id", getCartByUserId);  // id user
-cartRouter.put("/:id", updateCartItem); 
-cartRouter.delete("/:id", removeCartItem);
+cartRouter.post("/",authentication ,authorization("manage_cart"),addItemToCart);
+cartRouter.get("/", authentication,authorization("manage_cart"),getCartByUserId);
+cartRouter.put("/:cartItem_id", authentication,authorization("manage_cart"),updateCartItem);
+cartRouter.delete("/:cartItem_id",authentication,authorization("manage_cart"), removeCartItem);
 
 
 

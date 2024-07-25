@@ -8,7 +8,7 @@ const createOrder = async (req, res) => {
     try {
 
 //hon get all carrt items from user id cart 
-        const cartResult = await pool.query(
+        const cartResult = await pool.query(//kman inner join to get res table where user id = and take delivery fees
             `SELECT * FROM cart_items 
              INNER JOIN carts ON cart_items.cart_id = carts.id 
              WHERE carts.user_id = $1`,
@@ -25,7 +25,7 @@ const createOrder = async (req, res) => {
         const cartItems = cartResult.rows;
 
         // Calculate total price of the order 
-        const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0); // momken to add delivery fees hon
 
         // Create a new order
         // momken to add paymentMethod hon 
@@ -33,7 +33,8 @@ const createOrder = async (req, res) => {
         const orderResult = await pool.query(
             `INSERT INTO orders (user_id, restaurant_id, total_price, status, delivery_address) 
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending' , delivery_address ]
+            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending' ,delivery_address ] // delivery fees column mn res fixed
+
         );
         const orderId = orderResult.rows[0].id;
 
