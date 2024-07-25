@@ -22,12 +22,18 @@ ridersRouter.put("/status/riders/:id" , deliveryOfTheOrder)
 
 
 
-ridersRouter.put("/accept/:id" ,authentication,authorization("manage_orders"), acceptOrder)
-ridersRouter.put("/onTheWay/:id" ,authentication,authorization("manage_orders"), setOrderOnTheWay)
-ridersRouter.put("/delivered/:id" , authentication,authorization("manage_orders"),markOrderAsDelivered)
-ridersRouter.get("/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
-ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
-ridersRouter.get("/accepted",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
+// ridersRouter.put("/accept/:id" ,authentication,authorization("manage_orders"), acceptOrder)
+ridersRouter.put("/accept/:id/:orderId" , acceptOrder)
+//ridersRouter.put("/onTheWay/:id" ,authentication,authorization("manage_orders"), setOrderOnTheWay)
+ridersRouter.put("/onTheWay/:id/:orderId" , setOrderOnTheWay) ;
+//ridersRouter.put("/delivered/:id" , authentication,authorization("manage_orders"),markOrderAsDelivered)
+ridersRouter.put("/delivered/:id/:orderId" , markOrderAsDelivered) ;
+//ridersRouter.get("/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
+ridersRouter.get("/onTheWay/:id", getAllOrderIsOnTheWay) 
+//ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
+ridersRouter.get("/delivered/:id", getAllOrderIsDelivered) 
+//ridersRouter.get("/accepted",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
+ridersRouter.get("/accepted/:id", getAllOrderIsAccepted) 
 
 
 

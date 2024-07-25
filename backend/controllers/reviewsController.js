@@ -7,7 +7,7 @@ const getReviewsForRestaurant = async (req, res) => {
 
   //AVG group by restaurant_id
     const restaurant_id = req.params.id;
-    const query = `SELECT * FROM reviews WHERE restaurant_id =$1`;
+    const query = `SELECT * FROM reviews WHERE restaurant_id=$1`;
     pool
       .query(query,[restaurant_id])
       .then((result)=>{
