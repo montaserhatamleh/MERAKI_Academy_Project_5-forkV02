@@ -181,7 +181,45 @@ const deliveryOfTheOrder = async(req , res )=>{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // manage orders by rider 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const acceptOrder = async (req, res) => {
   const userId = req.token.userId;
@@ -418,7 +456,7 @@ const getAllOrderIsOnTheWay = async (req, res) => {
       error: err.message,
     });
   }
-  
+}
 const getAllOrderIsAccepted = async (req, res) => {
   const userId = req.token.userId;
 
@@ -459,7 +497,7 @@ const getAllOrderIsAccepted = async (req, res) => {
     });
   }
 }
-}
+
 module.exports = {
   updateRider,
   findAllRiders,

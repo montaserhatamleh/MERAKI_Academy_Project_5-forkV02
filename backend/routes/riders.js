@@ -18,12 +18,16 @@ ridersRouter.get("/user/:id", getRidersByUserId)
 ridersRouter.get("/all/order" ,authentication,authorization("manage_orders"),getAllOrderIsPending)
 ridersRouter.put("/status/order" , updateStatusOrder)
 ridersRouter.put("/status/riders/:id" , deliveryOfTheOrder)
+
+
+
+
 ridersRouter.put("/accept/:id" ,authentication,authorization("manage_orders"), acceptOrder)
 ridersRouter.put("/onTheWay/:id" ,authentication,authorization("manage_orders"), setOrderOnTheWay)
 ridersRouter.put("/delivered/:id" , authentication,authorization("manage_orders"),markOrderAsDelivered)
 ridersRouter.get("/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
 ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
-ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
+ridersRouter.get("/accepted",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
 
 
 
