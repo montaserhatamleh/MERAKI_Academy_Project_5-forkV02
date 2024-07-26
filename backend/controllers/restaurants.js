@@ -191,25 +191,26 @@ const deleteRestaurantById = (req, res) => {
       });
     });
 };
-
 const getRestaurantInfoById = async (req, res) => {
-  const { id } = req.params;  
+  const { id } = req.params;  // Assuming id = 10 for this example
 
   try {
+      // Fetch restaurant info with average rating and rating count
       const restaurantResult = await pool.query(
           `SELECT 
-              id,
-              name,
-              user_id,
-              image,
-              address,
-              category,
-              phone_number,
-              created_at,
+              r.id,
+              r.name,
+              r.user_id,
+              r.image,
+              r.address,
+              r.category,
+              r.phone_number,
+              r.delivery_fees,
+              r.created_at,
               COALESCE(avg_reviews.average_rating, 0.00) AS average_rating,
               COALESCE(avg_reviews.rating_count, 0) AS rating_count
            FROM 
-              restaurants 
+              restaurants r
            LEFT JOIN 
               (SELECT 
                   restaurant_id, 
@@ -220,9 +221,9 @@ const getRestaurantInfoById = async (req, res) => {
                GROUP BY 
                   restaurant_id) AS avg_reviews
            ON 
-           restaurants.id = avg_reviews.restaurant_id
+           r.id = avg_reviews.restaurant_id
            WHERE 
-           restaurants.id = $1`,
+           r.id = $1`,
           [id]
       );
 
@@ -239,7 +240,7 @@ const getRestaurantInfoById = async (req, res) => {
               name,
               description,
               price,
-              sub_category_id,
+              sub_category,
               image_url,
               available,
               created_at
@@ -248,13 +249,21 @@ const getRestaurantInfoById = async (req, res) => {
            WHERE 
               restaurant_id = $1
            ORDER BY 
-              created_at DESC`,
+              sub_category ASC, name ASC`,
           [id]
       );
 
-      // hon 3mlna include lal items b object wa7ad
+      // Organize menu items by sub_category
+      const menuItemsBySubCategory = menuItemsResult.rows.reduce((acc, item) => {
+          if (!acc[item.sub_category]) {
+              acc[item.sub_category] = [];
+          }
+          acc[item.sub_category].push(item);
+          return acc;
+      }, {});
+
       const restaurant = restaurantResult.rows[0];
-      restaurant.menu_items = menuItemsResult.rows;
+      restaurant.menu_items = menuItemsBySubCategory;
 
       res.status(200).json({
           success: true,
@@ -268,7 +277,31 @@ const getRestaurantInfoById = async (req, res) => {
       });
   }
 }
-
+// example data 
+/* {
+  id: 10,
+  name: "Example Restaurant",
+  user_id: 1,
+  image: "/images/restaurant.png",
+  address: "123 Main St",
+  category: "Fusion",
+  phone_number: "123-456-7890",
+  delivery_fees: 2.99,
+  created_at: "2024-07-15T12:00:00.000Z",
+  average_rating: 4.5,
+  rating_count: 10,
+  menu_items: {
+    "Appetizers": [
+      { id: 1, name: "Spring Rolls", description: "Tasty rolls", price: 5.99, sub_category: "Appetizers", image_url: "/images/sr.png", available: true, created_at: "2024-07-15T12:00:00.000Z" },
+      { id: 2, name: "Garlic Bread", description: "Garlic & Butter", price: 3.99, sub_category: "Appetizers", image_url: "/images/gb.png", available: true, created_at: "2024-07-15T12:05:00.000Z" }
+    ],
+    "Main Course": [
+      { id: 3, name: "Steak", description: "Juicy steak", price: 25.99, sub_category: "Main Course", image_url: "/images/st.png", available: true, created_at: "2024-07-15T12:10:00.000Z" },
+      { id: 4, name: "Pasta", description: "Italian Pasta", price: 15.99, sub_category: "Main Course", image_url: "/images/ps.png", available: true, created_at: "2024-07-15T12:15:00.000Z" }
+    ]
+  }
+}
+*/
 
 const getRestaurantOrders= async (req ,res)=>{
   const {id} = req.params ; 
