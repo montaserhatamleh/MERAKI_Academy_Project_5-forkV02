@@ -182,7 +182,7 @@ const deliveryOfTheOrder = async(req , res )=>{
 
 
 const acceptOrder = async (req, res) => {
-  const id = req.params.id;
+  const id = req.token.userId;
   const { orderId } = req.params;
 
   try {
@@ -234,7 +234,7 @@ const acceptOrder = async (req, res) => {
 
 
 const setOrderOnTheWay = async (req, res) => {
-  const id = req.params.id;
+  const id = req.token.userId;
   const { orderId } = req.params;
 
   try {
@@ -325,7 +325,7 @@ const setOrderOnTheWay = async (req, res) => {
 
 
 const markOrderAsDelivered = async (req, res) => {
-    const id = req.params.id;
+  const id = req.token.userId;
     const { orderId } = req.params;
 
     try {
@@ -377,7 +377,7 @@ const markOrderAsDelivered = async (req, res) => {
 
 const getAllOrderIsDelivered = async (req, res) => {
   //const userId = req.token.userId;
-  const{id}=req.params ; 
+  const id = req.token.userId;
 
   try {
     const riderResult = await pool.query(
@@ -418,7 +418,7 @@ const getAllOrderIsDelivered = async (req, res) => {
 
 const getAllOrderIsOnTheWay = async (req, res) => {
   // const userId = req.token.userId;
-  const{id}=req.params ; 
+  const id = req.token.userId;
 
   try {
     const riderResult = await pool.query(
@@ -457,7 +457,7 @@ const getAllOrderIsOnTheWay = async (req, res) => {
   }
 }
 const getAllOrderIsAccepted = async (req, res) => {
-   const{id}=req.params ; 
+  const id = req.token.userId;
   //const userId = req.token.userId;
 
 
