@@ -122,6 +122,7 @@ const updateCartItem = async (req, res) => {
       });
   }
 };
+
 const removeCartItem = async (req, res) => {
   const { id } = req.params;
 
