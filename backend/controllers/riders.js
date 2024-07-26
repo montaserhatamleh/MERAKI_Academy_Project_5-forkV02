@@ -30,7 +30,7 @@ const updateRider = async (req, res) => {
 const findAllRiders = async (req, res) => {
   try {
     const query =
-      "SELECT * FROM riders INNER JOIN users ON riders.user_id = users.id WHERE riders.deleted_at ='0'";
+      "SELECT * FROM riders INNER JOIN users ON riders.user_id = users.id WHERE riders.deleted_at = false";
     const result = await pool.query(query);
 
     if (result.rows.length === 0)
@@ -108,7 +108,7 @@ const getRidersByUserId = async (req, res) => {
 const getAllOrderIsPending = async (req, res) => {
   try {
     const query =
-      "SELECT * FROM orders WHERE status='ready to pick up' AND deleted_at = '0'";
+      "SELECT * FROM orders WHERE status='ready to pick up' AND deleted_at = false";
     const result = await pool.query(query);
 
     if (result.rows.length === 0)

@@ -56,7 +56,7 @@ const signupCustomer = async (req, res) => {
 const login = async (req, res) => {
     const {email,password,role} = req.body
     try {
-    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = 0`,[email])
+    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = false`,[email])
     console.log(emailCheck.rows)
     if(!emailCheck.rows.length>0){
      return res.status(403).json({
@@ -112,7 +112,7 @@ const login = async (req, res) => {
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=0', [id]);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=false', [id]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -162,7 +162,7 @@ const updateUserInfo = async (req, res) => {
                 phone_number = COALESCE($4, phone_number), 
                 email = COALESCE($5, email), 
                 address = COALESCE($6, address)    
-            WHERE id = $7 AND deleted_at ='0'
+            WHERE id = $7 AND deleted_at =false
             RETURNING *`,
             [first_name, last_name, username, phone_number, email, address, id]
         );
