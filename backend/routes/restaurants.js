@@ -9,6 +9,9 @@ const {
   getRestaurantInfoById,
   getItemsByIdForRestaurant,
   deleteRestaurantById,
+  getRestaurantOrders ,
+  changeStatusToPrepar,
+  changeStatusReadyToBickup
 } = require("../controllers/restaurants");
 
 //Getting All Restaurant
@@ -17,6 +20,8 @@ restaurantRouter.get("/", getAllRestaurant);
 restaurantRouter.get("/getByRating", getRestaurantHigherRating);
 //Getting Restaurant by id
 restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
+//Find all order related restaurants
+restaurantRouter.get('/find/:id',getRestaurantOrders)
 //Filter by Category
 restaurantRouter.get("/byCategory", getAllRestaurantByCategory);
 //Update Data For The Restaurant
@@ -30,4 +35,7 @@ restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
 restaurantRouter.get("/allInfo/:id",getRestaurantInfoById);
 
 
+// Mange Order 
+restaurantRouter.put("/prepar/:id/:restaurant",changeStatusToPrepar);
+restaurantRouter.put("/read/:id/:restaurant",changeStatusReadyToBickup);
 module.exports = restaurantRouter;

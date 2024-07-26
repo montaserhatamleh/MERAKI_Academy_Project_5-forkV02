@@ -27,7 +27,7 @@ app.use("/restaurants", restaurantRouter);
 app.use("/riders" , ridersRouter)
 const itemRouter = require("./routes/item");
 
-app.use("/item", itemRouter);
+app.use("/items", itemRouter);
 
 // Handles any other endpoints [unassigned - endpoints]
 app.use("*", (req, res) => res.status(404).json("NO content at this path"));

@@ -1,15 +1,16 @@
+const {pool} = require("../models/db")
 //customer side
 const createOrder = async (req, res) => {
-    const userId = req.token.userId;
+    const userId = req.params.id;
 
    const {delivery_address} = req.body // mn el token a7san 
 
     try {
 
 //hon get all carrt items from user id cart 
-        const cartResult = await pool.query(
+        const cartResult = await pool.query(//kman inner join to get res table where user id = and take delivery fees
             `SELECT * FROM cart_items 
-             INNER JOIN carts ON cart_items.cart_id = carts.cart_id 
+             INNER JOIN carts ON cart_items.cart_id = carts.id 
              WHERE carts.user_id = $1`,
             [userId]
         );
@@ -24,7 +25,7 @@ const createOrder = async (req, res) => {
         const cartItems = cartResult.rows;
 
         // Calculate total price of the order 
-        const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0); // momken to add delivery fees hon
 
         // Create a new order
         // momken to add paymentMethod hon 
@@ -32,16 +33,17 @@ const createOrder = async (req, res) => {
         const orderResult = await pool.query(
             `INSERT INTO orders (user_id, restaurant_id, total_price, status, delivery_address) 
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending' ,delivery_address ]
+            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending' ,delivery_address ] // delivery fees column mn res fixed
+
         );
-        const orderId = orderResult.rows[0].order_id;
+        const orderId = orderResult.rows[0].id;
 
         // Move cart items to order items
         for (const item of cartItems) {
             await pool.query(
-                `INSERT INTO order_items (order_id, menu_item_id, quantity, price) 
-                 VALUES ($1, $2, $3, $4)`, // no need for the price here remove it from order items table
-                [orderId, item.menu_item_id, item.quantity, item.price]
+                `INSERT INTO order_items (order_id, menu_item_id, quantity) 
+                 VALUES ($1, $2, $3)`, // no need for the price here remove it from order items table
+                [orderId, item.menu_item_id, item.quantity]
             );
         }
 
@@ -74,7 +76,7 @@ const getOrderById = async (req, res) => {
 
     try {
         const orderResult = await pool.query(
-            `SELECT * FROM orders WHERE order_id = $1`,
+            `SELECT * FROM orders WHERE id = $1`,
             [id]
         );
 
@@ -90,8 +92,8 @@ const getOrderById = async (req, res) => {
         const orderItemsResult = await pool.query(
             `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.image_url 
              FROM order_items 
-             INNER JOIN menu_items ON order_items.menu_item_id = menu_items.menu_item_id 
-             WHERE order_id = $1`,
+             INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id 
+             WHERE order_items.order_id = $1`,
             [id]
         );
 
@@ -112,7 +114,7 @@ const getOrderById = async (req, res) => {
 
 
 const getOrders = async (req, res) => {
-    const userId = req.token.userId;
+    const userId = req.token.id;
 
     const query = `SELECT * FROM orders WHERE user_id = $1`;
     pool
@@ -131,5 +133,6 @@ const getOrders = async (req, res) => {
         });
       });
   };
+
 
   module.exports = { getOrders, getOrderById, createOrder };

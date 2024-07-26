@@ -1,8 +1,7 @@
 const { query } = require("express");
 const { pool } = require("../models/db");
 
-// function that return items for restaurants with same id
-const getItemsById = (req, res) => {
+const getItemsByRestaurantsId = (req, res) => {
   const item_id = req.params.id;
   // join for user_id
   const query = ` SELECT       
@@ -41,17 +40,19 @@ const getItemsById = (req, res) => {
 };
 // function that update any items
 const updateItemsById = (req, res) => {
-  const item_id = req.params.id;
+  //:id/:restaurant
+  const id = req.params.id;
+  const restaurant = req.params.restaurant;
   const { name, description, price, sub_category, image_url, available } =
     req.body;
   const query = `UPDATE menu_items 
   SET  name = COALESCE($1, name),
        description = COALESCE($2, description),
        price = COALESCE($3, price),
-       sub_category = COALESCE($4, sub_category),
+       sub_category_id = COALESCE($4, sub_category_id),
        image_url = COALESCE($5, image_url),
        available = COALESCE($6, available)
-        WHERE id = $7
+        WHERE restaurant_id = $7 AND id=$8 
         RETURNING *
   `;
   const data = [
@@ -61,7 +62,9 @@ const updateItemsById = (req, res) => {
     sub_category,
     image_url,
     available,
-    item_id,
+    restaurant,
+    id
+    
   ];
   pool
     .query(query, data)
@@ -69,12 +72,12 @@ const updateItemsById = (req, res) => {
       if (result.rowCount === 0) {
         return res.status(404).json({
           success: false,
-          message: `No menu item found with id: ${item_id}`,
+          message: `No menu item found with id: ${id}`,
         });
       }
       res.status(200).json({
         success: true,
-        message: `Menu item with id: ${item_id} updated successfully`,
+        message: `Menu item with id: ${id} updated successfully`,
         result: result.rows[0],
       });
     })
@@ -83,7 +86,7 @@ const updateItemsById = (req, res) => {
       res.status(500).json({
         success: false,
         message: "Server error",
-        err: err,
+        err: err.message,
       });
     });
 };
@@ -92,10 +95,7 @@ const updateItemsById = (req, res) => {
 const addItemsById = (req, res) => {
   const restaurant_id = req.params.id;
   const { name, description, price, image_url, sub_category } = req.body;
-  const query = `INSERT INTO menu_items 
-  (restaurant_id, name, description, price, image_url, sub_category)
-  VALUES ($1, $2, $3, $4, $5, $6)
-  RETURNING *`;
+  const query = `INSERT INTO menu_items (restaurant_id, name, description, price, image_url, sub_category_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
   pool
     .query(query, [
       restaurant_id,
@@ -165,10 +165,15 @@ const changeAvailableFromOnToOffById = (req, res) => {
       });
     });
 };
+
+
+
+
 module.exports = {
-  getItemsById,
+  getItemsByRestaurantsId,
   updateItemsById,
   addItemsById,
   deleteItemById,
   changeAvailableFromOnToOffById,
+
 };

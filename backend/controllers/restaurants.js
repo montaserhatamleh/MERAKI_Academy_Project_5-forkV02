@@ -32,7 +32,7 @@ const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
   pool
     .query(
-      `SELECT name, price, image_url FROM menu_items WHERE id = $1 AND deleted_at = 0`,
+      `SELECT name, price, image_url,description FROM menu_items WHERE restaurant_id = $1 AND deleted_at = 0`,
       [restaurant_id]
     )
     .then((result) => {
@@ -134,17 +134,16 @@ ORDER BY rating DESC LIMIT 5;`
 const updateRestaurantById = (req, res) => {
 
   const {id} = req.params;
-  const { name, address, category, phone_number, rating } = req.body;
+  const { name, address, category, phone_number, image } = req.body;
   pool
     .query(
       `UPDATE restaurants SET name = COALESCE($1, name), 
                                      address = COALESCE($2, address), 
-                                     category = COALESCE($3, category), 
-                                     phone_number = COALESCE($4, phone_number), 
-                                      rating = COALESCE($5, rating), 
-                                     updated_at = CURRENT_TIMESTAMP
-            WHERE restaurant_id = $6 RETURNING *`,
-      [name, address, category, phone_number, rating, id]
+                                     image = COALESCE($3, image),
+                                     category = COALESCE($4, category), 
+                                     phone_number = COALESCE($5, phone_number)
+            WHERE id = $6 RETURNING *`,
+      [name, address, image ,category, phone_number, id]
     )
     .then((result) => {
       if (result.rows.length === 0) {
@@ -197,19 +196,18 @@ const getRestaurantInfoById = async (req, res) => {
   try {
       const restaurantResult = await pool.query(
           `SELECT 
-              r.restaurant_id,
-              r.name,
-              r.user_id,
-              r.image_url,
-              r.address,
-              r.category,
-              r.phone_number,
-              r.created_at,
-              r.updated_at,
+              id,
+              name,
+              user_id,
+              image,
+              address,
+              category,
+              phone_number,
+              created_at,
               COALESCE(avg_reviews.average_rating, 0.00) AS average_rating,
               COALESCE(avg_reviews.rating_count, 0) AS rating_count
            FROM 
-              restaurants r
+              restaurants 
            LEFT JOIN 
               (SELECT 
                   restaurant_id, 
@@ -220,9 +218,9 @@ const getRestaurantInfoById = async (req, res) => {
                GROUP BY 
                   restaurant_id) AS avg_reviews
            ON 
-              r.restaurant_id = avg_reviews.restaurant_id
+           restaurants.id = avg_reviews.restaurant_id
            WHERE 
-              r.restaurant_id = $1`,
+           restaurants.id = $1`,
           [id]
       );
 
@@ -235,15 +233,14 @@ const getRestaurantInfoById = async (req, res) => {
 
       const menuItemsResult = await pool.query(
           `SELECT 
-              menu_item_id,
+              id,
               name,
               description,
               price,
-              sub_category,
+              sub_category_id,
               image_url,
               available,
-              created_at,
-              updated_at
+              created_at
            FROM 
               menu_items
            WHERE 
@@ -265,15 +262,93 @@ const getRestaurantInfoById = async (req, res) => {
       res.status(500).json({
           success: false,
           message: 'Server error',
-          error: err.stack
+          error: err.message
       });
   }
 }
 
 
+const getRestaurantOrders= async (req ,res)=>{
+  const {id} = req.params ; 
+  try{
+  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Pending' " ;
+  const result = await pool.query(query ,[id]) 
+  if(result.rows.length === 0 ){
+    return res.status(404).json({
+      success: false,
+      message: `No item found `,
+    })
+  }
+  res.status(200).json({
+    success: true ,
+    result:result.rows  
+  })
+  }catch(err)
+  {res.status(500).json({
+    success: false,
+    message: `Server Erorr`,
+    error:err.message
+  })}
+}
+
+const changeStatusToPrepar = async (req , res)=>{
+const {id} = req.params ; 
+const {restaurant} = req.params ; 
+try{
+
+const query = "UPDATE orders Set status='Prepar' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
+const result = await pool.query(query,[id , restaurant]);
+   
+if (result.rowCount === 0)
+return res.status(200).json({
+  success: false,
+  message: "Not update",
+});
+
+res.status(200).json({
+success: true,
+result: result.rows[0],
+});
+} catch (err) {
+res.status(500).json({
+success: false,
+message: "Server error",
+error: err.message,
+});
+}
+};
+
+
+const changeStatusReadyToBickup = async (req , res)=>{
+  const {id} = req.params ; 
+  const {restaurant} = req.params ; 
+  try{
+  
+  const query = "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepar' AND restaurant_id=$2 RETURNING *";
+  const result = await pool.query(query,[id , restaurant]);
+     
+  if (result.rowCount === 0)
+  return res.status(200).json({
+    success: false,
+    message: "Not update",
+  });
+  
+  res.status(200).json({
+  success: true,
+  result: result.rows[0],
+  });
+  } catch (err) {
+  res.status(500).json({
+  success: false,
+  message: "Server error",
+  error: err.message,
+  });
+  }
+  };
+  
 
 module.exports = {
-  getRestaurantInfoById,//ahmad route
+  getRestaurantInfoById,
   getAllRestaurant,
   getRestaurantHigherRating,
   getRestaurantById,
@@ -281,4 +356,7 @@ module.exports = {
   updateRestaurantById,
   getItemsByIdForRestaurant,
   deleteRestaurantById,
+  getRestaurantOrders,
+  changeStatusToPrepar,
+  changeStatusReadyToBickup
 };
