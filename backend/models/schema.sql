@@ -83,3 +83,88 @@ CREATE TABLE restaurants (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE orders (
+    id SERIAL NOT NULL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    rider_id INT DEFAULT NULL REFERENCES riders(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    total_price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending',
+    delivery_address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+
+);
+
+CREATE TABLE menu_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    sub_category VARCHAR(50),
+    image_url TEXT,
+    available BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE order_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    menu_item_id INT REFERENCES menu_items(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE menu_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    sub_category VARCHAR(50),
+    image_url TEXT,
+    available BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE order_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    menu_item_id INT REFERENCES menu_items(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE carts (
+    id SERIAL NOT NULL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    restaurant_id INT DEFAULT NULL REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE cart_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    cart_id INT REFERENCES carts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    menu_item_id INT REFERENCES menu_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    quantity INT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE,
+    CONSTRAINT unique_cart_menu_item UNIQUE (cart_id, menu_item_id)
+);
+
+
+CREATE TABLE reviews (
+    id SERIAL NOT NULL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+)
