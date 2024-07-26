@@ -6,7 +6,7 @@ const getAllRestaurant = (req, res) => {
     .query(
       `SELECT * 
 FROM restaurants 
-WHERE deleted_at = 0 
+WHERE deleted_at = false 
 ORDER BY created_at DESC;`
     ) // t5leh order by creation time: change DONE
     .then((result) => {
@@ -34,7 +34,7 @@ const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
   pool
     .query(
-      `SELECT name, price, image_url,description FROM menu_items WHERE restaurant_id = $1 AND deleted_at = 0`,
+      `SELECT name, price, image_url,description FROM menu_items WHERE restaurant_id = $1 AND deleted_at = false`,
       [restaurant_id]
     )
     .then((result) => {
@@ -58,7 +58,7 @@ const getItemsByIdForRestaurant = (req, res) => {
 const getRestaurantById = (req, res) => {
   const restaurant_id = req.params.id;
   pool
-    .query(`SELECT * FROM restaurants WHERE id = $1 AND deleted_at = 0;`, [
+    .query(`SELECT * FROM restaurants WHERE id = $1 AND deleted_at = false;`, [
       restaurant_id,
     ])
 
@@ -111,7 +111,7 @@ const getAllRestaurantByCategory = (req, res) => {
 const getRestaurantHigherRating = (req, res) => {
   pool
     .query(
-      `SELECT * FROM restaurants WHERE deleted_at = 0 
+      `SELECT * FROM restaurants WHERE deleted_at = false 
 ORDER BY rating DESC LIMIT 5;`
     )
     .then((result) => {
@@ -172,7 +172,7 @@ const updateRestaurantById = (req, res) => {
 const deleteRestaurantById = (req, res) => {
   const restaurant_id = req.params.id;
   pool
-    .query(`UPDATE restaurants SET deleted_at = 1 WHERE id = $1 RETURNING *`, [
+    .query(`UPDATE restaurants SET deleted_at = true WHERE id = $1 RETURNING *`, [
       restaurant_id,
     ])
     .then((result) => {

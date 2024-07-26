@@ -44,7 +44,7 @@ CREATE TABLE pending_registrations_rider (
     id SERIAL NOT NULL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     address TEXT,
@@ -72,15 +72,17 @@ CREATE TABLE pending_registrations_ownerRes (
 );
 
 CREATE TABLE restaurants (
-  restaurant_id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR NOT NULL,
-  user_id INT
+  user_id INT,
   address TEXT,
   category VARCHAR,
   phone_number VARCHAR,
   rating DECIMAL(3,2) DEFAULT 0.00,
+  image_url TEXT, 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE orders (
@@ -96,19 +98,6 @@ CREATE TABLE orders (
 
 );
 
-CREATE TABLE menu_items (
-    id SERIAL NOT NULL PRIMARY KEY,
-    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    sub_category VARCHAR(50),
-    image_url TEXT,
-    available BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at BOOLEAN DEFAULT FALSE
-);
-
 CREATE TABLE order_items (
     id SERIAL NOT NULL PRIMARY KEY,
     order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -127,15 +116,6 @@ CREATE TABLE menu_items (
     sub_category VARCHAR(50),
     image_url TEXT,
     available BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at BOOLEAN DEFAULT FALSE
-);
-
-CREATE TABLE order_items (
-    id SERIAL NOT NULL PRIMARY KEY,
-    order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    menu_item_id INT REFERENCES menu_items(id) ON DELETE SET NULL ON UPDATE CASCADE,
-    quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at BOOLEAN DEFAULT FALSE
 );
