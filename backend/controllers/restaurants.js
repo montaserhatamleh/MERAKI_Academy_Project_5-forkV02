@@ -331,7 +331,7 @@ const {id} = req.params ;
 const {restaurant} = req.params ; 
 try{
 
-const query = "UPDATE orders Set status='Prepar' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
+const query = "UPDATE orders Set status='Prepare' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
 const result = await pool.query(query,[id , restaurant]);
    
 if (result.rowCount === 0)

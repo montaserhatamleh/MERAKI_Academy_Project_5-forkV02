@@ -85,6 +85,7 @@ const login = async (req, res) => {
       userId : emailCheck.rows[0].id,
       username: emailCheck.rows[0].username,
       role: emailCheck.rows[0].role_id,
+      address:emailCheck.rows[0].address
       //address kman
     }
     console.log(payload);
