@@ -27,8 +27,6 @@ ORDER BY created_at DESC;`
 };
 
 //get menu item by id for Restaurant
-
-
 // i think no need for this function anymore 
 const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
@@ -108,6 +106,7 @@ const getAllRestaurantByCategory = (req, res) => {
 };
 
 //function get higher rating : change DONE
+//for user
 const getRestaurantHigherRating = (req, res) => {
   pool
     .query(
@@ -195,7 +194,6 @@ const deleteRestaurantById = (req, res) => {
 
 const getRestaurantInfoById = async (req, res) => {
   const { id } = req.params;  
-
   try {
       const restaurantResult = await pool.query(
           `SELECT 

@@ -4,6 +4,7 @@ const { pool } = require("../models/db");
 // function that return items for restaurants with same id
 const getItemsById = (req, res) => {
   const item_id = req.params.id;
+  // join for user_id
   const query = ` SELECT       
       menu_items.name,
       menu_items.description, 
@@ -38,7 +39,6 @@ const getItemsById = (req, res) => {
       });
     });
 };
-
 // function that update any items
 const updateItemsById = (req, res) => {
   const item_id = req.params.id;
@@ -88,10 +88,14 @@ const updateItemsById = (req, res) => {
     });
 };
 // function can create post
+// should be userId 
 const addItemsById = (req, res) => {
   const restaurant_id = req.params.id;
   const { name, description, price, image_url, sub_category } = req.body;
-  const query = `INSERT INTO menu_items (restaurant_id, name, description, price, image_url, sub_category) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+  const query = `INSERT INTO menu_items 
+  (restaurant_id, name, description, price, image_url, sub_category)
+  VALUES ($1, $2, $3, $4, $5, $6)
+  RETURNING *`;
   pool
     .query(query, [
       restaurant_id,
