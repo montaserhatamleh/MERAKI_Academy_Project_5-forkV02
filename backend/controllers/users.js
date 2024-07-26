@@ -13,7 +13,7 @@ const signupCustomer = async (req, res) => {
         email,
         password,
         address,
-        role_id // customer
+     // customer
       } = req.body
       
       try {
@@ -28,7 +28,7 @@ const signupCustomer = async (req, res) => {
         }
        const password_hash = await bcryptjs.hash(password,8)
        const user = await pool.query(
-        `INSERT INTO users (first_name,last_name,phone_number,username,email,password,address,role_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *` , [first_name,last_name,phone_number,username,email,password_hash,address,role_id]
+        `INSERT INTO users (first_name,last_name,phone_number,username,email,password,address,role_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *` , [first_name,last_name,phone_number,username,email,password_hash,address,2]
        )
 
        const cart = await pool.query(
@@ -224,7 +224,6 @@ const sendRiderRegistrationToAdmin = async (req, res) => {
         last_name,
         address,
         phone_number,
-        role_id,
         vehicle_details} = req.body
 try {
         const newRider = await pool.query(
@@ -243,7 +242,7 @@ try {
             last_name,
             address,
             phone_number,
-            role_id,
+            3,
             vehicle_details]
         )
         res.status(201).json({
@@ -269,7 +268,6 @@ const sendResOwnerRegistrationToAdmin = async (req, res) => {
         last_name,
         address,
         phone_number,
-        role_id,
         category,
         restaurant_name,
         restaurant_address,
@@ -296,7 +294,7 @@ delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,
             last_name,
             address,
             phone_number,
-            role_id,
+            4,
             category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees]
         )
         res.status(201).json({
