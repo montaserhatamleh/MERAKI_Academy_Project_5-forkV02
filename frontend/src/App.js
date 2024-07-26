@@ -1,5 +1,7 @@
 import React from 'react'
 import "./App.css";
+import "@fontsource/roboto";
+
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
 const App = () => {

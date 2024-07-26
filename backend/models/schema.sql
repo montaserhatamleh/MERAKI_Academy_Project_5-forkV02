@@ -95,6 +95,29 @@ CREATE TABLE orders (
     delivery_address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at BOOLEAN DEFAULT FALSE
+
+);
+
+CREATE TABLE menu_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    sub_category VARCHAR(50),
+    image_url TEXT,
+    available BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE order_items (
+    id SERIAL NOT NULL PRIMARY KEY,
+    order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    menu_item_id INT REFERENCES menu_items(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE menu_items (
@@ -137,6 +160,7 @@ CREATE TABLE cart_items (
     CONSTRAINT unique_cart_menu_item UNIQUE (cart_id, menu_item_id)
 );
 
+
 CREATE TABLE reviews (
     id SERIAL NOT NULL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -145,4 +169,4 @@ CREATE TABLE reviews (
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at BOOLEAN DEFAULT FALSE
-);
+)

@@ -85,6 +85,7 @@ const login = async (req, res) => {
       userId : emailCheck.rows[0].id,
       username: emailCheck.rows[0].username,
       role: emailCheck.rows[0].role_id,
+      address:emailCheck.rows[0].address
       //address kman
     }
     console.log(payload);
@@ -272,7 +273,8 @@ const sendResOwnerRegistrationToAdmin = async (req, res) => {
         category,
         restaurant_name,
         restaurant_address,
-        restaurant_phone_number } = req.body
+        restaurant_phone_number,
+        delivery_fees } = req.body
 try {
         const newRes = await pool.query(
             `INSERT INTO pending_registrations_ownerRes (username,
@@ -286,7 +288,8 @@ try {
         category,
 restaurant_name,
 restaurant_address,
-restaurant_phone_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,[username,
+restaurant_phone_number,
+delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,[username,
             email,
             password,
             first_name,
@@ -294,7 +297,7 @@ restaurant_phone_number) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNI
             address,
             phone_number,
             role_id,
-            category,restaurant_name,restaurant_address,restaurant_phone_number]
+            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees]
         )
         res.status(201).json({
 success:true,
@@ -484,9 +487,9 @@ const acceptReqRes = async (req, res) =>
             const userId = newUser.rows[0].id;
     
             const newRestaurant = await pool.query(
-                `INSERT INTO restaurants (name, address, category, phone_number, user_id) 
-                VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId]
+                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees) 
+                VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
+                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,delivery_fees]
             );
     
             await pool.query('DELETE FROM pending_registrations_ownerRes WHERE id = $1', [id]);
