@@ -1,9 +1,9 @@
 const {pool} = require("../models/db")
 //customer side
 const createOrder = async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.token.userId;
 
-   const {delivery_address} = req.body // mn el token a7san 
+   const delivery_address = req.token.address // mn el token a7san 
 
     try {
 
