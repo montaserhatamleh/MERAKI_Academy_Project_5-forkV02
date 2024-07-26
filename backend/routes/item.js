@@ -9,7 +9,7 @@ const {
 } = require("../controllers/item");
 
 itemRouter.get("/getItems/:id", getItemsByRestaurantsId);
-itemRouter.put("/updateItems/:id", updateItemsById);
+itemRouter.put("/updateItems/:id/:restaurant", updateItemsById);
 itemRouter.post("/addItems/:id", addItemsById);
 itemRouter.put("/deleteItem/:id", deleteItemById);
 itemRouter.put("/changeAvailable/:id", changeAvailableFromOnToOffById);

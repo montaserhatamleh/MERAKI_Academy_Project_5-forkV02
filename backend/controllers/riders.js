@@ -181,10 +181,106 @@ const deliveryOfTheOrder = async(req , res )=>{
 }
 
 
+const acceptOrder = async (req, res) => {
+  const id = req.params.id;
+  const { orderId } = req.params;
+
+  try {
+      const riderResult = await pool.query(
+          `SELECT id FROM riders WHERE user_id = $1`,
+          [id]
+      );
+
+      if (riderResult.rows.length === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Rider not found'
+          });
+      }
+
+      const riderId = riderResult.rows[0].id;
+
+      // Update order status and assign him
+      const orderResult = await pool.query(
+          `UPDATE orders 
+           SET status = 'Accepted by Rider', rider_id = $1
+           WHERE id = $2 AND status = 'Ready To Pick Up'
+           RETURNING *`,
+          [riderId, orderId]
+      );
+
+      if (orderResult.rows.length === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Order not found or cannot be accepted'
+          });
+      }
+
+      res.status(200).json({
+          success: true,
+          message: 'Order accepted by rider',
+          order: orderResult.rows[0]
+      });
+  } catch (err) {
+      res.status(500).json({
+          success: false,
+          message: 'Server error',
+          error: err.stack
+      });
+  }
+};
 
 
 
 
+const setOrderOnTheWay = async (req, res) => {
+  const id = req.params.id;
+  const { orderId } = req.params;
+
+  try {
+      const riderResult = await pool.query(
+          `SELECT id FROM riders WHERE user_id = $1`,
+          [id]
+      );
+
+      if (riderResult.rows.length === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Rider not found'
+          });
+      }
+
+      const riderId = riderResult.rows[0].id;
+
+      
+      const orderResult = await pool.query(
+          `UPDATE orders 
+             SET status ='On the Way'
+             WHERE id = $1 AND rider_id = $2 AND status ='Accepted by Rider'
+             RETURNING *`,
+          [orderId, riderId]
+      );
+
+      if (orderResult.rows.length === 0) {
+          return res.status(404).json({
+              success: false,
+              message: 'Order not found or cannot be set On the Way'
+          });
+      }
+
+      res.status(200).json({
+          success: true,
+          message: 'Order status updated to On the Way',
+          order: orderResult.rows[0]
+      });
+  } catch (err) {
+      res.status(500).json({
+          success: false,
+          message: 'Server error',
+          error: err.stack
+      });
+  }
+};
 
 
 
@@ -221,118 +317,21 @@ const deliveryOfTheOrder = async(req , res )=>{
 
 
 
-const acceptOrder = async (req, res) => {
-  const userId = req.token.userId;
-  const { orderId } = req.params;
-
-  try {
-      // jeeeb riderId using userId
-      const riderResult = await pool.query(
-          `SELECT rider_id FROM riders WHERE user_id = $1`,
-          [userId]
-      );
-
-      if (riderResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Rider not found'
-          });
-      }
-
-      const riderId = riderResult.rows[0].rider_id;
-
-      // Update order status and assign him
-      const orderResult = await pool.query(
-          `UPDATE orders 
-           SET status = 'Accepted by Rider', rider_id = $1, updated_at = CURRENT_TIMESTAMP
-           WHERE order_id = $2 AND status = 'ready to pick up'
-           RETURNING *`,
-          [riderId, orderId]
-      );
-
-      if (orderResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Order not found or cannot be accepted'
-          });
-      }
-
-      res.status(200).json({
-          success: true,
-          message: 'Order accepted by rider',
-          order: orderResult.rows[0]
-      });
-  } catch (err) {
-      res.status(500).json({
-          success: false,
-          message: 'Server error',
-          error: err.stack
-      });
-  }
-};
 
 //step 2 
 //on the way 
-const setOrderOnTheWay = async (req, res) => {
-  const userId = req.token.userId;
-  const { orderId } = req.params;
-
-  try {
-      const riderResult = await pool.query(
-          `SELECT rider_id FROM riders WHERE user_id = $1`,
-          [userId]
-      );
-
-      if (riderResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Rider not found'
-          });
-      }
-
-      const riderId = riderResult.rows[0].rider_id;
-
-      // Update order status to "On the Way"
-      const orderResult = await pool.query(
-          `UPDATE orders 
-             SET status = 'On the Way', updated_at = CURRENT_TIMESTAMP
-             WHERE order_id = $1 AND rider_id = $2 AND status = 'Accepted by Rider'
-             RETURNING *`,
-          [orderId, riderId]
-      );
-
-      if (orderResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Order not found or cannot be set On the Way'
-          });
-      }
-
-      res.status(200).json({
-          success: true,
-          message: 'Order status updated to On the Way',
-          order: orderResult.rows[0]
-      });
-  } catch (err) {
-      res.status(500).json({
-          success: false,
-          message: 'Server error',
-          error: err.stack
-      });
-  }
-};
 
 //step 3 
 
 
 const markOrderAsDelivered = async (req, res) => {
-    const userId = req.token.userId;
+    const id = req.params.id;
     const { orderId } = req.params;
 
     try {
         const riderResult = await pool.query(
-            `SELECT rider_id FROM riders WHERE user_id = $1`,
-            [userId]
+            `SELECT id FROM riders WHERE user_id = $1`,
+            [id]
         );
 
         if (riderResult.rows.length === 0) {
@@ -342,13 +341,13 @@ const markOrderAsDelivered = async (req, res) => {
             });
         }
 
-        const riderId = riderResult.rows[0].rider_id;
+        const riderId = riderResult.rows[0].id;
 
         // Update order status to "Delivered"
         const orderResult = await pool.query(
             `UPDATE orders 
-             SET status = 'Delivered', updated_at = CURRENT_TIMESTAMP
-             WHERE order_id = $1 AND rider_id = $2 AND status = 'On the Way'
+             SET status = 'Delivered'
+             WHERE id = $1 AND rider_id = $2 AND status = 'On the Way'
              RETURNING *`,
             [orderId, riderId]
         );
@@ -377,13 +376,13 @@ const markOrderAsDelivered = async (req, res) => {
 //step four 
 
 const getAllOrderIsDelivered = async (req, res) => {
-  const userId = req.token.userId;
-
+  //const userId = req.token.userId;
+  const{id}=req.params ; 
 
   try {
     const riderResult = await pool.query(
-      `SELECT rider_id FROM riders WHERE user_id = $1`,
-      [userId]
+      `SELECT id FROM riders WHERE user_id = $1`,
+      [id]
   );
 
   if (riderResult.rows.length === 0) {
@@ -393,7 +392,7 @@ const getAllOrderIsDelivered = async (req, res) => {
       });
   }
 
-  const riderId = riderResult.rows[0].rider_id;
+  const riderId = riderResult.rows[0].id;
     const query =
       "SELECT * FROM orders WHERE status='Delivered' AND rider_id =$1";
     const result = await pool.query(query,[riderId]);
@@ -418,13 +417,13 @@ const getAllOrderIsDelivered = async (req, res) => {
 };
 
 const getAllOrderIsOnTheWay = async (req, res) => {
-  const userId = req.token.userId;
-
+  // const userId = req.token.userId;
+  const{id}=req.params ; 
 
   try {
     const riderResult = await pool.query(
-      `SELECT rider_id FROM riders WHERE user_id = $1`,
-      [userId]
+      `SELECT id FROM riders WHERE user_id = $1`,
+      [id]
   );
 
   if (riderResult.rows.length === 0) {
@@ -434,7 +433,7 @@ const getAllOrderIsOnTheWay = async (req, res) => {
       });
   }
 
-  const riderId = riderResult.rows[0].rider_id;
+  const riderId = riderResult.rows[0].id;
     const query =
       "SELECT * FROM orders WHERE status='on the way' AND rider_id =$1";
     const result = await pool.query(query,[riderId]);
@@ -458,13 +457,14 @@ const getAllOrderIsOnTheWay = async (req, res) => {
   }
 }
 const getAllOrderIsAccepted = async (req, res) => {
-  const userId = req.token.userId;
+   const{id}=req.params ; 
+  //const userId = req.token.userId;
 
 
   try {
     const riderResult = await pool.query(
-      `SELECT rider_id FROM riders WHERE user_id = $1`,
-      [userId]
+      `SELECT id FROM riders WHERE user_id = $1`,
+      [id]
   );
 
   if (riderResult.rows.length === 0) {
@@ -474,7 +474,7 @@ const getAllOrderIsAccepted = async (req, res) => {
       });
   }
 
-  const riderId = riderResult.rows[0].rider_id;
+  const riderId = riderResult.rows[0].id;
     const query =
       "SELECT * FROM orders WHERE status='Accepted by Rider' AND rider_id =$1";
     const result = await pool.query(query,[riderId]);

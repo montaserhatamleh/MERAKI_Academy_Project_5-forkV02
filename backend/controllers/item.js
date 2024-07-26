@@ -40,7 +40,9 @@ const getItemsByRestaurantsId = (req, res) => {
 
 // function that update any items
 const updateItemsById = (req, res) => {
-  const item_id = req.params.id;
+  //:id/:restaurant
+  const id = req.params.id;
+  const restaurant = req.params.restaurant;
   const { name, description, price, sub_category, image_url, available } =
     req.body;
   const query = `UPDATE menu_items 
@@ -50,7 +52,7 @@ const updateItemsById = (req, res) => {
        sub_category_id = COALESCE($4, sub_category_id),
        image_url = COALESCE($5, image_url),
        available = COALESCE($6, available)
-        WHERE id = $7
+        WHERE restaurant_id = $7 AND id=$8 
         RETURNING *
   `;
   const data = [
@@ -60,7 +62,9 @@ const updateItemsById = (req, res) => {
     sub_category,
     image_url,
     available,
-    item_id,
+    restaurant,
+    id
+    
   ];
   pool
     .query(query, data)
@@ -68,12 +72,12 @@ const updateItemsById = (req, res) => {
       if (result.rowCount === 0) {
         return res.status(404).json({
           success: false,
-          message: `No menu item found with id: ${item_id}`,
+          message: `No menu item found with id: ${id}`,
         });
       }
       res.status(200).json({
         success: true,
-        message: `Menu item with id: ${item_id} updated successfully`,
+        message: `Menu item with id: ${id} updated successfully`,
         result: result.rows[0],
       });
     })
@@ -160,10 +164,15 @@ const changeAvailableFromOnToOffById = (req, res) => {
       });
     });
 };
+
+
+
+
 module.exports = {
   getItemsByRestaurantsId,
   updateItemsById,
   addItemsById,
   deleteItemById,
   changeAvailableFromOnToOffById,
+
 };
