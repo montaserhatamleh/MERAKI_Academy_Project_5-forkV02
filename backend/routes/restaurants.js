@@ -10,8 +10,11 @@ const {
   getItemsByIdForRestaurant,
   deleteRestaurantById,
   getRestaurantOrders ,
-  changeStatusToPrepar,
-  changeStatusReadyToBickup
+  changeStatusToPrepare,
+  changeStatusReadyToPickup,
+  
+  getRestaurantOrdersPrepare,
+getRestaurantOrdersReady
 } = require("../controllers/restaurants");
 
 //Getting All Restaurant
@@ -36,6 +39,13 @@ restaurantRouter.get("/allInfo/:id",getRestaurantInfoById);
 
 
 // Mange Order 
-restaurantRouter.put("/prepar/:id/:restaurant",changeStatusToPrepar);
-restaurantRouter.put("/read/:id/:restaurant",changeStatusReadyToBickup);
+restaurantRouter.put("/prepare/:id/:restaurant",changeStatusToPrepare);
+restaurantRouter.put("/read/:id/:restaurant",changeStatusReadyToPickup);
+restaurantRouter.get("/:restaurant/prepare",getRestaurantOrdersPrepare);
+restaurantRouter.get("/:restaurant/ready",getRestaurantOrdersReady);
+
+
+// authentication,authorization("manage_orders")
+
+
 module.exports = restaurantRouter;

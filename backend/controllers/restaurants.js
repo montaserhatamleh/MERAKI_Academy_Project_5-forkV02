@@ -293,7 +293,7 @@ const getRestaurantOrders= async (req ,res)=>{
   })}
 }
 
-const changeStatusToPrepar = async (req , res)=>{
+const changeStatusToPrepare = async (req , res)=>{
 const {id} = req.params ; 
 const {restaurant} = req.params ; 
 try{
@@ -321,12 +321,12 @@ error: err.message,
 };
 
 
-const changeStatusReadyToBickup = async (req , res)=>{
+const changeStatusReadyToPickup = async (req , res)=>{
   const {id} = req.params ; 
   const {restaurant} = req.params ; 
   try{
   
-  const query = "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepar' AND restaurant_id=$2 RETURNING *";
+  const query = "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepare' AND restaurant_id=$2 RETURNING *";
   const result = await pool.query(query,[id , restaurant]);
      
   if (result.rowCount === 0)
@@ -349,6 +349,52 @@ const changeStatusReadyToBickup = async (req , res)=>{
   };
   
 
+  
+const getRestaurantOrdersPrepare= async (req ,res)=>{
+  const {id} = req.params ; 
+  try{
+  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Prepare' " ;
+  const result = await pool.query(query ,[id]) 
+  if(result.rows.length === 0 ){
+    return res.status(404).json({
+      success: false,
+      message: `No item found `,
+    })
+  }
+  res.status(200).json({
+    success: true ,
+    result:result.rows  
+  })
+  }catch(err)
+  {res.status(500).json({
+    success: false,
+    message: `Server Erorr`,
+    error:err.message
+  })}
+}
+const getRestaurantOrdersReady= async (req ,res)=>{
+  const {id} = req.params ; 
+  try{
+  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Ready To Pick Up' " ;
+  const result = await pool.query(query ,[id]) 
+  if(result.rows.length === 0 ){
+    return res.status(404).json({
+      success: false,
+      message: `No item found `,
+    })
+  }
+  res.status(200).json({
+    success: true ,
+    result:result.rows  
+  })
+  }catch(err)
+  {res.status(500).json({
+    success: false,
+    message: `Server Erorr`,
+    error:err.message
+  })}
+}
+
 module.exports = {
   getRestaurantInfoById,
   getAllRestaurant,
@@ -359,6 +405,8 @@ module.exports = {
   getItemsByIdForRestaurant,
   deleteRestaurantById,
   getRestaurantOrders,
-  changeStatusToPrepar,
-  changeStatusReadyToBickup
+  changeStatusToPrepare,
+  changeStatusReadyToPickup,
+  getRestaurantOrdersPrepare,
+getRestaurantOrdersReady
 };
