@@ -2,6 +2,7 @@ const {pool} = require("../models/db");
 
 
 const addItemToCart = async (req, res) => {
+
   const userId = req.token.userId;
 
   const { menu_item_id, quantity, restaurant_id } = req.body;
@@ -61,6 +62,7 @@ const addItemToCart = async (req, res) => {
 
 const getCartByUserId = async (req, res) => {
     const userId = req.token.userId;
+
 
   try {
       const cartResult = await pool.query(

@@ -25,6 +25,9 @@ const Header = () => {
           <Button color="inherit" component={Link} to="/become-rider">
             Become a Rider
           </Button>
+          <Button color="inherit" component={Link} to="/get_All_Rider">
+            get All riders
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>
