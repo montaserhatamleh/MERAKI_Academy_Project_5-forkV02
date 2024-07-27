@@ -3,6 +3,7 @@ const {pool} = require("../models/db")
 const bcryptjs = require("bcryptjs")
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET
+const cloudinary = require('../cloud'); 
 
 const signupCustomer = async (req, res) => {
     const {
@@ -13,7 +14,7 @@ const signupCustomer = async (req, res) => {
         email,
         password,
         address,
-        role_id // customer
+     // customer
       } = req.body
       
       try {
@@ -28,7 +29,7 @@ const signupCustomer = async (req, res) => {
         }
        const password_hash = await bcryptjs.hash(password,8)
        const user = await pool.query(
-        `INSERT INTO users (first_name,last_name,phone_number,username,email,password,address,role_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *` , [first_name,last_name,phone_number,username,email,password_hash,address,role_id]
+        `INSERT INTO users (first_name,last_name,phone_number,username,email,password,address,role_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *` , [first_name,last_name,phone_number,username,email,password_hash,address,2]
        )
 
        const cart = await pool.query(
@@ -36,7 +37,8 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created" ,new_user:user.rows[0],
+        message: " email created" ,
+        new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
       }
@@ -54,9 +56,9 @@ const signupCustomer = async (req, res) => {
 
 
 const login = async (req, res) => {
-    const {email,password,role} = req.body
+    const {email,password} = req.body
     try {
-    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = 0`,[email])
+    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.role_id WHERE email = ($1) AND deleted_at = false`,[email])
     console.log(emailCheck.rows)
     if(!emailCheck.rows.length>0){
      return res.status(403).json({
@@ -65,20 +67,22 @@ const login = async (req, res) => {
       })
     
     }
-    const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
-    if (!passwordCheck){
+  //  const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
+   // if (!passwordCheck){
+    //  return res.status(403).json({
+     //   success:false,
+     //   message:"The email doesn’t exist or the Password you’ve entered is incorrect"
+   //   })
+    
+ //   }
+ console.log();
+ if (emailCheck.rows[0].password!==password){
       return res.status(403).json({
-        success:false,
-        message:"The email doesn’t exist or the Password you’ve entered is incorrect"
+       success:false,
+      message:"2The email doesn’t exist or the Password you’ve entered is incorrect"
       })
     
-    }
-    if (emailCheck.rows[0].role !== role) {
-        return res.status(403).json({
-            success: false,
-            message: `Access denied.`
-        });
-    }
+  }
     
     console.log(emailCheck.rows[0]);
     const payload = {
@@ -95,7 +99,9 @@ const login = async (req, res) => {
       success:true,
       message:"Valid login credentials",
       token:token,
-      userId: emailCheck.rows[0].id
+      role: emailCheck.rows[0].role_name,
+      user:emailCheck.rows[0].id
+      
     })
     }
     catch(err){
@@ -112,7 +118,7 @@ const login = async (req, res) => {
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=0', [id]);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=false', [id]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -162,7 +168,7 @@ const updateUserInfo = async (req, res) => {
                 phone_number = COALESCE($4, phone_number), 
                 email = COALESCE($5, email), 
                 address = COALESCE($6, address)    
-            WHERE id = $7 AND deleted_at ='0'
+            WHERE id = $7 AND deleted_at =false
             RETURNING *`,
             [first_name, last_name, username, phone_number, email, address, id]
         );
@@ -224,7 +230,6 @@ const sendRiderRegistrationToAdmin = async (req, res) => {
         last_name,
         address,
         phone_number,
-        role_id,
         vehicle_details} = req.body
 try {
         const newRider = await pool.query(
@@ -243,11 +248,12 @@ try {
             last_name,
             address,
             phone_number,
-            role_id,
+            3,
             vehicle_details]
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRider.rows[0]
         })
     }
@@ -269,13 +275,21 @@ const sendResOwnerRegistrationToAdmin = async (req, res) => {
         last_name,
         address,
         phone_number,
-        role_id,
         category,
         restaurant_name,
         restaurant_address,
         restaurant_phone_number,
         delivery_fees } = req.body
 try {
+
+    let image_url = null;
+    if (req.files && req.files.image) {
+      const result = await cloudinary.uploader.upload(req.files.image.path, {
+        folder: 'res_images',
+      });
+      image_url = result.secure_url;
+    }
+
         const newRes = await pool.query(
             `INSERT INTO pending_registrations_ownerRes (username,
         email,
@@ -289,18 +303,21 @@ try {
 restaurant_name,
 restaurant_address,
 restaurant_phone_number,
-delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,[username,
+delivery_fees,
+image_url) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,[username,
             email,
             password,
             first_name,
             last_name,
             address,
             phone_number,
-            role_id,
-            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees]
+            4,
+            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees,
+            image_url]
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRes.rows[0]
         })
     }
@@ -481,15 +498,15 @@ const acceptReqRes = async (req, res) =>
             const newUser = await pool.query(
                 `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
+                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // res role 
             );
     
             const userId = newUser.rows[0].id;
     
             const newRestaurant = await pool.query(
-                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees) 
-                VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
-                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,delivery_fees]
+                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees,image_url) 
+                VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *`,
+                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,resOwner.delivery_fees,resOwner.image_url]
             );
     
             await pool.query('DELETE FROM pending_registrations_ownerRes WHERE id = $1', [id]);

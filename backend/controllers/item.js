@@ -12,7 +12,7 @@ const getItemsByRestaurantsId = (req, res) => {
       menu_items.image_url
       FROM restaurants
       JOIN menu_items ON menu_items.restaurant_id = restaurants.id 
-    WHERE restaurants.id = $1 AND menu_items.deleted_at = 0;
+    WHERE restaurants.id = $1 AND menu_items.deleted_at = false;
      `;
   pool
     .query(query, [item_id])
