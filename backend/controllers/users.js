@@ -79,7 +79,7 @@ const login = async (req, res) => {
  if (emailCheck.rows[0].password!==password){
       return res.status(403).json({
        success:false,
-      message:"2The email doesn’t exist or the Password you’ve entered is incorrect"
+      message:"The email doesn’t exist or the Password you’ve entered is incorrect"
       })
     
   }
@@ -90,7 +90,6 @@ const login = async (req, res) => {
       username: emailCheck.rows[0].username,
       role: emailCheck.rows[0].role_id,
       address:emailCheck.rows[0].address
-      //address kman
     }
     console.log(payload);
     const options =  { expiresIn: "60m" }
