@@ -5,6 +5,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
+import GetAllRider from "../pages/Admin/getAllRegister"
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
         path: 'become-rider',
         element: <BecomeRider />,
       },
+      {
+        path: 'get_All_Rider',
+        element: <GetAllRider />,
+      }
     ],
   },
 ]);
