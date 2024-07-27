@@ -18,7 +18,16 @@ function Restaurants() {
     fetchAllRestaurants();
   }, []);
   return <div>
-
+    {restaurants.map((elem,i)=>(
+        <div key={i}>
+            <h1>{elem.name}</h1>
+            <h1>{elem.image_url}</h1>
+            <h1>{elem.phone_number}</h1>
+            <h1>{elem.rating}</h1>
+            <h1>{elem.address}</h1>
+        </div>
+        
+    ))}
   </div>;
 }
 
