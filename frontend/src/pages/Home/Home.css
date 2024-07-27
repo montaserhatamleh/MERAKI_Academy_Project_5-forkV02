@@ -1,0 +1,32 @@
+.home {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .carousel .slide img {
+    max-height: 500px;
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  .carousel-content {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    color: white;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+  }
+  
+  .carousel-content .MuiTypography-root {
+    margin-bottom: 20px;
+  }
+  
+  .carousel-content .MuiButton-root {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
