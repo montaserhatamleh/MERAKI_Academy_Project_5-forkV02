@@ -504,9 +504,9 @@ const acceptReqRes = async (req, res) =>
             const userId = newUser.rows[0].id;
     
             const newRestaurant = await pool.query(
-                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees) 
-                VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
-                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,delivery_fees]
+                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees,image_url) 
+                VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *`,
+                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,resOwner.delivery_fees,resOwner.image_url]
             );
     
             await pool.query('DELETE FROM pending_registrations_ownerRes WHERE id = $1', [id]);
