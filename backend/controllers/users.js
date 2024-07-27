@@ -3,6 +3,7 @@ const {pool} = require("../models/db")
 const bcryptjs = require("bcryptjs")
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET
+const cloudinary = require('../cloud'); 
 
 const signupCustomer = async (req, res) => {
     const {
@@ -252,6 +253,7 @@ try {
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRider.rows[0]
         })
     }
@@ -279,6 +281,15 @@ const sendResOwnerRegistrationToAdmin = async (req, res) => {
         restaurant_phone_number,
         delivery_fees } = req.body
 try {
+
+    let image_url = null;
+    if (req.files && req.files.image) {
+      const result = await cloudinary.uploader.upload(req.files.image.path, {
+        folder: 'res_images',
+      });
+      image_url = result.secure_url;
+    }
+
         const newRes = await pool.query(
             `INSERT INTO pending_registrations_ownerRes (username,
         email,
@@ -292,7 +303,8 @@ try {
 restaurant_name,
 restaurant_address,
 restaurant_phone_number,
-delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,[username,
+delivery_fees,
+image_url) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,[username,
             email,
             password,
             first_name,
@@ -300,10 +312,12 @@ delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,
             address,
             phone_number,
             4,
-            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees]
+            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees,
+            image_url]
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRes.rows[0]
         })
     }
@@ -484,7 +498,7 @@ const acceptReqRes = async (req, res) =>
             const newUser = await pool.query(
                 `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
+                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // res role 
             );
     
             const userId = newUser.rows[0].id;
