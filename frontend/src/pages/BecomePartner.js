@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Container } from '@mui/material';
+import { TextField, Button, Box, Typography, Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import axios from 'axios';
 
 const BecomePartner = () => {
@@ -186,22 +186,25 @@ const BecomePartner = () => {
               style: { color: 'white' }
             }}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="category"
-            label="Category"
-            value={restaurant.category}
-            onChange={handleChange}
-            InputProps={{
-              style: { color: 'white' }
-            }}
-            InputLabelProps={{
-              style: { color: 'white' }
-            }}
-          />
+          <FormControl fullWidth variant="outlined" margin="normal">
+            <InputLabel style={{ color: 'white' }}>Category</InputLabel>
+            <Select
+              name="category"
+              value={restaurant.category}
+              onChange={handleChange}
+              label="Category"
+              sx={{ color: 'white', borderColor: 'white' }}
+              InputLabelProps={{
+                style: { color: 'white' }
+              }}
+            >
+              <MenuItem value="Lebanese">Lebanese</MenuItem>
+              <MenuItem value="Syrian">Syrian</MenuItem>
+              <MenuItem value="Palestinian">Palestinian</MenuItem>
+              <MenuItem value="Jordanian">Jordanian</MenuItem>
+              <MenuItem value="Egyptian">Egyptian</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             variant="outlined"
             margin="normal"
