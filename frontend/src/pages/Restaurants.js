@@ -1,4 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
+//nav
+//params
+
 import axios from "axios";
 
 function Restaurants() {
@@ -17,18 +25,19 @@ function Restaurants() {
   useEffect(() => {
     fetchAllRestaurants();
   }, []);
-  return <div>
-    {restaurants.map((elem,i)=>(
+  return (
+    <div>
+      {restaurants.map((elem, i) => (
         <div key={i}>
-            <h1>{elem.name}</h1>
-            <h1>{elem.image_url}</h1>
-            <h1>{elem.phone_number}</h1>
-            <h1>{elem.rating}</h1>
-            <h1>{elem.address}</h1>
+          <h1>{elem.name}</h1>
+          <h1>{elem.image_url}</h1>
+          <h1>{elem.phone_number}</h1>
+          <h1>{elem.rating}</h1>
+          <h1>{elem.address}</h1>
         </div>
-        
-    ))}
-  </div>;
+      ))}
+    </div>
+  );
 }
 
 export default Restaurants;
