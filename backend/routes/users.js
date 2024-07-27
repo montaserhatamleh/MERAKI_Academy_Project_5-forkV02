@@ -30,7 +30,7 @@ userRouter.put("/:id", updateUserInfo);
 userRouter.delete("/:id", authentication,authorization("manage_users"),deleteUser);
 
 // Registration Requests
-userRouter.post("/riderRegistration", multipartyMiddleware,sendRiderRegistrationToAdmin);
+userRouter.post("/riderRegistration",sendRiderRegistrationToAdmin);
 userRouter.post("/restaurantOwnerRegistration",multipartyMiddleware, sendResOwnerRegistrationToAdmin);
 
 // Admin: Get All Requests
