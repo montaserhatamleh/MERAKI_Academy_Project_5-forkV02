@@ -1,6 +1,6 @@
 /* styles.css */
 body {
-  background: url('../public/images/bg_4.jpg') no-repeat center center fixed;
+  background: url('../src/assets//images/bg_4.jpg') no-repeat center center fixed;
   background-size: cover;
   margin: 0;
   padding: 0;
