@@ -54,9 +54,9 @@ const signupCustomer = async (req, res) => {
 
 
 const login = async (req, res) => {
-    const {email,password,role} = req.body
+    const {email,password} = req.body
     try {
-    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = false`,[email])
+    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.role_id WHERE email = ($1) AND deleted_at = false`,[email])
     console.log(emailCheck.rows)
     if(!emailCheck.rows.length>0){
      return res.status(403).json({
@@ -65,20 +65,22 @@ const login = async (req, res) => {
       })
     
     }
-    const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
-    if (!passwordCheck){
+  //  const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
+   // if (!passwordCheck){
+    //  return res.status(403).json({
+     //   success:false,
+     //   message:"The email doesn’t exist or the Password you’ve entered is incorrect"
+   //   })
+    
+ //   }
+ console.log(req.body);
+ if (emailCheck.rows[0].password!==password){
       return res.status(403).json({
-        success:false,
-        message:"The email doesn’t exist or the Password you’ve entered is incorrect"
+       success:false,
+      message:"2The email doesn’t exist or the Password you’ve entered is incorrect"
       })
     
-    }
-    if (emailCheck.rows[0].role !== role) {
-        return res.status(403).json({
-            success: false,
-            message: `Access denied.`
-        });
-    }
+  }
     
     console.log(emailCheck.rows[0]);
     const payload = {
@@ -95,7 +97,9 @@ const login = async (req, res) => {
       success:true,
       message:"Valid login credentials",
       token:token,
-      userId: emailCheck.rows[0].id
+      role: emailCheck.rows[0].role_name,
+      user:emailCheck.rows[0].id
+      
     })
     }
     catch(err){
