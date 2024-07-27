@@ -36,7 +36,8 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created" ,new_user:user.rows[0],
+        message: " email created" ,
+        new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
       }
@@ -73,7 +74,7 @@ const login = async (req, res) => {
    //   })
     
  //   }
- console.log(req.body);
+ console.log();
  if (emailCheck.rows[0].password!==password){
       return res.status(403).json({
        success:false,
