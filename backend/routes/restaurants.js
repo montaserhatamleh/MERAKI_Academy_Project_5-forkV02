@@ -23,13 +23,13 @@ restaurantRouter.get("/", getAllRestaurant);
 //Getting Restaurant Depending on Rating
 restaurantRouter.get("/getByRating", getRestaurantHigherRating);
 //Getting Restaurant by id
-restaurantRouter.get("/RestaurantById/:id", getRestaurantById);
+restaurantRouter.get("/RestaurantById",authentication,authorization("manage_restaurants"),getRestaurantById);
 //Find all order related restaurants
 restaurantRouter.get("/find/:id", getRestaurantOrders);
 //Filter by Category
 restaurantRouter.get("/byCategory/:text", getAllRestaurantByCategory);
 //Update Data For The Restaurant
-restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
+restaurantRouter.put("/updateRestaurant", authentication,authorization("manage_restaurants"),updateRestaurantById);
 //Getting items for restaurant
 restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
@@ -63,7 +63,8 @@ restaurantRouter.get(
   authorization("manage_orders"),
   getRestaurantOrdersReady
 );
-
+//('Restaurant Owner')
+//('manage_restaurants')
 // authentication,authorization("manage_orders")
 
 module.exports = restaurantRouter;
