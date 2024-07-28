@@ -39,10 +39,10 @@ restaurantRouter.get("/allInfo/:id",getRestaurantInfoById);
 
 
 // Mange Order 
-restaurantRouter.put("/prepare/:id/:restaurant",changeStatusToPrepare);
-restaurantRouter.put("/read/:id/:restaurant",changeStatusReadyToPickup);
-restaurantRouter.get("/:restaurant/prepare",getRestaurantOrdersPrepare);
-restaurantRouter.get("/:restaurant/ready",getRestaurantOrdersReady);
+restaurantRouter.put("/prepare/:id/:restaurant",authentication,authorization("manage_orders"),changeStatusToPrepare);
+restaurantRouter.put("/read/:id/:restaurant",authentication,authorization("manage_orders"),changeStatusReadyToPickup);
+restaurantRouter.get("/:restaurant/prepare",authentication,authorization("manage_orders"),getRestaurantOrdersPrepare);
+restaurantRouter.get("/:restaurant/ready",authentication,authorization("manage_orders"),getRestaurantOrdersReady);
 
 
 // authentication,authorization("manage_orders")

@@ -67,6 +67,9 @@ CREATE TABLE pending_registrations_ownerRes (
   restaurant_name VARCHAR,
   restaurant_address TEXT,
   restaurant_phone_number VARCHAR(15),
+ delivery_fees DECIMAL(3,2) DEFAULT 0.00 ,
+   image_url TEXT, 
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -80,6 +83,7 @@ CREATE TABLE restaurants (
   phone_number VARCHAR,
   rating DECIMAL(3,2) DEFAULT 0.00,
   image_url TEXT, 
+  delivery_fees DECIMAL(3,2) DEFAULT 0.00 ,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE

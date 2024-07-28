@@ -3,6 +3,7 @@ const { pool } = require("../models/db");
 
 const getItemsByRestaurantsId = (req, res) => {
   const item_id = req.params.id;
+  // join for user_id
   const query = ` SELECT       
       menu_items.name,
       menu_items.description, 
@@ -37,7 +38,6 @@ const getItemsByRestaurantsId = (req, res) => {
       });
     });
 };
-
 // function that update any items
 const updateItemsById = (req, res) => {
   //:id/:restaurant
@@ -90,7 +90,8 @@ const updateItemsById = (req, res) => {
       });
     });
 };
-
+// function can create post
+// should be userId 
 const addItemsById = (req, res) => {
   const restaurant_id = req.params.id;
   const { name, description, price, image_url, sub_category } = req.body;
