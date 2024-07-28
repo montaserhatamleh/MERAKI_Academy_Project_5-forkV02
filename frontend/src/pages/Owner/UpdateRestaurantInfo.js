@@ -1,9 +1,9 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Typography, Box, Container, TextField, Button } from '@mui/material';
+import { TextField, Button, Container, Box, Typography } from '@mui/material';
 
-const Owner = () => {
+const UpdateRestaurantInfo = () => {
   const token = useSelector(state => state.auth.token);
   const [restaurant, setRestaurant] = useState({
     name: '',
@@ -14,23 +14,6 @@ const Owner = () => {
     image_url: ''
   });
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    const getRestaurantInfo = async () => {
-      try {
-        const result = await axios.get("http://localhost:5000/restaurants/RestaurantById", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setRestaurant(result.data.result);
-      } catch (error) {
-        setMessage('Error getting restaurant information. Please try again later.');
-      }
-    };
-
-    getRestaurantInfo();
-  }, [token]);
 
   const handleChange = (e) => {
     setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
@@ -63,7 +46,7 @@ const Owner = () => {
           borderRadius: 2
         }}
       >
-        <Typography component="h1" variant="h5" sx={{ color: 'white', marginBottom: 2 }}>Restaurant Dashboard</Typography>
+        <Typography component="h1" variant="h5" sx={{ color: 'white', marginBottom: 2 }}>Update Restaurant Info</Typography>
         {message && <Typography color="error">{message}</Typography>}
         <Box component="form" sx={{ mt: 3 }}>
           <TextField
@@ -158,4 +141,4 @@ const Owner = () => {
   );
 };
 
-export default Owner;
+export default UpdateRestaurantInfo;

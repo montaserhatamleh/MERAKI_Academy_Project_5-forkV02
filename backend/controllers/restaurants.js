@@ -322,7 +322,7 @@ const getRestaurantOrders= async (req ,res)=>{
   }catch(err)
   {res.status(500).json({
     success: false,
-    message: `Server Erorr`,
+    message: `Server Error`,
     error:err.message
   })}
 }
