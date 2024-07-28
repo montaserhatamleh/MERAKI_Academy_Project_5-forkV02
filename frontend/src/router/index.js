@@ -45,9 +45,9 @@ export const router = createBrowserRouter([
 
       path: 'get_All_Owner',
       element: <GetAllOwner />,
-    }
+    },{
 
-        path: 'Restaurants',
+        path: 'restaurants',
         element: <Restaurants />,
       }
 

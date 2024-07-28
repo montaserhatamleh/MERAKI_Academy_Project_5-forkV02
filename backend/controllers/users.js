@@ -74,6 +74,7 @@ const login = async (req, res) => {
        success:false,
        message:"The email doesn’t exist or the Password you’ve entered is incorrect"
      })
+    }
 
    
     const payload = {
@@ -93,7 +94,8 @@ const login = async (req, res) => {
       user:emailCheck.rows[0].id
       
     })
-    }
+    
+}
     catch(err){
       res.status(500).json({
         success:false,
@@ -102,8 +104,9 @@ const login = async (req, res) => {
       })
     
     }
+}
     
-};
+
 
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
