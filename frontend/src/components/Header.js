@@ -47,6 +47,9 @@ const Header = () => {
           <Button sx={{ color: 'white' }} component={Link} to="/get_All_Rider">
             Get All Riders
           </Button>
+          <Button sx={{ color: 'white' }} component={Link} to="/get_All_Owner">
+            Get All Owner
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

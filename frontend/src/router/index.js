@@ -6,6 +6,7 @@ import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 import GetAllRider from "../pages/Admin/getAllRegister"
+import GetAllOwner from "../pages/Admin/getAllOwner"
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +36,11 @@ export const router = createBrowserRouter([
       {
         path: 'get_All_Rider',
         element: <GetAllRider />,
-      }
+      },
+      {
+      path: 'get_All_Owner',
+      element: <GetAllOwner />,
+    }
     ],
   },
 ]);

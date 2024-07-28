@@ -9,25 +9,23 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+
 import axios from "axios";
-
-
-const GetAllRegister = () => {
-  const [users, setUsers] = useState([]);
-  const [message, setMessage] = useState("");
-  
+const GetAllOwner = () => {
   const token = useSelector((state) => state.auth.token);
-
+  const [owner, setOwner] = useState([]);
+  const [message, setMessage] = useState("");
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/users/rider/registration`,{
+        `http://localhost:5000/users/restaurantOwner/Registration`,{
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
       );
-      setUsers(response.data.riders);
+      setOwner(response.data.result);
+      console.log(response.data.result);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -40,12 +38,13 @@ const GetAllRegister = () => {
   const acceptPendingRiders = async (id) => {
     try {
       const accepted = await axios.post(
-        `http://localhost:5000/users/riderRegistration/${id}`,{},{
+        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,{},{
             headers: {
               Authorization: `Bearer ${token}`,
             },
           },
       );
+      console.log(accepted);
       setMessage(accepted.data.message);
     } catch (err) {
       console.log(err);
@@ -55,7 +54,7 @@ const GetAllRegister = () => {
   const rejectPendingRiders = async (id) => {
     try {
       const reject = await axios.delete(
-        `http://localhost:5000/users/riderRegistration/${id}`,{
+        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,{
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -67,7 +66,6 @@ const GetAllRegister = () => {
       console.log(err);
     }
   };
-
   return (
     <Container
       maxWidth="lr"
@@ -76,13 +74,12 @@ const GetAllRegister = () => {
         display: "flex",
         flexDirection: "column",
         boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-
         padding: "20px",
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h4" gutterBottom>
-        All Riders Registration Pending
+      <Typography variant="h5" gutterBottom>
+        All Owner Restaurants Registration Pending
       </Typography>
       <List sx={{ width: "100%" }}>
         <ListItem
@@ -97,7 +94,7 @@ const GetAllRegister = () => {
           <ListItemText primary="Phone" sx={{ flex: 1, fontWeight: "bold" }} />
           <Box sx={{ flex: 1 }} />
         </ListItem>
-        {users.map((user) => (
+        {owner.map((user) => (
           <ListItem
             key={user.id}
             sx={{
@@ -114,12 +111,12 @@ const GetAllRegister = () => {
               <Button
                 onClick={() => {
                   acceptPendingRiders(user.id);
-                }}
+                }}  
                 variant="contained"
                 color="primary"
                 sx={{ marginRight: "10px" }}
               >
-                Accept
+                Acceptrs
               </Button>
               <Button
                 onClick={() => rejectPendingRiders(user.id)}
@@ -136,4 +133,4 @@ const GetAllRegister = () => {
   );
 };
 
-export default GetAllRegister;
+export default GetAllOwner;
