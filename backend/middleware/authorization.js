@@ -7,13 +7,13 @@ const authorization = (requiredPermission) => {
       console.log(req.token);
 console.log(roleId);
       const result = await pool.query(
-        `SELECT p.permission FROM permissions p
-         INNER JOIN role_permission rp ON p.id = rp.permission_id
+        `SELECT p.permission_name FROM permissions p
+         INNER JOIN role_permissions rp ON p.id = rp.permission_id
          WHERE rp.role_id = $1`,
         [roleId]
       );
 console.log(result.rows);
-      const permissions = result.rows.map(row => row.permission);
+      const permissions = result.rows.map(row => row.permission_name);
       if (permissions.includes(requiredPermission)) {
         return next();
       } else {
