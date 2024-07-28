@@ -5,7 +5,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
-
+import Cart from '../pages/Cart';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -32,5 +32,10 @@ export const router = createBrowserRouter([
         element: <BecomeRider />,
       },
     ],
+   
+  },
+  {
+    path: '/cart',
+    element: <Cart />,
   },
 ]);
