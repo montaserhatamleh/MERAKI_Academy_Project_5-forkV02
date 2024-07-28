@@ -11,6 +11,7 @@ import GetAllOwner from "../pages/Admin/getAllOwner"
 
 import Restaurants from "../pages/Restaurants"
 import Owner from '../pages/Owner';
+import Mycart from '../pages/Mycart';
 
 
 export const router = createBrowserRouter([
@@ -53,7 +54,11 @@ export const router = createBrowserRouter([
       },{
         path:'restaurant_owner',
         element:<Owner/>
+      },{
+        path:'my_cart',
+        element:<Mycart/>
       }
+
 
     ],
   },
