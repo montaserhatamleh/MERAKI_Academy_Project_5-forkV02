@@ -10,6 +10,7 @@ import GetAllRider from "../pages/Admin/getAllRegister"
 import GetAllOwner from "../pages/Admin/getAllOwner"
 
 import Restaurants from "../pages/Restaurants"
+import Owner from '../pages/Owner';
 
 
 export const router = createBrowserRouter([
@@ -49,6 +50,9 @@ export const router = createBrowserRouter([
 
         path: 'restaurants',
         element: <Restaurants />,
+      },{
+        path:'restaurant_owner',
+        element:<Owner/>
       }
 
     ],
