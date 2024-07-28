@@ -37,7 +37,7 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created" ,
+        message: "email created with cart" ,
         new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
