@@ -85,7 +85,7 @@ const getRestaurantById = (req, res) => {
 
 //function get Restaurant by category for
 const getAllRestaurantByCategory = (req, res) => {
-  const category_id = req.query.category;
+  const category_id = req.params.text;
   pool
     .query("SELECT * FROM restaurants WHERE category = $1", [category_id])
     .then((result) => {
