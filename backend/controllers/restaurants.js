@@ -141,7 +141,7 @@ const updateRestaurantById = (req, res) => {
     .query(
       `UPDATE restaurants SET name = COALESCE($1, name), 
                                      address = COALESCE($2, address), 
-                                     image_url = COALESCE($3, image),
+                                     image_url = COALESCE($3, image_url),
                                      category = COALESCE($4, category), 
                                      phone_number = COALESCE($5, phone_number),
                                        delivery_fees = COALESCE($6, delivery_fees)
@@ -202,7 +202,7 @@ const getRestaurantInfoById = async (req, res) => {
               r.id,
               r.name,
               r.user_id,
-              r.image,
+              r.image_url,
               r.address,
               r.category,
               r.phone_number,
@@ -283,7 +283,7 @@ const getRestaurantInfoById = async (req, res) => {
   id: 10,
   name: "Example Restaurant",
   user_id: 1,
-  image: "/images/restaurant.png",
+  image_url: "/images/restaurant.png",
   address: "123 Main St",
   category: "Fusion",
   phone_number: "123-456-7890",

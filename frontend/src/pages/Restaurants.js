@@ -33,6 +33,8 @@ function Restaurants() {
   // const [search, setSearch] = useState("");
 
   const categorySearch = (text) => {
+
+
     axios
       .get(`http://localhost:5000/restaurants/byCategory/${text}`)
       .then((result) => {
@@ -45,6 +47,7 @@ function Restaurants() {
       });
   };
   const fetchAllRestaurants = () => {
+    
     axios
       .get("http://localhost:5000/restaurants/")
       .then((result) => {
