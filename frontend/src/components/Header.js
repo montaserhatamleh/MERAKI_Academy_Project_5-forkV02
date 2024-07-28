@@ -50,6 +50,11 @@ const Header = () => {
                   My Restaurant
                 </Button>
               )}
+                  {role === 'Customer' && (
+                <Button sx={{ color: 'white' }} component={Link} to="/my_cart">
+                  My Cart
+                </Button>
+              )}
               <Button sx={{ color: 'white' }} onClick={handleLogout}>
                 Sign Out
               </Button>
