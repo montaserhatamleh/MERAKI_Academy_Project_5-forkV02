@@ -28,7 +28,7 @@ const Signin = () => {
       dispatch(setUserId(user));
       dispatch(setRole(role));
 
-      navigate('/restaurants');
+      navigate('/become-partner');
     } catch (error) {
       console.error('Error during login:', error);
       if (error.response && error.response.data.message) {

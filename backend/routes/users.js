@@ -34,8 +34,8 @@ userRouter.post("/riderRegistration",sendRiderRegistrationToAdmin);
 userRouter.post("/restaurantOwnerRegistration",multipartyMiddleware, sendResOwnerRegistrationToAdmin);
 
 // Admin: Get All Requests
-userRouter.get("/riderRegistration", authentication,authorization("manage_users"),getAllRiderReqForTheAdmin); // Get all rider registration requests
-userRouter.get("/restaurantOwnerRegistration",authentication,authorization("manage_users"), getAllResReqForTheAdmin); // Get all restaurant owner registration requests
+userRouter.get("/rider/Registration", authentication,authorization("manage_users"),getAllRiderReqForTheAdmin); // Get all rider registration requests
+userRouter.get("/restaurantOwner/Registration",authentication,authorization("manage_users"), getAllResReqForTheAdmin); // Get all restaurant owner registration requests
 
 // Admin: Manage Requests
 userRouter.delete("/riderRegistration/:id",authentication,authorization("manage_users"), rejectReqRider); // Reject rider registration request

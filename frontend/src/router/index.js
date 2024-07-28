@@ -6,7 +6,11 @@ import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 import GetAllRider from "../pages/Admin/getAllRegister"
+
+import GetAllOwner from "../pages/Admin/getAllOwner"
+
 import Restaurants from "../pages/Restaurants"
+
 
 export const router = createBrowserRouter([
   {
@@ -38,9 +42,15 @@ export const router = createBrowserRouter([
         element: <GetAllRider />,
       },
       {
+
+      path: 'get_All_Owner',
+      element: <GetAllOwner />,
+    }
+
         path: 'Restaurants',
         element: <Restaurants />,
       }
+
     ],
   },
 ]);
