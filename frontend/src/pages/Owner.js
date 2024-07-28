@@ -1,12 +1,18 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { Typography, Box, Container, TextField } from '@mui/material';
+import { Typography, Box, Container, TextField, Button } from '@mui/material';
 
 const Owner = () => {
   const token = useSelector(state => state.auth.token);
-  const [restaurant, setRestaurant] = useState(null);
+  const [restaurant, setRestaurant] = useState({
+    name: '',
+    address: '',
+    phone_number: '',
+    category: '',
+    delivery_fees: '',
+    image_url: ''
+  });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -26,25 +32,23 @@ const Owner = () => {
     getRestaurantInfo();
   }, [token]);
 
-  if (!restaurant) {
-    return (
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            color: 'white'
-          }}
-        >
-          <Typography component="h1" variant="h5">Restaurant Dashboard</Typography>
-          {message && <Typography color="error">{message}</Typography>}
-          <Typography variant="h6">Loading...</Typography>
-        </Box>
-      </Container>
-    );
-  }
+  const handleChange = (e) => {
+    setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const result = await axios.put("http://localhost:5000/restaurants/updateRestaurant", restaurant, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMessage('Restaurant updated successfully!');
+      setRestaurant(result.data.result);
+    } catch (error) {
+      setMessage('Error updating restaurant information. Please try again later.');
+    }
+  };
 
   return (
     <Container maxWidth="md">
@@ -54,7 +58,7 @@ const Owner = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          backgroundColor: '#424242', // Slightly lighter background
+          backgroundColor: '#424242',
           padding: 3,
           borderRadius: 2
         }}
@@ -69,8 +73,9 @@ const Owner = () => {
             fullWidth
             name="name"
             label="Restaurant Name"
-            value={restaurant.name || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.name}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
@@ -81,8 +86,9 @@ const Owner = () => {
             fullWidth
             name="address"
             label="Address"
-            value={restaurant.address || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.address}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
@@ -93,8 +99,9 @@ const Owner = () => {
             fullWidth
             name="phone_number"
             label="Phone Number"
-            value={restaurant.phone_number || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.phone_number}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
@@ -105,8 +112,9 @@ const Owner = () => {
             fullWidth
             name="category"
             label="Category"
-            value={restaurant.category || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.category}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
@@ -118,8 +126,9 @@ const Owner = () => {
             name="delivery_fees"
             label="Delivery Fees"
             type="number"
-            value={restaurant.delivery_fees || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.delivery_fees}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
@@ -129,10 +138,20 @@ const Owner = () => {
             fullWidth
             name="image_url"
             label="Image URL"
-            value={restaurant.image_url || ''}
-            InputProps={{ readOnly: true, style: { color: 'white' } }}
+            value={restaurant.image_url}
+            onChange={handleChange}
+            InputProps={{ style: { color: 'white' } }}
             InputLabelProps={{ style: { color: 'white' } }}
           />
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            onClick={handleUpdate}
+            sx={{ mt: 3, mb: 2, backgroundColor: '#1976d2' }}
+          >
+            Update Information
+          </Button>
         </Box>
       </Box>
     </Container>
