@@ -114,6 +114,9 @@ function Restaurants() {
         console.log(err);
       });
   };
+  const navigateRestaurantsById = (id) => {
+    navigate(`/one/${id}`);
+  };
 
   useEffect(() => {
     fetchAllRestaurants();
@@ -121,62 +124,69 @@ function Restaurants() {
 
   const filteredRestaurants = restaurants.filter((elem) =>
     elem.name.toLowerCase().includes(search.toLowerCase())
-  );
-
+  ); 
+  
   return (
     <div>
-      <input
-        placeholder="Search…"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <FormControl
-        variant="outlined"
-        sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
-      >
-        <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
-          Select Category
-        </InputLabel>
-        <Button
-          variant="contained" size="small" 
-          onClick={() => {
-            filteredRestaurantsByDeliveryFees();
-          }}
+      <div className="searchHolder">
+        <input
+          placeholder="Search…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <FormControl
+          variant="outlined"
+          sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
         >
-          Sort low fees
-        </Button>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Select an Option"
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.dark",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.light",
-            },
-          }}
-          onChange={(e) => {
-            categorySearch(e.target.value);
-          }}
-        >
-          <MenuItem value={"All"}>All</MenuItem>
-          <MenuItem value={"Syiran"}>Syiran</MenuItem>
-          <MenuItem value={"lebanese"}>lebanese</MenuItem>
-          <MenuItem value={"palestinian"}>palestinian</MenuItem>
-          <MenuItem value={"jordanian"}>jordanian</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
+            Select Category
+          </InputLabel>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {
+              filteredRestaurantsByDeliveryFees();
+            }}
+          >
+            Sort low fees
+          </Button>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Select an Option"
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.main",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.dark",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.light",
+              },
+            }}
+            onChange={(e) => {
+              categorySearch(e.target.value);
+            }}
+          >
+            <MenuItem value={"All"}>All</MenuItem>
+            <MenuItem value={"Syiran"}>Syiran</MenuItem>
+            <MenuItem value={"lebanese"}>lebanese</MenuItem>
+            <MenuItem value={"palestinian"}>palestinian</MenuItem>
+            <MenuItem value={"jordanian"}>jordanian</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
       <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Grid container spacing={15}>
+        <Grid
+          container
+          spacing={15}
+          //nav
+        >
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
-              <Paper>
-                <Card sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+              {/* <Paper> */}
+                <Card onClick={()=>{navigateRestaurantsById(elem.id)}}sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
                   <CardContent>
                     <CardHeader
                       action={<IconButton aria-label="settings"></IconButton>}
@@ -210,7 +220,7 @@ function Restaurants() {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Paper>
+              {/* </Paper> */}
             </Grid>
           ))}
         </Grid>
