@@ -3,6 +3,7 @@ const {pool} = require("../models/db")
 const bcryptjs = require("bcryptjs")
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET
+const cloudinary = require('../cloud'); 
 
 const signupCustomer = async (req, res) => {
     const {
@@ -36,7 +37,8 @@ const signupCustomer = async (req, res) => {
        )
        res.status(201).json({
         success: true,
-        message: " email created" ,new_user:user.rows[0],
+        message: "email created with cart" ,
+        new_user:user.rows[0],
         new_cart:cart.rows[0]
        })
       }
@@ -54,9 +56,9 @@ const signupCustomer = async (req, res) => {
 
 
 const login = async (req, res) => {
-    const {email,password,role} = req.body
+    const {email,password} = req.body
     try {
-    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email = ($1) AND deleted_at = false`,[email])
+    const emailCheck = await pool.query(`SELECT users.*,roles.role_name from users INNER JOIN roles ON users.role_id = roles.id WHERE email =$1 AND deleted_at = false`,[email])
     console.log(emailCheck.rows)
     if(!emailCheck.rows.length>0){
      return res.status(403).json({
@@ -65,28 +67,21 @@ const login = async (req, res) => {
       })
     
     }
-    const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
-    if (!passwordCheck){
-      return res.status(403).json({
-        success:false,
-        message:"The email doesn’t exist or the Password you’ve entered is incorrect"
-      })
-    
+
+   const passwordCheck = await bcryptjs.compare(password,emailCheck.rows[0].password)
+   if (!passwordCheck){
+     return res.status(403).json({
+       success:false,
+       message:"The email doesn’t exist or the Password you’ve entered is incorrect"
+     })
     }
-    if (emailCheck.rows[0].role !== role) {
-        return res.status(403).json({
-            success: false,
-            message: `Access denied.`
-        });
-    }
-    
-    console.log(emailCheck.rows[0]);
+
+   
     const payload = {
       userId : emailCheck.rows[0].id,
       username: emailCheck.rows[0].username,
       role: emailCheck.rows[0].role_id,
       address:emailCheck.rows[0].address
-      //address kman
     }
     console.log(payload);
     const options =  { expiresIn: "60m" }
@@ -95,9 +90,12 @@ const login = async (req, res) => {
       success:true,
       message:"Valid login credentials",
       token:token,
-      userId: emailCheck.rows[0].id
+      role: emailCheck.rows[0].role_name,
+      user:emailCheck.rows[0].id
+      
     })
-    }
+    
+}
     catch(err){
       res.status(500).json({
         success:false,
@@ -106,13 +104,14 @@ const login = async (req, res) => {
       })
     
     }
+}
     
-};
+
 
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=false', [id]);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at = false', [id]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -135,7 +134,7 @@ const getUserInfo = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const usersResult = await pool.query('SELECT * FROM users');
+        const usersResult = await pool.query('SELECT * FROM users WHERE deleted_at = false');
         res.status(200).json({
             success: true,
             users: usersResult.rows
@@ -192,7 +191,7 @@ const deleteUser = async (req, res) => {
     const { id } = req.params;
     console.log(id)
     try {
-        const deletedUser = await pool.query("UPDATE users SET deleted_at ='1' WHERE id= $1 RETURNING *", [id]);
+        const deletedUser = await pool.query("UPDATE users SET deleted_at ='true' WHERE id= $1 RETURNING *", [id]);
 
         if (deletedUser.rows.length === 0) {
             return res.status(404).json({
@@ -247,6 +246,7 @@ try {
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRider.rows[0]
         })
     }
@@ -274,6 +274,15 @@ const sendResOwnerRegistrationToAdmin = async (req, res) => {
         restaurant_phone_number,
         delivery_fees } = req.body
 try {
+
+    let image_url = null;
+    if (req.files && req.files.image) {
+      const result = await cloudinary.uploader.upload(req.files.image.path, {
+        folder: 'res_images',
+      });
+      image_url = result.secure_url;
+    }
+
         const newRes = await pool.query(
             `INSERT INTO pending_registrations_ownerRes (username,
         email,
@@ -287,7 +296,9 @@ try {
 restaurant_name,
 restaurant_address,
 restaurant_phone_number,
-delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,[username,
+
+delivery_fees,
+image_url) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *`,[username,
             email,
             password,
             first_name,
@@ -295,10 +306,12 @@ delivery_fees) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,13$) RETURNING *`,
             address,
             phone_number,
             4,
-            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees]
+            category,restaurant_name,restaurant_address,restaurant_phone_number,delivery_fees,
+            image_url]
         )
         res.status(201).json({
 success:true,
+message:"request added successfully, Wait a response from us!",
 result:newRes.rows[0]
         })
     }
@@ -423,11 +436,11 @@ const acceptReqRider = async (req, res) => {
 
         const password = await bcryptjs.hash(rider.password, 8);
 
-        const newUser = await pool.query(
-            `INSERT INTO users (username, email, password, first_name, last_name, address, phone_number, role_id) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [rider.username, rider.email, password, rider.first_name, rider.last_name, rider.address, rider.phone_number, rider.role_id]
-        );
+            const newUser = await pool.query(
+                `INSERT INTO users (username, email, password, first_name, last_name, address, phone_number, role_id) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                [rider.username, rider.email, password, rider.first_name, rider.last_name, rider.address, rider.phone_number, rider.role_id]
+            );
 
         const userId = newUser.rows[0].id;
 
@@ -473,21 +486,24 @@ const acceptReqRes = async (req, res) =>
             }
     
             const resOwner = pendingRes.rows[0];
-    
+            console.log(resOwner)
             const password_hash = await bcryptjs.hash(resOwner.password, 8);
     
             const newUser = await pool.query(
-                `INSERT INTO users (username, email, password_hash, first_name, last_name, address, phone_number, role_id) 
+                `INSERT INTO users (username, email, password, first_name, last_name, address, phone_number, role_id) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // rider role 
+                [resOwner.username, resOwner.email, password_hash, resOwner.first_name, resOwner.last_name, resOwner.address, resOwner.phone_number, resOwner.role_id] // res role 
             );
     
             const userId = newUser.rows[0].id;
     
             const newRestaurant = await pool.query(
-                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees) 
-                VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
-                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,delivery_fees]
+
+
+                `INSERT INTO restaurants (name, address, category, phone_number, user_id,delivery_fees,image_url) 
+                VALUES ($1, $2, $3, $4, $5,$6,$7) RETURNING *`,
+                [resOwner.restaurant_name, resOwner.restaurant_address, resOwner.category, resOwner.restaurant_phone_number, userId,resOwner.delivery_fees,resOwner.image_url]
+
             );
     
             await pool.query('DELETE FROM pending_registrations_ownerRes WHERE id = $1', [id]);

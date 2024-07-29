@@ -283,7 +283,30 @@ const setOrderOnTheWay = async (req, res) => {
 };
 
 
-
+const deletedRiders = async (req , res) =>{
+  const id = req.params.id
+  try{
+    const query = "UPDATE riders SET deleted_at = true WHERE user_id = $1"
+    const result = await pool.query(query, [id]);
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "Erorr Update",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "updated successfully",
+      result: result.rows[0],
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
+  }
+}
 
 
 
@@ -511,5 +534,6 @@ module.exports = {
   markOrderAsDelivered,
   getAllOrderIsOnTheWay,
   getAllOrderIsDelivered,
-  getAllOrderIsAccepted
+  getAllOrderIsAccepted ,
+  deletedRiders
 };

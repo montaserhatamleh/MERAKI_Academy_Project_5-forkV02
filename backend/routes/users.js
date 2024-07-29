@@ -18,23 +18,24 @@ const {
 } = require("../controllers/users");
 const authentication = require("../middleware/authentication")
 const authorization = require("../middleware/authorization")
-
+const multiparty = require('connect-multiparty');
+const multipartyMiddleware = multiparty();
 
 // User login and Information
 userRouter.post("/login", login);
 userRouter.post("/signup", signupCustomer);
 userRouter.get("/:id", authentication,getUserInfo);
-userRouter.get("/all", authentication,authorization("manage_users"),getAllUsers); // Get all users (admin only)
+userRouter.get("/find/all", authentication,authorization("manage_users"),getAllUsers); // Get all users (admin only)
 userRouter.put("/:id", updateUserInfo);
-userRouter.delete("/:id", authentication,authorization("manage_users"),deleteUser);
+userRouter.put("/delete/:id", authentication,authorization("manage_users"),deleteUser);
 
 // Registration Requests
-userRouter.post("/riderRegistration", sendRiderRegistrationToAdmin);
-userRouter.post("/restaurantOwnerRegistration", sendResOwnerRegistrationToAdmin);
+userRouter.post("/riderRegistration",sendRiderRegistrationToAdmin);
+userRouter.post("/restaurantOwnerRegistration",multipartyMiddleware, sendResOwnerRegistrationToAdmin);
 
 // Admin: Get All Requests
-userRouter.get("/riderRegistration", authentication,authorization("manage_users"),getAllRiderReqForTheAdmin); // Get all rider registration requests
-userRouter.get("/restaurantOwnerRegistration",authentication,authorization("manage_users"), getAllResReqForTheAdmin); // Get all restaurant owner registration requests
+userRouter.get("/rider/Registration", authentication,authorization("manage_users"),getAllRiderReqForTheAdmin); // Get all rider registration requests
+userRouter.get("/restaurantOwner/Registration",authentication,authorization("manage_users"), getAllResReqForTheAdmin); // Get all restaurant owner registration requests
 
 // Admin: Manage Requests
 userRouter.delete("/riderRegistration/:id",authentication,authorization("manage_users"), rejectReqRider); // Reject rider registration request
