@@ -14,6 +14,7 @@ const {
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
   getRestaurantOrdersReady,
+  getAllRestaurantByDeliveryFees,
  
 } = require("../controllers/restaurants");
 const authentication = require("../middleware/authentication");
@@ -46,6 +47,10 @@ restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
 restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
 // get All Restaurant By Delivery Fees
+restaurantRouter.get(
+  "/getAllRestaurantByDeliveryFees",
+  getAllRestaurantByDeliveryFees
+);
 
 
 //ahmad route

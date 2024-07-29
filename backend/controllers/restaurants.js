@@ -434,6 +434,34 @@ const getRestaurantOrdersReady = async (req, res) => {
   }
 };
 
+const getAllRestaurantByDeliveryFees = (req, res) => {
+  pool
+    .query(
+      `SELECT * FROM restaurants 
+    WHERE deleted_at = false 
+    ORDER BY delivery_fees ASC`
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No item found `,
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: `All the restaurants by delivery_fees`,
+        result: result.rows,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: `Server Erorr`,
+        error: err.message,
+      });
+    });
+  }
 
 module.exports = {
   getRestaurantInfoById,
@@ -449,4 +477,5 @@ module.exports = {
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
   getRestaurantOrdersReady,
+  getAllRestaurantByDeliveryFees,
 };
