@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Card,
@@ -24,16 +25,15 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
-
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-//nav
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
-  const [filterCategory, setFilterCategory] = useState([]);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -109,24 +109,27 @@ function Restaurants() {
     fetchAllRestaurants();
   }, []);
 
-  // const filteredRestaurants = restaurants.filter((elem) =>
-  //   elem.name.toLowerCase().includes(search.toLowerCase())
-  // );
+  const filteredRestaurants = restaurants.filter((elem) =>
+    elem.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div>
-      <Search sx={{ mt: 4}}>
+      <Search sx={{ mt: 4 }}>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
-          inputProps={{ "aria-label": "search" }}
+          value={search}
+          onChange={(e) => 
+            setSearch(e.target.value)
+          }
         />
       </Search>
       <FormControl
         variant="outlined"
-        sx={{ mt: 4, ml: 5, width: "150px", color: "white" }}
+        sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
       >
         <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
           Select Category
@@ -159,7 +162,7 @@ function Restaurants() {
       </FormControl>
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Grid container spacing={15}>
-          {restaurants.map((elem, i) => (
+          {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
               <Paper>
                 <Card sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
@@ -188,10 +191,7 @@ function Restaurants() {
                       <strong>Phone:</strong> {elem.phone_number}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      <strong>Rating:</strong> {elem.rating}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      <strong>elivery Fees:</strong> {elem.delivery_fees}
+                      <strong>Delivery Fees:</strong> {elem.delivery_fees}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       <strong>Category:</strong> {elem.category}
