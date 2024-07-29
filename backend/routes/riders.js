@@ -4,7 +4,7 @@ const ridersRouter = express.Router()
 const {updateRider, findAllRiders  , findRiderById , acceptOrder,setOrderOnTheWay,markOrderAsDelivered,
     getAllOrderIsOnTheWay,
     getAllOrderIsDelivered,getAllOrderIsAccepted
-    ,getRidersByUserId ,getAllOrderIsPending , updateStatusOrder ,deliveryOfTheOrder} = require("../controllers/riders") ;
+    ,getRidersByUserId ,getAllOrderIsPending , updateStatusOrder ,deliveryOfTheOrder ,deletedRiders} = require("../controllers/riders") ;
 
     
 const authentication = require("../middleware/authentication")
@@ -18,6 +18,7 @@ ridersRouter.get("/user/:id", getRidersByUserId)
 ridersRouter.get("/all/order" ,authentication,authorization("manage_orders"),getAllOrderIsPending)
 ridersRouter.put("/status/order" , updateStatusOrder)
 ridersRouter.put("/status/riders/:id" , deliveryOfTheOrder)
+ridersRouter.put("/deleted/:id" , deletedRiders)
 
 
 

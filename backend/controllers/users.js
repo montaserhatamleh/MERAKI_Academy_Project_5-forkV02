@@ -111,7 +111,7 @@ const login = async (req, res) => {
 const getUserInfo = async (req, res) => {
     const { id } = req.params;
     try {
-        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at=false', [id]);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at = false', [id]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -134,7 +134,7 @@ const getUserInfo = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const usersResult = await pool.query('SELECT * FROM users');
+        const usersResult = await pool.query('SELECT * FROM users WHERE deleted_at = false');
         res.status(200).json({
             success: true,
             users: usersResult.rows
@@ -191,7 +191,7 @@ const deleteUser = async (req, res) => {
     const { id } = req.params;
     console.log(id)
     try {
-        const deletedUser = await pool.query("UPDATE users SET deleted_at ='1' WHERE id= $1 RETURNING *", [id]);
+        const deletedUser = await pool.query("UPDATE users SET deleted_at ='true' WHERE id= $1 RETURNING *", [id]);
 
         if (deletedUser.rows.length === 0) {
             return res.status(404).json({

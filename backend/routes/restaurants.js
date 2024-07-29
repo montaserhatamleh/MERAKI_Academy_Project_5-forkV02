@@ -33,7 +33,7 @@ restaurantRouter.put("/updateRestaurant/:id", updateRestaurantById);
 //Getting items for restaurant
 restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
-restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
+restaurantRouter.put("/deleteRestaurant/:id" , deleteRestaurantById);
 
 //ahmad route
 restaurantRouter.get("/allInfo/:id", getRestaurantInfoById);
