@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import {
   Card,
   CardActions,
@@ -77,6 +77,17 @@ function Restaurants() {
     },
   }));
 
+  const fetchAllRestaurants = () => {
+    axios
+      .get("http://localhost:5000/restaurants/")
+      .then((result) => {
+        setRestaurants(result.data.result);
+        // console.log(result.data.result);
+      })
+      .catch((err) => {
+        console.log("fetch Restaurants not working", err);
+      });
+  };
   const categorySearch = (text) => {
     //if fetch all restaurants
     if (text == "All") {
@@ -92,16 +103,15 @@ function Restaurants() {
         console.log(err);
       });
   };
-
-  const fetchAllRestaurants = () => {
+  const filteredRestaurantsByDeliveryFees = () => {
     axios
-      .get("http://localhost:5000/restaurants/")
+      .get(`http://localhost:5000/restaurants/getAllRestaurantByDeliveryFees`)
       .then((result) => {
         setRestaurants(result.data.result);
-        // console.log(result.data.result);
+        // console.log(result.data);
       })
       .catch((err) => {
-        console.log("fetch Restaurants not working", err);
+        console.log(err);
       });
   };
 
@@ -127,6 +137,14 @@ function Restaurants() {
         <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
           Select Category
         </InputLabel>
+        <Button
+          variant="contained" size="small" 
+          onClick={() => {
+            filteredRestaurantsByDeliveryFees();
+          }}
+        >
+          Sort low fees
+        </Button>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
