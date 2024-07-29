@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 import {
   Button,
   Container,
@@ -12,17 +12,22 @@ import {
 
 import axios from "axios";
 const GetAllOwner = () => {
-  const token = useSelector((state) => state.auth.token);
+  const { token, role } = useSelector((state) => ({
+    token: state.auth.token,
+    role: state.auth.role,
+  }));
+
   const [owner, setOwner] = useState([]);
   const [message, setMessage] = useState("");
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/users/restaurantOwner/Registration`,{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        `http://localhost:5000/users/restaurantOwner/Registration`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
+        }
       );
       setOwner(response.data.result);
       console.log(response.data.result);
@@ -32,17 +37,19 @@ const GetAllOwner = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    if (role == "Admin") fetchUsers();
   }, []);
 
   const acceptPendingRiders = async (id) => {
     try {
       const accepted = await axios.post(
-        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,{},{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
+        }
       );
       console.log(accepted);
       setMessage(accepted.data.message);
@@ -54,13 +61,13 @@ const GetAllOwner = () => {
   const rejectPendingRiders = async (id) => {
     try {
       const reject = await axios.delete(
-        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        `http://localhost:5000/users/restaurantOwnerRegistration/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
+        }
       );
-      console.log(reject);
       setMessage(reject.data.message);
     } catch (err) {
       console.log(err);
@@ -111,7 +118,7 @@ const GetAllOwner = () => {
               <Button
                 onClick={() => {
                   acceptPendingRiders(user.id);
-                }}  
+                }}
                 variant="contained"
                 color="primary"
                 sx={{ marginRight: "10px" }}
@@ -120,7 +127,7 @@ const GetAllOwner = () => {
               </Button>
               <Button
                 onClick={() => rejectPendingRiders(user.id)}
-                variant="outlined"
+                variant="contained"
                 color="error"
               >
                 Reject
