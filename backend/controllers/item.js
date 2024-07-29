@@ -2,7 +2,7 @@ const { query } = require("express");
 const { pool } = require("../models/db");
 
 const getItemsByRestaurantsId = (req, res) => {
-  const item_id = req.params.id;
+  const res = req.params.id;
   // join for user_id
   const query = ` SELECT       
       menu_items.name,
@@ -15,17 +15,17 @@ const getItemsByRestaurantsId = (req, res) => {
     WHERE restaurants.id = $1 AND menu_items.deleted_at = false;
      `;
   pool
-    .query(query, [item_id])
+    .query(query, [res])
     .then((result) => {
       if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          message: `No item found with id: ${item_id}`,
+          message: `No item found with id: ${res}`,
         });
       }
       res.status(200).json({
         success: true,
-        message: `The item With id :${item_id} `,
+        message: `The item With id :${res} `,
         result: result.rows,
       });
     })

@@ -10,6 +10,11 @@ import GetAllRider from "../pages/Admin/getAllRegister"
 import GetAllOwner from "../pages/Admin/getAllOwner"
 
 import Restaurants from "../pages/Restaurants"
+import Owner from '../pages/Owner/Owner';
+
+import Mycart from '../pages/Mycart';
+import ViewRestaurantInfo from '../pages/Owner/ViewRestaurantInfo';
+import UpdateRestaurantInfo from '../pages/Owner/UpdateRestaurantInfo';
 
 
 export const router = createBrowserRouter([
@@ -49,9 +54,18 @@ export const router = createBrowserRouter([
 
         path: 'restaurants',
         element: <Restaurants />,
+      },{
+        path:'restaurant_owner',
+        element:<Owner/>,
+        children: [
+          { path: 'view-info', element: <ViewRestaurantInfo /> },
+          { path: 'update-info', element: <UpdateRestaurantInfo /> },
+        ],
+      },{
+        path:'my_cart',
+        element:<Mycart/>
       }
 
-      
     ],
   },
 ]);

@@ -54,22 +54,24 @@ const getItemsByIdForRestaurant = (req, res) => {
 
 //function to get restaurant by id
 const getRestaurantById = (req, res) => {
-  const restaurant_id = req.params.id;
+  const user_id = req.token.userId;
+  console.log(req.token.userId);
   pool
-    .query(`SELECT * FROM restaurants WHERE id = $1 AND deleted_at = false;`, [
-      restaurant_id,
+    .query(`SELECT * FROM restaurants WHERE user_id = $1 AND deleted_at = false;`, [
+      user_id,
     ])
 
     .then((result) => {
       if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          message: `No restaurant found with id: ${restaurant_id}`,
+          message: `No restaurant`,
         });
       }
+      console.log(result.rows[0]);
       res.status(200).json({
         success: true,
-        message: `The restaurants With id :${restaurant_id} `,
+        message: `The restaurant`,
         result: result.rows[0],
       });
     })
@@ -133,17 +135,18 @@ ORDER BY rating DESC LIMIT 5;`
 //function to update restaurant by id
 const updateRestaurantById = (req, res) => {
 
-  const {id} = req.params;
-  const { name, address, category, phone_number, image } = req.body;
+  const id = req.token.userId;
+  const { name, address, category, phone_number, delivery_fees,image_url } = req.body;
   pool
     .query(
       `UPDATE restaurants SET name = COALESCE($1, name), 
                                      address = COALESCE($2, address), 
-                                     image = COALESCE($3, image),
+                                     image_url = COALESCE($3, image_url),
                                      category = COALESCE($4, category), 
-                                     phone_number = COALESCE($5, phone_number)
-            WHERE id = $6 RETURNING *`,
-      [name, address, image ,category, phone_number, id]
+                                     phone_number = COALESCE($5, phone_number),
+                                       delivery_fees = COALESCE($6, delivery_fees)
+            WHERE user_id = $7 RETURNING *`,
+      [name, address, image_url ,category, phone_number,delivery_fees, id]
     )
     .then((result) => {
       if (result.rows.length === 0) {
@@ -193,13 +196,13 @@ const deleteRestaurantById = (req, res) => {
 const getRestaurantInfoById = async (req, res) => {
   const { id } = req.params;  // Assuming id = 10 for this example
   try {
-      // Fetch restaurant info with average rating and rating count
+      // get restaurant info with average rating and rating count
       const restaurantResult = await pool.query(
           `SELECT 
               r.id,
               r.name,
               r.user_id,
-              r.image,
+              r.image_url,
               r.address,
               r.category,
               r.phone_number,
@@ -280,7 +283,7 @@ const getRestaurantInfoById = async (req, res) => {
   id: 10,
   name: "Example Restaurant",
   user_id: 1,
-  image: "/images/restaurant.png",
+  image_url: "/images/restaurant.png",
   address: "123 Main St",
   category: "Fusion",
   phone_number: "123-456-7890",
@@ -319,7 +322,7 @@ const getRestaurantOrders= async (req ,res)=>{
   }catch(err)
   {res.status(500).json({
     success: false,
-    message: `Server Erorr`,
+    message: `Server Error`,
     error:err.message
   })}
 }
