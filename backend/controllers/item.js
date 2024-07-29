@@ -35,10 +35,9 @@ const getItemsByRestaurantOwner = (req, res) => {
     });
 };
 
-const updateItemById = (req, res) => {
-  const userId = req.token.userId;
+const updateItemById = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, sub_category, image_url, available } = req.body;
+  const { name, description, price, sub_category, available } = req.body;
   const query = `
     UPDATE menu_items 
     SET name = COALESCE($1, name), 
@@ -47,11 +46,19 @@ const updateItemById = (req, res) => {
         sub_category = COALESCE($4, sub_category), 
         image_url = COALESCE($5, image_url),
         available = COALESCE($6, available)
-    FROM restaurants
-    WHERE menu_items.restaurant_id = restaurants.id AND restaurants.user_id = $7 AND menu_items.id = $8 
+  WHERE id =$7
     RETURNING *
   `;
-  const data = [name, description, price, sub_category, image_url, available, userId, id];
+
+  let image_url = null;
+  if (req.files && req.files.image) {
+    const result = await cloudinary.uploader.upload(req.files.image.path, {
+      folder: 'items-images',
+    });
+    image_url = result.secure_url;
+  }
+
+  const data = [name, description, price, sub_category, image_url, available, id];
   pool.query(query, data)
     .then(result => {
       if (result.rowCount === 0) {
@@ -119,7 +126,7 @@ const deleteItemById = (req, res) => {
   const { id } = req.params;
   const query = `
     UPDATE menu_items 
-    SET deleted_at = 1 
+    SET deleted_at = true 
     FROM restaurants 
     WHERE menu_items.restaurant_id = restaurants.id AND restaurants.user_id = $1 AND menu_items.id = $2 
     RETURNING *
@@ -170,7 +177,25 @@ const changeAvailability = (req, res) => {
     });
 };
 
+const getItemById = async (req,res) => {
+const {id} = req.params
 
+
+try {
+const item = await pool.query(`SELECT * FROM menu_items WHERE id =$1`,[id])
+
+res.status(200).json({
+  success:true,
+  result:item.rows[0]
+})
+}
+catch(error){
+res.status(500).json({
+  success:false,
+  err:error.message
+})
+}
+}
 
 
 module.exports = {
@@ -179,5 +204,6 @@ module.exports = {
   addItem,
   deleteItemById,
   changeAvailability,
+  getItemById
 
 };

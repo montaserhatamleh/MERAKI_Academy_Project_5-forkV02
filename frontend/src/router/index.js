@@ -17,6 +17,7 @@ import ViewRestaurantInfo from '../pages/Owner/ViewRestaurantInfo';
 import UpdateRestaurantInfo from '../pages/Owner/UpdateRestaurantInfo';
 import ViewItems from '../pages/Owner/ViewItems';
 import AddItem from '../pages/Owner/AddItem';
+import UpdateItem from '../pages/Owner/UpdateItem';
 
 
 export const router = createBrowserRouter([
@@ -63,7 +64,8 @@ export const router = createBrowserRouter([
           { path: 'view-info', element: <ViewRestaurantInfo /> },
           { path: 'update-info', element: <UpdateRestaurantInfo /> },
           {path:'view-item',element:<ViewItems/>},
-          {path:'add-item',element:<AddItem/>}
+          {path:'add-item',element:<AddItem/>},
+          {path:'update-item/:id',element:<UpdateItem/>},
 
         ],
       },{
