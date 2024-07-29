@@ -23,6 +23,13 @@ const SidebarOwner = () => {
           <ListItem  component={Link} to="/restaurant_owner/update-info">
             <ListItemText primary="Update Restaurant Info" />
           </ListItem>
+          <ListItem  component={Link} to="/restaurant_owner/view-item">
+            <ListItemText primary="View Restaurant Items" />
+          </ListItem>
+          
+          <ListItem  component={Link} to="/restaurant_owner/add-item">
+            <ListItemText primary="Add Restaurant Items" />
+          </ListItem>
         </List>
       </Box>
     </Drawer>

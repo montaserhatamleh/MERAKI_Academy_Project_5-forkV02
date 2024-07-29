@@ -15,6 +15,8 @@ import Owner from '../pages/Owner/Owner';
 import Mycart from '../pages/Mycart';
 import ViewRestaurantInfo from '../pages/Owner/ViewRestaurantInfo';
 import UpdateRestaurantInfo from '../pages/Owner/UpdateRestaurantInfo';
+import ViewItems from '../pages/Owner/ViewItems';
+import AddItem from '../pages/Owner/AddItem';
 
 
 export const router = createBrowserRouter([
@@ -60,6 +62,9 @@ export const router = createBrowserRouter([
         children: [
           { path: 'view-info', element: <ViewRestaurantInfo /> },
           { path: 'update-info', element: <UpdateRestaurantInfo /> },
+          {path:'view-item',element:<ViewItems/>},
+          {path:'add-item',element:<AddItem/>}
+
         ],
       },{
         path:'my_cart',
