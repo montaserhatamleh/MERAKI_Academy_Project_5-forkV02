@@ -14,6 +14,7 @@ const {
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
   getRestaurantOrdersReady,
+ 
 } = require("../controllers/restaurants");
 const authentication = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
@@ -23,17 +24,29 @@ restaurantRouter.get("/", getAllRestaurant);
 //Getting Restaurant Depending on Rating
 restaurantRouter.get("/getByRating", getRestaurantHigherRating);
 //Getting Restaurant by id
-restaurantRouter.get("/RestaurantById",authentication,authorization("manage_restaurants"),getRestaurantById);
+restaurantRouter.get(
+  "/RestaurantById",
+  authentication,
+  authorization("manage_restaurants"),
+  getRestaurantById
+);
 //Find all order related restaurants
 restaurantRouter.get("/find/:id", getRestaurantOrders);
 //Filter by Category
 restaurantRouter.get("/byCategory/:text", getAllRestaurantByCategory);
 //Update Data For The Restaurant
-restaurantRouter.put("/updateRestaurant", authentication,authorization("manage_restaurants"),updateRestaurantById);
+restaurantRouter.put(
+  "/updateRestaurant",
+  authentication,
+  authorization("manage_restaurants"),
+  updateRestaurantById
+);
 //Getting items for restaurant
 restaurantRouter.get("/getItemsForRestaurant/:id", getItemsByIdForRestaurant);
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
-restaurantRouter.put("/deleteRestaurant/:id" , deleteRestaurantById);
+restaurantRouter.put("/deleteRestaurant/:id", deleteRestaurantById);
+// get All Restaurant By Delivery Fees
+
 
 //ahmad route
 restaurantRouter.get("/allInfo/:id", getRestaurantInfoById);

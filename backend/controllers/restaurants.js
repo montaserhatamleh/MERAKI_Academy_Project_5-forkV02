@@ -27,7 +27,7 @@ ORDER BY created_at DESC;`
 };
 
 //get menu item by id for Restaurant
-// i think no need for this function anymore 
+// i think no need for this function anymore
 const getItemsByIdForRestaurant = (req, res) => {
   const restaurant_id = req.params.id;
   pool
@@ -57,9 +57,10 @@ const getRestaurantById = (req, res) => {
   const user_id = req.token.userId;
   console.log(req.token.userId);
   pool
-    .query(`SELECT * FROM restaurants WHERE user_id = $1 AND deleted_at = false;`, [
-      user_id,
-    ])
+    .query(
+      `SELECT * FROM restaurants WHERE user_id = $1 AND deleted_at = false;`,
+      [user_id]
+    )
 
     .then((result) => {
       if (result.rows.length === 0) {
@@ -134,9 +135,9 @@ ORDER BY rating DESC LIMIT 5;`
 
 //function to update restaurant by id
 const updateRestaurantById = (req, res) => {
-
   const id = req.token.userId;
-  const { name, address, category, phone_number, delivery_fees,image_url } = req.body;
+  const { name, address, category, phone_number, delivery_fees, image_url } =
+    req.body;
   pool
     .query(
       `UPDATE restaurants SET name = COALESCE($1, name), 
@@ -146,7 +147,7 @@ const updateRestaurantById = (req, res) => {
                                      phone_number = COALESCE($5, phone_number),
                                        delivery_fees = COALESCE($6, delivery_fees)
             WHERE user_id = $7 RETURNING *`,
-      [name, address, image_url ,category, phone_number,delivery_fees, id]
+      [name, address, image_url, category, phone_number, delivery_fees, id]
     )
     .then((result) => {
       if (result.rows.length === 0) {
@@ -174,9 +175,10 @@ const updateRestaurantById = (req, res) => {
 const deleteRestaurantById = (req, res) => {
   const restaurant_id = req.params.id;
   pool
-    .query(`UPDATE restaurants SET deleted_at = true WHERE id = $1 RETURNING *`, [
-      restaurant_id,
-    ])
+    .query(
+      `UPDATE restaurants SET deleted_at = true WHERE id = $1 RETURNING *`,
+      [restaurant_id]
+    )
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -194,11 +196,11 @@ const deleteRestaurantById = (req, res) => {
     });
 };
 const getRestaurantInfoById = async (req, res) => {
-  const { id } = req.params;  // Assuming id = 10 for this example
+  const { id } = req.params; // Assuming id = 10 for this example
   try {
-      // get restaurant info with average rating and rating count
-      const restaurantResult = await pool.query(
-          `SELECT 
+    // get restaurant info with average rating and rating count
+    const restaurantResult = await pool.query(
+      `SELECT 
               r.id,
               r.name,
               r.user_id,
@@ -225,18 +227,18 @@ const getRestaurantInfoById = async (req, res) => {
            r.id = avg_reviews.restaurant_id
            WHERE 
            r.id = $1`,
-          [id]
-      );
+      [id]
+    );
 
-      if (restaurantResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Restaurant not found'
-          });
-      }
+    if (restaurantResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Restaurant not found",
+      });
+    }
 
-      const menuItemsResult = await pool.query(
-          `SELECT 
+    const menuItemsResult = await pool.query(
+      `SELECT 
               id,
               name,
               description,
@@ -251,34 +253,34 @@ const getRestaurantInfoById = async (req, res) => {
               restaurant_id = $1
            ORDER BY 
               sub_category ASC, name ASC`,
-          [id]
-      );
+      [id]
+    );
 
-      // Organize menu items by sub_category
-      const menuItemsBySubCategory = menuItemsResult.rows.reduce((acc, item) => {
-          if (!acc[item.sub_category]) {
-              acc[item.sub_category] = [];
-          }
-          acc[item.sub_category].push(item);
-          return acc;
-      }, {});
+    // Organize menu items by sub_category
+    const menuItemsBySubCategory = menuItemsResult.rows.reduce((acc, item) => {
+      if (!acc[item.sub_category]) {
+        acc[item.sub_category] = [];
+      }
+      acc[item.sub_category].push(item);
+      return acc;
+    }, {});
 
-      const restaurant = restaurantResult.rows[0];
-      restaurant.menu_items = menuItemsBySubCategory;
+    const restaurant = restaurantResult.rows[0];
+    restaurant.menu_items = menuItemsBySubCategory;
 
-      res.status(200).json({
-          success: true,
-          restaurant: restaurant
-      });
+    res.status(200).json({
+      success: true,
+      restaurant: restaurant,
+    });
   } catch (err) {
-      res.status(500).json({
-          success: false,
-          message: 'Server error',
-          error: err.message
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
   }
-}
-// example data 
+};
+// example data
 /* {
   id: 10,
   name: "Example Restaurant",
@@ -304,130 +306,134 @@ const getRestaurantInfoById = async (req, res) => {
 }
 */
 
-const getRestaurantOrders= async (req ,res)=>{
-  const {id} = req.params ; 
-  try{
-  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Pending' " ;
-  const result = await pool.query(query ,[id]) 
-  if(result.rows.length === 0 ){
-    return res.status(404).json({
+const getRestaurantOrders = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query =
+      "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Pending' ";
+    const result = await pool.query(query, [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No item found `,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      result: result.rows,
+    });
+  } catch (err) {
+    res.status(500).json({
       success: false,
-      message: `No item found `,
-    })
+      message: `Server Error`,
+      error: err.message,
+    });
   }
-  res.status(200).json({
-    success: true ,
-    result:result.rows  
-  })
-  }catch(err)
-  {res.status(500).json({
-    success: false,
-    message: `Server Error`,
-    error:err.message
-  })}
-}
-
-const changeStatusToPrepare = async (req , res)=>{
-const {id} = req.params ; 
-const {restaurant} = req.params ; 
-try{
-
-const query = "UPDATE orders Set status='Prepare' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
-const result = await pool.query(query,[id , restaurant]);
-   
-if (result.rowCount === 0)
-return res.status(200).json({
-  success: false,
-  message: "Not update",
-});
-
-res.status(200).json({
-success: true,
-result: result.rows[0],
-});
-} catch (err) {
-res.status(500).json({
-success: false,
-message: "Server error",
-error: err.message,
-});
-}
 };
 
+const changeStatusToPrepare = async (req, res) => {
+  const { id } = req.params;
+  const { restaurant } = req.params;
+  try {
+    const query =
+      "UPDATE orders Set status='Prepare' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
+    const result = await pool.query(query, [id, restaurant]);
 
-const changeStatusReadyToPickup = async (req , res)=>{
-  const {id} = req.params ; 
-  const {restaurant} = req.params ; 
-  try{
-  
-  const query = "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepare' AND restaurant_id=$2 RETURNING *";
-  const result = await pool.query(query,[id , restaurant]);
-     
-  if (result.rowCount === 0)
-  return res.status(200).json({
-    success: false,
-    message: "Not update",
-  });
-  
-  res.status(200).json({
-  success: true,
-  result: result.rows[0],
-  });
+    if (result.rowCount === 0)
+      return res.status(200).json({
+        success: false,
+        message: "Not update",
+      });
+
+    res.status(200).json({
+      success: true,
+      result: result.rows[0],
+    });
   } catch (err) {
-  res.status(500).json({
-  success: false,
-  message: "Server error",
-  error: err.message,
-  });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: err.message,
+    });
   }
-  };
-  
+};
 
-  
-const getRestaurantOrdersPrepare= async (req ,res)=>{
-  const {id} = req.params ; 
-  try{
-  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Prepare' " ;
-  const result = await pool.query(query ,[id]) 
-  if(result.rows.length === 0 ){
-    return res.status(404).json({
+const changeStatusReadyToPickup = async (req, res) => {
+  const { id } = req.params;
+  const { restaurant } = req.params;
+  try {
+    const query =
+      "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepare' AND restaurant_id=$2 RETURNING *";
+    const result = await pool.query(query, [id, restaurant]);
+
+    if (result.rowCount === 0)
+      return res.status(200).json({
+        success: false,
+        message: "Not update",
+      });
+
+    res.status(200).json({
+      success: true,
+      result: result.rows[0],
+    });
+  } catch (err) {
+    res.status(500).json({
       success: false,
-      message: `No item found `,
-    })
+      message: "Server error",
+      error: err.message,
+    });
   }
-  res.status(200).json({
-    success: true ,
-    result:result.rows  
-  })
-  }catch(err)
-  {res.status(500).json({
-    success: false,
-    message: `Server Erorr`,
-    error:err.message
-  })}
-}
-const getRestaurantOrdersReady= async (req ,res)=>{
-  const {id} = req.params ; 
-  try{
-  const query = "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Ready To Pick Up' " ;
-  const result = await pool.query(query ,[id]) 
-  if(result.rows.length === 0 ){
-    return res.status(404).json({
+};
+
+const getRestaurantOrdersPrepare = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query =
+      "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Prepare' ";
+    const result = await pool.query(query, [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No item found `,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      result: result.rows,
+    });
+  } catch (err) {
+    res.status(500).json({
       success: false,
-      message: `No item found `,
-    })
+      message: `Server Erorr`,
+      error: err.message,
+    });
   }
-  res.status(200).json({
-    success: true ,
-    result:result.rows  
-  })
-  }catch(err)
-  {res.status(500).json({
-    success: false,
-    message: `Server Erorr`,
-    error:err.message
-  })}
-}
+};
+const getRestaurantOrdersReady = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query =
+      "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Ready To Pick Up' ";
+    const result = await pool.query(query, [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No item found `,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      result: result.rows,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `Server Erorr`,
+      error: err.message,
+    });
+  }
+};
+
 
 module.exports = {
   getRestaurantInfoById,
@@ -442,5 +448,5 @@ module.exports = {
   changeStatusToPrepare,
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
-getRestaurantOrdersReady
+  getRestaurantOrdersReady,
 };

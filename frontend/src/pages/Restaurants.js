@@ -115,18 +115,11 @@ function Restaurants() {
 
   return (
     <div>
-      <Search sx={{ mt: 4 }}>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search…"
-          value={search}
-          onChange={(e) => 
-            setSearch(e.target.value)
-          }
-        />
-      </Search>
+      <input
+        placeholder="Search…"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <FormControl
         variant="outlined"
         sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
@@ -190,6 +183,7 @@ function Restaurants() {
                     >
                       <strong>Phone:</strong> {elem.phone_number}
                     </Typography>
+
                     <Typography variant="body2" color="text.secondary">
                       <strong>Delivery Fees:</strong> {elem.delivery_fees}
                     </Typography>
