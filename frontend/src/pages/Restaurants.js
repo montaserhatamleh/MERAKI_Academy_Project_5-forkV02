@@ -45,8 +45,8 @@ function Restaurants() {
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
+      marginLeft: theme.spacing(5),
+      width: "18rem",
     },
   }));
 
@@ -115,7 +115,7 @@ function Restaurants() {
 
   return (
     <div>
-      <Search>
+      <Search sx={{ mt: 4}}>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
@@ -151,14 +151,10 @@ function Restaurants() {
           }}
         >
           <MenuItem value={"All"}>All</MenuItem>
-          <MenuItem value={"Italian"}>Italian</MenuItem>
-          <MenuItem value={"Chinese"}>Chinese</MenuItem>
-          <MenuItem value={"Mexican"}>Mexican</MenuItem>
-          <MenuItem value={"Indian"}>Indian</MenuItem>
-          <MenuItem value={"American"}>American</MenuItem>
-          <MenuItem value={"French"}>French</MenuItem>
-          <MenuItem value={"Japanese"}>Japanese</MenuItem>
-          <MenuItem value={"Korean"}>Korean</MenuItem>
+          <MenuItem value={"Syiran"}>Syiran</MenuItem>
+          <MenuItem value={"lebanese"}>lebanese</MenuItem>
+          <MenuItem value={"palestinian"}>palestinian</MenuItem>
+          <MenuItem value={"jordanian"}>jordanian</MenuItem>
         </Select>
       </FormControl>
       <Container maxWidth="md" sx={{ mt: 4 }}>
