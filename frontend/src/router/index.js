@@ -5,6 +5,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
+import Cart from '../pages/Cart';
 import GetAllRider from "../pages/Admin/getAllRegister"
 
 import GetAllOwner from "../pages/Admin/getAllOwner"
@@ -71,8 +72,13 @@ export const router = createBrowserRouter([
       },{
         path:'my_cart',
         element:<Mycart/>
-      }
+      },
+  {
+    path: '/cart',
+    element: <Cart />,
+  }
 
     ],
+   
   },
 ]);
