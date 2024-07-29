@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector} from 'react-redux';
+import GetAllUsers from '../Admin/getAllUsers' ; 
 import {
   Button,
   Container,
@@ -10,13 +11,21 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
+import GetAllRestaurants from "./getAllRestaurants";
+import GetAllRiders from "./getAllRiders";
+import GetAllOwner from "./getAllOwner";
+
 
 
 const GetAllRegister = () => {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
   
-  const token = useSelector((state) => state.auth.token);
+  const { token, role } = useSelector((state) => ({
+    token: state.auth.token,
+    role: state.auth.role
+  }));
+
 
   const fetchUsers = async () => {
     try {
@@ -34,6 +43,7 @@ const GetAllRegister = () => {
   };
 
   useEffect(() => {
+    if(role == "Admin")
     fetchUsers();
   }, []);
 
@@ -69,6 +79,7 @@ const GetAllRegister = () => {
   };
 
   return (
+    <>
     <Container
       maxWidth="lr"
       sx={{
@@ -81,7 +92,7 @@ const GetAllRegister = () => {
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         All Riders Registration Pending
       </Typography>
       <List sx={{ width: "100%" }}>
@@ -123,7 +134,7 @@ const GetAllRegister = () => {
               </Button>
               <Button
                 onClick={() => rejectPendingRiders(user.id)}
-                variant="outlined"
+                variant="contained"
                 color="error"
               >
                 Reject
@@ -133,7 +144,18 @@ const GetAllRegister = () => {
         ))}
       </List>
     </Container>
+    <br/>
+    <GetAllOwner/>
+    <br/>
+    <GetAllUsers/>
+    <br/>  
+    <GetAllRestaurants/>
+    <br/>
+    <GetAllRiders/>
+    </>
   );
 };
+
+
 
 export default GetAllRegister;
