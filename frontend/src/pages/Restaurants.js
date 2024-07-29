@@ -34,7 +34,6 @@ import "@fontsource/roboto/700.css";
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
   const [filterCategory, setFilterCategory] = useState([]);
-  const [search, setSearch] = useState("");
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -60,7 +59,7 @@ function Restaurants() {
     alignItems: "center",
     justifyContent: "center",
   }));
-  
+
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
     width: "100%",
@@ -86,9 +85,8 @@ function Restaurants() {
     axios
       .get(`http://localhost:5000/restaurants/byCategory/${text}`)
       .then((result) => {
-        // setFilterCategory(result.data.result);
         setRestaurants(result.data.result);
-        console.log(result.data);
+        // console.log(result.data);
       })
       .catch((err) => {
         console.log(err);
@@ -106,18 +104,18 @@ function Restaurants() {
         console.log("fetch Restaurants not working", err);
       });
   };
-  
-  useEffect(() => {
-    // function for Search 
-    // const onSearch = restaurants.filter((elem) => {
-    //   return elem.name.toLowerCase().includes(search.toLowerCase());
-    // });
 
+  useEffect(() => {
     fetchAllRestaurants();
-  }, [search, restaurants]);
+  }, []);
+
+  // const filteredRestaurants = restaurants.filter((elem) =>
+  //   elem.name.toLowerCase().includes(search.toLowerCase())
+  // );
+
   return (
     <div>
-      <Search >
+      <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
@@ -195,6 +193,9 @@ function Restaurants() {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       <strong>Rating:</strong> {elem.rating}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      <strong>elivery Fees:</strong> {elem.delivery_fees}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       <strong>Category:</strong> {elem.category}
