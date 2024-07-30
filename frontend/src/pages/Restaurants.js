@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import axios, { Axios } from "axios";
 import {
   Card,
   CardActions,
@@ -24,16 +25,15 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
-
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-//nav
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
-  const [filterCategory, setFilterCategory] = useState([]);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -45,8 +45,8 @@ function Restaurants() {
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
+      marginLeft: theme.spacing(5),
+      width: "18rem",
     },
   }));
 
@@ -77,6 +77,17 @@ function Restaurants() {
     },
   }));
 
+  const fetchAllRestaurants = () => {
+    axios
+      .get("http://localhost:5000/restaurants/")
+      .then((result) => {
+        setRestaurants(result.data.result);
+        // console.log(result.data.result);
+      })
+      .catch((err) => {
+        console.log("fetch Restaurants not working", err);
+      });
+  };
   const categorySearch = (text) => {
     //if fetch all restaurants
     if (text == "All") {
@@ -92,81 +103,90 @@ function Restaurants() {
         console.log(err);
       });
   };
-
-  const fetchAllRestaurants = () => {
+  const filteredRestaurantsByDeliveryFees = () => {
     axios
-      .get("http://localhost:5000/restaurants/")
+      .get(`http://localhost:5000/restaurants/getAllRestaurantByDeliveryFees`)
       .then((result) => {
         setRestaurants(result.data.result);
-        // console.log(result.data.result);
+        // console.log(result.data);
       })
       .catch((err) => {
-        console.log("fetch Restaurants not working", err);
+        console.log(err);
       });
+  };
+  const navigateRestaurantsById = (id) => {
+    navigate(`/one/${id}`);
   };
 
   useEffect(() => {
     fetchAllRestaurants();
   }, []);
 
-  // const filteredRestaurants = restaurants.filter((elem) =>
-  //   elem.name.toLowerCase().includes(search.toLowerCase())
-  // );
-
+  const filteredRestaurants = restaurants.filter((elem) =>
+    elem.name.toLowerCase().includes(search.toLowerCase())
+  ); 
+  
   return (
     <div>
-      <Search>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
+      <div className="searchHolder">
+        <input
           placeholder="Search…"
-          inputProps={{ "aria-label": "search" }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-      </Search>
-      <FormControl
-        variant="outlined"
-        sx={{ mt: 4, ml: 5, width: "150px", color: "white" }}
-      >
-        <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
-          Select Category
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Select an Option"
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.dark",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.light",
-            },
-          }}
-          onChange={(e) => {
-            categorySearch(e.target.value);
-          }}
+        <FormControl
+          variant="outlined"
+          sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
         >
-          <MenuItem value={"All"}>All</MenuItem>
-          <MenuItem value={"Italian"}>Italian</MenuItem>
-          <MenuItem value={"Chinese"}>Chinese</MenuItem>
-          <MenuItem value={"Mexican"}>Mexican</MenuItem>
-          <MenuItem value={"Indian"}>Indian</MenuItem>
-          <MenuItem value={"American"}>American</MenuItem>
-          <MenuItem value={"French"}>French</MenuItem>
-          <MenuItem value={"Japanese"}>Japanese</MenuItem>
-          <MenuItem value={"Korean"}>Korean</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
+            Select Category
+          </InputLabel>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {
+              filteredRestaurantsByDeliveryFees();
+            }}
+          >
+            Sort low fees
+          </Button>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Select an Option"
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.main",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.dark",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "primary.light",
+              },
+            }}
+            onChange={(e) => {
+              categorySearch(e.target.value);
+            }}
+          >
+            <MenuItem value={"All"}>All</MenuItem>
+            <MenuItem value={"Syiran"}>Syiran</MenuItem>
+            <MenuItem value={"lebanese"}>lebanese</MenuItem>
+            <MenuItem value={"palestinian"}>palestinian</MenuItem>
+            <MenuItem value={"jordanian"}>jordanian</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
       <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Grid container spacing={15}>
-          {restaurants.map((elem, i) => (
+        <Grid
+          container
+          spacing={15}
+          //nav
+        >
+          {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
-              <Paper>
-                <Card sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+              {/* <Paper> */}
+                <Card onClick={()=>{navigateRestaurantsById(elem.id)}}sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
                   <CardContent>
                     <CardHeader
                       action={<IconButton aria-label="settings"></IconButton>}
@@ -191,18 +211,16 @@ function Restaurants() {
                     >
                       <strong>Phone:</strong> {elem.phone_number}
                     </Typography>
+
                     <Typography variant="body2" color="text.secondary">
-                      <strong>Rating:</strong> {elem.rating}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      <strong>elivery Fees:</strong> {elem.delivery_fees}
+                      <strong>Delivery Fees:</strong> {elem.delivery_fees}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       <strong>Category:</strong> {elem.category}
                     </Typography>
                   </CardContent>
                 </Card>
-              </Paper>
+              {/* </Paper> */}
             </Grid>
           ))}
         </Grid>

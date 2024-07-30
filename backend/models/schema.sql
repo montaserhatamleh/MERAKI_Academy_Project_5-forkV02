@@ -67,7 +67,7 @@ CREATE TABLE pending_registrations_ownerRes (
   restaurant_name VARCHAR,
   restaurant_address TEXT,
   restaurant_phone_number VARCHAR(15),
- delivery_fees DECIMAL(3,2) DEFAULT 0.00 ,
+ delivery_fees DECIMAL(5,2) DEFAULT 0.00 ,
    image_url TEXT, 
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,7 +81,7 @@ CREATE TABLE restaurants (
   address TEXT,
   category VARCHAR,
   phone_number VARCHAR,
-  rating DECIMAL(3,2) DEFAULT 0.00,
+  rating DECIMAL(5,2) DEFAULT 0.00,
   image_url TEXT, 
   delivery_fees DECIMAL(3,2) DEFAULT 0.00 ,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

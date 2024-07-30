@@ -30,6 +30,12 @@ const SidebarOwner = () => {
           <ListItem  component={Link} to="/restaurant_owner/add-item">
             <ListItemText primary="Add Restaurant Items" />
           </ListItem>
+          
+          
+          <ListItem  component={Link} to="/restaurant_owner/pending-orders">
+            <ListItemText primary="Show Pending Orders" />
+          </ListItem>
+          
         </List>
       </Box>
     </Drawer>
