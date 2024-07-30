@@ -18,6 +18,7 @@ const ViewRestaurantInfo = () => {
         });
         setRestaurant(result.data.result);
       } catch (error) {
+        console.log(error)
         setMessage('Error getting restaurant information. Please try again later.');
       }
     };
