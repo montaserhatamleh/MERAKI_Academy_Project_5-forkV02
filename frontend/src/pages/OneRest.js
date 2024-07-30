@@ -5,7 +5,7 @@ const OneRest = () => {
     const {id}= useParams()
     console.log(id);
   return (
-    <div>OneRest</div>
+    <div></div>
   )
 }
 

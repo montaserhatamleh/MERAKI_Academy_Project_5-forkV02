@@ -19,11 +19,10 @@ import UpdateRestaurantInfo from "../pages/Owner/UpdateRestaurantInfo";
 import ViewItems from "../pages/Owner/ViewItems";
 import AddItem from "../pages/Owner/AddItem";
 import UpdateItem from "../pages/Owner/UpdateItem";
-import OneRest from "../pages/Owner/OneRest";
+import OneRest from "../pages/OneRest";
 import PendingOrders from "../pages/Owner/PendingOrders";
 
 export const router = createBrowserRouter([
-  
   {
     path: "/",
     element: <Main />,
@@ -74,8 +73,6 @@ export const router = createBrowserRouter([
           { path: "add-item", element: <AddItem /> },
           { path: "update-item/:id", element: <UpdateItem /> },
           { path: "pending-orders", element: <PendingOrders /> },
-
-        
         ],
       },
       {
