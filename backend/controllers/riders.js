@@ -5,7 +5,7 @@ const updateRider = async (req, res) => {
   const { vehicle_details } = req.body;
   try {
     const query =
-      "UPDATE riders SET vehicle_details = COALESCE($1,vehicle_details) WHERE id = $2 RETURNING *";
+      "UPDATE riders SET vehicle_details = COALESCE($1,vehicle_details) WHERE user_id= $2 RETURNING *";
     const result = await pool.query(query, [vehicle_details, id]);
     if (result.rowCount === 0) {
       return res.status(200).json({
@@ -56,7 +56,7 @@ const findRiderById = async (req, res) => {
   const { id } = req.params;
   try {
     const query =
-      "SELECT * FROM riders INNER JOIN users ON riders.user_id = users.id WHERE riders.id = $1";
+      "SELECT * FROM riders INNER JOIN users ON riders.user_id = users.id WHERE riders.user_id = $1";
     const result = await pool.query(query, [id]);
 
     if (result.rows.length === 0)
@@ -108,7 +108,8 @@ const getRidersByUserId = async (req, res) => {
 const getAllOrderIsPending = async (req, res) => {
   try {
     const query =
-      "SELECT * FROM orders WHERE status='ready to pick up' AND deleted_at = false";
+      `SELECT * FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id 
+      WHERE status='Ready To Pick Up' AND orders.deleted_at = false`;
     const result = await pool.query(query);
 
     if (result.rows.length === 0)
@@ -119,7 +120,7 @@ const getAllOrderIsPending = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      result: result.rows[0],
+      result: result.rows,
     });
   } catch (err) {
     res.status(500).json({
@@ -129,6 +130,34 @@ const getAllOrderIsPending = async (req, res) => {
     });
   }
 };
+
+
+const getItemsByOrderId = async (req , res)=>{
+  try{
+  const {id} = req.params ; 
+  const query = "SELECT * FROM order_items INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id where order_id =$1 "
+  const result = await pool.query(query, [id]);
+
+  if (result.rows.length === 0)
+    return res.status(404).json({
+      success: false,
+      message: "Not Found",
+    });
+
+  res.status(200).json({
+    success: true,
+    result: result.rows,
+  });
+} catch (err) {
+  res.status(500).json({
+    success: false,
+    message: "Server error",
+    error: err.message,
+  });
+}
+}
+
+
 //momtaz 
 const updateStatusOrder = async (req, res) => {
   const { id_rider, id_order, status } = req.body;
@@ -199,12 +228,15 @@ const acceptOrder = async (req, res) => {
       }
 
       const riderId = riderResult.rows[0].id;
+      
+
+      console.log(id , orderId , riderId)
 
       // Update order status and assign him
       const orderResult = await pool.query(
           `UPDATE orders 
            SET status = 'Accepted by Rider', rider_id = $1
-           WHERE id = $2 AND status = 'Ready To Pick Up'
+           WHERE id = $2 AND status ='Ready To Pick Up'
            RETURNING *`,
           [riderId, orderId]
       );
@@ -535,5 +567,6 @@ module.exports = {
   getAllOrderIsOnTheWay,
   getAllOrderIsDelivered,
   getAllOrderIsAccepted ,
-  deletedRiders
+  deletedRiders,
+  getItemsByOrderId 
 };
