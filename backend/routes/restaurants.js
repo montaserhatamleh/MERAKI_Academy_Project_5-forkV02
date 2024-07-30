@@ -32,7 +32,6 @@ restaurantRouter.get(
   getRestaurantById
 );
 //Find all order related restaurants
-restaurantRouter.get("/find/:id", getRestaurantOrders);
 //Filter by Category
 restaurantRouter.get("/byCategory/:text", getAllRestaurantByCategory);
 //Update Data For The Restaurant
@@ -57,14 +56,18 @@ restaurantRouter.get(
 restaurantRouter.get("/allInfo/:id", getRestaurantInfoById);
 
 // Mange Order
+restaurantRouter.get("/find",
+  authentication,
+  authorization("manage_orders"), getRestaurantOrders);
+
 restaurantRouter.put(
-  "/prepare/:id/:restaurant",
+  "/prepare/:restaurant",
   authentication,
   authorization("manage_orders"),
   changeStatusToPrepare
 );
 restaurantRouter.put(
-  "/read/:id/:restaurant",
+  "/read/:restaurant",
   authentication,
   authorization("manage_orders"),
   changeStatusReadyToPickup
