@@ -8,7 +8,6 @@ import {
     ListItemText,
     Typography,
     Box,
-    Drawer
   } from "@mui/material";
 
 const GetAllRestaurants = ()=> {

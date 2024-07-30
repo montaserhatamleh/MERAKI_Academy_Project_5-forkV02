@@ -109,7 +109,7 @@ const login = async (req, res) => {
 
 
 const getUserInfo = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.token.userId;
     try {
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1 AND deleted_at = false', [id]);
         if (userResult.rows.length === 0) {

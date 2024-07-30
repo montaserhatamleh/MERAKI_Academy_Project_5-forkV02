@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector} from 'react-redux';
-import GetAllUsers from '../Admin/getAllUsers' ; 
 import {
   Button,
   Container,
@@ -11,9 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import axios from "axios";
-import GetAllRestaurants from "./getAllRestaurants";
-import GetAllRiders from "./getAllRiders";
-import GetAllOwner from "./getAllOwner";
+
 
 
 
@@ -144,14 +141,7 @@ const GetAllRegister = () => {
         ))}
       </List>
     </Container>
-    <br/>
-    <GetAllOwner/>
-    <br/>
-    <GetAllUsers/>
-    <br/>  
-    <GetAllRestaurants/>
-    <br/>
-    <GetAllRiders/>
+    
     </>
   );
 };

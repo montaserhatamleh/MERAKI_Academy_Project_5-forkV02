@@ -123,7 +123,7 @@ const GetAllOwner = () => {
                 color="primary"
                 sx={{ marginRight: "10px" }}
               >
-                Acceptrs
+                Accept
               </Button>
               <Button
                 onClick={() => rejectPendingRiders(user.id)}
