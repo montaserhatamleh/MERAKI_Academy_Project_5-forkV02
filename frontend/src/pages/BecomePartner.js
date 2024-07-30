@@ -52,6 +52,7 @@ const BecomePartner = () => {
       console.error('Error during registration:', error);
       if (error.response && error.response.data.message) {
         setMessage(error.response.data.message);
+        console.log(error.response.data.message);
       } else {
         setMessage('An unexpected error occurred. Please try again.');
       }

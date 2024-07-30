@@ -305,19 +305,26 @@ const getRestaurantInfoById = async (req, res) => {
   }
 }
 */
-
 const getRestaurantOrders = async (req, res) => {
-  const { id } = req.params;
+  const userId = req.token.userId;
+
   try {
-    const query =
-      "SELECT * FROM orders WHERE restaurant_id = $1 AND status='Pending' ";
-    const result = await pool.query(query, [id]);
+    // Use a JOIN to get restaurant and order details in one query
+    const query = `
+      SELECT orders.*
+      FROM orders
+      JOIN restaurants ON orders.restaurant_id = restaurants.id
+      WHERE restaurants.user_id = $1 AND orders.status = 'Pending'
+    `;
+    const result = await pool.query(query, [userId]);
+
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `No item found `,
+        message: 'No pending orders found for this restaurant',
       });
     }
+
     res.status(200).json({
       success: true,
       result: result.rows,
@@ -325,19 +332,19 @@ const getRestaurantOrders = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: `Server Error`,
+      message: 'Server Error',
       error: err.message,
     });
   }
 };
 
+
 const changeStatusToPrepare = async (req, res) => {
-  const { id } = req.params;
   const { restaurant } = req.params;
   try {
     const query =
-      "UPDATE orders Set status='Prepare' WHERE id = $1  AND status='Pending' AND restaurant_id=$2 RETURNING *";
-    const result = await pool.query(query, [id, restaurant]);
+      "UPDATE orders Set status='Prepare' WHERE id = $1  AND status='Pending' RETURNING *";
+    const result = await pool.query(query, [restaurant]);
 
     if (result.rowCount === 0)
       return res.status(200).json({
@@ -359,12 +366,11 @@ const changeStatusToPrepare = async (req, res) => {
 };
 
 const changeStatusReadyToPickup = async (req, res) => {
-  const { id } = req.params;
   const { restaurant } = req.params;
   try {
     const query =
-      "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepare' AND restaurant_id=$2 RETURNING *";
-    const result = await pool.query(query, [id, restaurant]);
+      "UPDATE orders Set status='Ready To Pick Up' WHERE id = $1  AND status='Prepare' RETURNING *";
+    const result = await pool.query(query, [restaurant]);
 
     if (result.rowCount === 0)
       return res.status(200).json({
