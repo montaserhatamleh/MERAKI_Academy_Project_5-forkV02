@@ -36,6 +36,15 @@ const SidebarOwner = () => {
             <ListItemText primary="Show Pending Orders" />
           </ListItem>
           
+          
+          <ListItem  component={Link} to="/restaurant_owner/prepared-orders">
+            <ListItemText primary="Show Prepared Orders" />
+          </ListItem>
+          
+          <ListItem  component={Link} to="/restaurant_owner/delivered-orders">
+            <ListItemText primary="Show Delivered Orders" />
+          </ListItem>
+          
         </List>
       </Box>
     </Drawer>

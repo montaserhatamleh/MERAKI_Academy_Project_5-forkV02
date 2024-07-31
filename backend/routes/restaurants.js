@@ -13,7 +13,8 @@ const {
   changeStatusToPrepare,
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
-  getRestaurantOrdersReady,
+  getRestaurantOrdersDelivered
+  ,
   getAllRestaurantByDeliveryFees,
  
 } = require("../controllers/restaurants");
@@ -73,16 +74,16 @@ restaurantRouter.put(
   changeStatusReadyToPickup
 );
 restaurantRouter.get(
-  "/:restaurant/prepare",
+  "/restaurant/prepare",
   authentication,
   authorization("manage_orders"),
   getRestaurantOrdersPrepare
 );
 restaurantRouter.get(
-  "/:restaurant/ready",
+  "/restaurant/delivered",
   authentication,
   authorization("manage_orders"),
-  getRestaurantOrdersReady
+  getRestaurantOrdersDelivered
 );
 //('Restaurant Owner')
 //('manage_restaurants')
