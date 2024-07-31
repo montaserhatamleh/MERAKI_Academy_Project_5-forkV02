@@ -78,7 +78,7 @@ const RestaurantDetails = () => {
         </Box>
       </Box>
       <Typography variant="h5" gutterBottom>
-        Menu
+        Menu 
       </Typography>
       {Object.keys(restaurant.menu_items).map((category) => (
         <Box key={category} sx={{ marginBottom: 4 }}>
@@ -103,7 +103,7 @@ const RestaurantDetails = () => {
                       {item.description}
                     </Typography>
                     <Typography variant="body1" color="textPrimary">
-                      ${item.price.toFixed(2)}
+                      ${item.price}
                     </Typography>
                     <Typography
                       variant="body2"
