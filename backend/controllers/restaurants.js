@@ -195,6 +195,7 @@ const deleteRestaurantById = (req, res) => {
       });
     });
 };
+
 const getRestaurantInfoById = async (req, res) => {
   const { id } = req.params; // Assuming id = 10 for this example
   try {
