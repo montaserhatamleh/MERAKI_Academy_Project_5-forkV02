@@ -14,7 +14,8 @@ const {
     rejectReqRider,
     rejectReqRes,
     acceptReqRider,
-    acceptReqRes
+    acceptReqRes,
+    googleLogin
 } = require("../controllers/users");
 const authentication = require("../middleware/authentication")
 const authorization = require("../middleware/authorization")
@@ -24,6 +25,8 @@ const multipartyMiddleware = multiparty();
 // User login and Information
 userRouter.post("/login", login);
 userRouter.post("/signup", signupCustomer);
+userRouter.post("/google-login", googleLogin);
+
 userRouter.get("/:id", authentication,getUserInfo);
 userRouter.get("/find/all", authentication,authorization("manage_users"),getAllUsers); // Get all users (admin only)
 userRouter.put("/:id", updateUserInfo);

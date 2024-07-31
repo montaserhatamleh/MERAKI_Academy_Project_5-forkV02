@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setToken, setUserId,setRole } from '../redux/auth';
 import { useNavigate } from 'react-router-dom';
+import GoogleLogIn from '../components/GoogleLogIn';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -108,6 +109,7 @@ const Signin = () => {
           </Button>
         </Box>
       </Box>
+      <GoogleLogIn/>
     </Container>
   );
 };
