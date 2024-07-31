@@ -170,10 +170,10 @@ function Restaurants() {
             }}
           >
             <MenuItem value={"All"}>All</MenuItem>
-            <MenuItem value={"Syiran"}>Syiran</MenuItem>
-            <MenuItem value={"lebanese"}>lebanese</MenuItem>
-            <MenuItem value={"palestinian"}>palestinian</MenuItem>
-            <MenuItem value={"jordanian"}>jordanian</MenuItem>
+            <MenuItem value={"Syrian"}>Syrian</MenuItem>
+            <MenuItem value={"Lebanese"}>lebanese</MenuItem>
+            <MenuItem value={"Palestinian"}>palestinian</MenuItem>
+            <MenuItem value={"Jordanian"}>jordanian</MenuItem>
           </Select>
         </FormControl>
       </div>
