@@ -181,7 +181,6 @@ function Restaurants() {
         <Grid
           container
           spacing={15}
-          //nav
         >
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>

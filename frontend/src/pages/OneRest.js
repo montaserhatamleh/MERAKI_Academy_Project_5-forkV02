@@ -23,7 +23,9 @@ const OneRest = () => {
     fetchRestaurantsInfoById(id);
   }, [id]);
 
-  return <>res</>;
+  return <>
+   
+  </>;
 };
 
 export default OneRest;
