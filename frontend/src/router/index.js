@@ -35,6 +35,7 @@ import Mycart from '../pages/Mycart';
 import Cart from "../pages/Cart";
 import PreparedOrders from "../pages/Owner/PreparedOrders";
 import DeliveredOrders from "../pages/Owner/DeliveredOrders";
+import UserOrders from "../pages/UserOrders";
 
 
 export const router = createBrowserRouter([
@@ -63,8 +64,8 @@ export const router = createBrowserRouter([
         element: <BecomeRider />,
 
       },{
-        path: 'restaurants',
-        element: <Restaurants />,
+        path: 'userOrders',
+        element: <UserOrders />,
       },{    
       path:'admin',
       element:<Admin/>,
