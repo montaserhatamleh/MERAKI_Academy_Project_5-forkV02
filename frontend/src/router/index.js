@@ -6,7 +6,7 @@ import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 
-import Cart from '../pages/Cart';
+
 
 import GetAllRiderRigertions from "../pages/Admin/getAllRegister"
 import GetAllRegistrationOwner from "../pages/Admin/getAllOwner"
@@ -27,24 +27,20 @@ import Admin from '../pages/Admin/Admin';
 
 import Profile from '../pages/Riders/Profile'
 
-import Cart from "../pages/Cart";
 import GetAllRider from "../pages/Admin/getAllRegister";
 
 import GetAllOwner from "../pages/Admin/getAllOwner";
 
-import Restaurants from "../pages/Restaurants";
-import Owner from "../pages/Owner/Owner";
 
-import Mycart from "../pages/Mycart";
-import ViewRestaurantInfo from "../pages/Owner/ViewRestaurantInfo";
-import UpdateRestaurantInfo from "../pages/Owner/UpdateRestaurantInfo";
-import ViewItems from "../pages/Owner/ViewItems";
-import AddItem from "../pages/Owner/AddItem";
-import UpdateItem from "../pages/Owner/UpdateItem";
+
 import OneRest from "../pages/Owner/OneRest";
 import PendingOrders from "../pages/Owner/PendingOrders";
 
-
+import AllCompletedOrders from "../pages/Riders/AllCompletedOrders";
+import AllOrdersDelivered from "../pages/Riders/AllOrdersDelivered";
+import AllOrdersOnWay from "../pages/Riders/AllOrdersOnWay";
+import AllOrdersReady from "../pages/Riders/AllOrdersReady";
+import Rider from "../pages/Riders/Rider";
 export const router = createBrowserRouter([
   
   {
@@ -94,7 +90,7 @@ export const router = createBrowserRouter([
           {path:'view-item',element:<ViewItems/>},
           {path:'add-item',element:<AddItem/>},
           {path:'update-item/:id',element:<UpdateItem/>},
-
+        ]
       },
       {
         path: "get_All_Rider",
@@ -128,24 +124,29 @@ export const router = createBrowserRouter([
         ],
       },
 
-  {
-    path: '/cart',
-    element: <Cart />,
-  },{
-    path:"profile",
-    element:<Profile/>
+
+    {
+        path:"rider" ,
+        element:<Rider/> ,
+        children:[
+          {path:"All_complete_order" ,element: <AllCompletedOrders/>},
+          {path:"All_delivered_order" , element: <AllOrdersDelivered/>},
+          {path:"All__order_on_way" , element: <AllOrdersOnWay/>  },
+          {path:"/rider",element: <AllOrdersReady/>},
+          {path:"profile", element:<Profile/>
+          }
+
+         ]
     }
-
-
-      {
-        path: "my_cart",
-        element: <Mycart />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
+,
+    {
+    path: "my_cart",
+    element: <Mycart />,
+    },
+   
 
     ],
   },
 ]);
+
+
