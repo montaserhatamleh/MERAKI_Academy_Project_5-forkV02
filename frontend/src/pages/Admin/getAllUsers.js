@@ -13,8 +13,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Alert 
 } from "@mui/material";
+import { styled } from '@mui/system';
 const GetAllUsers = () => {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
@@ -75,6 +75,17 @@ const GetAllUsers = () => {
       console.log(err.response.data.message);
     }
   };
+
+  const StyledDialogContent = styled(DialogContent)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  });
+  
+  const InfoText = styled('h3')({
+    margin: '8px 0',
+  });
+  
 
   return (
     <>
@@ -165,11 +176,11 @@ const GetAllUsers = () => {
       >
         <DialogTitle > User Information </DialogTitle>
         <DialogContent alignItems="center">
-          <h3><strong>Name :</strong> {data.first_name}</h3>
-          <h3><strong>Last Name :</strong> {data.last_name}</h3>
-          <h3><strong>Email :</strong> {data.email}</h3>
-          <h3><strong>Phone:</strong> {data.phone_number}</h3>
-          <h3><strong>Created :</strong> {data.created_at}</h3>
+          <InfoText><strong>Name :</strong> {data.first_name}</InfoText>
+          <InfoText><strong>Last Name :</strong> {data.last_name}</InfoText>
+          <InfoText><strong>Email :</strong> {data.email}</InfoText>
+          <InfoText><strong>Phone :</strong> {data.phone_number}</InfoText>
+          <InfoText><strong>Created Data :</strong> {data.created_at}</InfoText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
