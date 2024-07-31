@@ -5,6 +5,63 @@ const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET
 const cloudinary = require('../cloud'); 
 
+
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const googleLogin = async (req, res) => {
+    const { token } = req.body;
+  
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const { name, email } = ticket.getPayload();
+  
+      let userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+  
+      if (userResult.rows.length === 0) {
+        const customerRole = 2; 
+  
+        const newUserResult = await pool.query(
+          'INSERT INTO users (username, email, role_id) VALUES ($1, $2, $3) RETURNING *',
+          [name, email, customerRole]
+        );
+        userResult = newUserResult;
+      }
+  
+      const user = userResult.rows[0];
+  
+      const payload = {
+        userId: user.id,
+        user: user.name,
+        role: user.role_id,
+      };
+      const authToken = jwt.sign(payload, process.env.SECRET);
+  
+      const roleNameResult = await pool.query('SELECT role_name FROM roles WHERE id = $1', [user.role_id]);
+      const roleName = roleNameResult.rows[0].role_name;
+  
+      res.status(200).json({
+        success: true,
+        token: authToken,
+        role: roleName,
+        user: user.name,
+        userID: user.id,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Google login failed',
+        error: error.message,
+      });
+    }
+  };
+  
+
+
 const signupCustomer = async (req, res) => {
     const {
         first_name,
@@ -540,5 +597,6 @@ module.exports = {
     rejectReqRider,
     rejectReqRes,
     acceptReqRider,
-    acceptReqRes
+    acceptReqRes,
+    googleLogin
 };
