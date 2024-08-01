@@ -29,11 +29,11 @@ ridersRouter.put("/onTheWay/:orderId" ,authentication,authorization("manage_orde
  // ridersRouter.put("/onTheWay/:id/:orderId" , setOrderOnTheWay) ;
 ridersRouter.put("/delivered/:orderId" , authentication,authorization("manage_orders"),markOrderAsDelivered)
 //ridersRouter.put("/delivered/:id/:orderId" , markOrderAsDelivered) ;
-ridersRouter.get("/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
+ridersRouter.get("/all/onTheWay",authentication,authorization("manage_orders"), getAllOrderIsOnTheWay) 
 // ridersRouter.get("/onTheWay/:id", getAllOrderIsOnTheWay) 
-ridersRouter.get("/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
+ridersRouter.get("/all/delivered",authentication,authorization("manage_orders"), getAllOrderIsDelivered) 
 // ridersRouter.get("/delivered/:id", getAllOrderIsDelivered) 
-ridersRouter.get("/accepted",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
+ridersRouter.get("/all/accepted",authentication,authorization("manage_orders"), getAllOrderIsAccepted) 
 // ridersRouter.get("/accepted/:id", getAllOrderIsAccepted) 
 
 

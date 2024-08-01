@@ -108,8 +108,11 @@ const getRidersByUserId = async (req, res) => {
 const getAllOrderIsPending = async (req, res) => {
   try {
     const query =
-      `SELECT * FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id 
-      WHERE status='Ready To Pick Up' AND orders.deleted_at = false`;
+      `SELECT orders.rider_id, orders.*,restaurants.name,restaurants.address
+      FROM orders
+      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id 
+      WHERE orders.status = 'Ready To Pick Up' 
+      AND orders.deleted_at = false;`;
     const result = await pool.query(query);
 
     if (result.rows.length === 0)
@@ -135,7 +138,11 @@ const getAllOrderIsPending = async (req, res) => {
 const getItemsByOrderId = async (req , res)=>{
   try{
   const {id} = req.params ; 
-  const query = "SELECT * FROM order_items INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id where order_id =$1 "
+  const query = `SELECT order_items.*,menu_items.* ,users.first_name, users.last_name ,users.phone_number FROM order_items 
+  INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id 
+    INNER JOIN orders ON order_items.order_id = orders.id
+     INNER JOIN users ON orders.user_id = users.id
+    where order_id =$1`
   const result = await pool.query(query, [id]);
 
   if (result.rows.length === 0)
@@ -449,7 +456,10 @@ const getAllOrderIsDelivered = async (req, res) => {
 
   const riderId = riderResult.rows[0].id;
     const query =
-      "SELECT * FROM orders WHERE status='Delivered' AND rider_id =$1";
+      `SELECT orders.*,restaurants.name,restaurants.address,users.first_name,users.last_name,users.phone_number FROM orders 
+      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id
+      INNER JOIN users ON orders.user_id = users.id
+       WHERE status='Delivered' AND rider_id =$1`;
     const result = await pool.query(query,[riderId]);
 
     if (result.rows.length === 0)
@@ -487,10 +497,11 @@ const getAllOrderIsOnTheWay = async (req, res) => {
           message: 'Rider not found'
       });
   }
-
+ 
   const riderId = riderResult.rows[0].id;
+  console.log(riderId) ;
     const query =
-      "SELECT * FROM orders WHERE status='on the way' AND rider_id =$1";
+      "SELECT orders.*,restaurants.name,restaurants.address FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id  WHERE status='On the Way' AND rider_id =$1";
     const result = await pool.query(query,[riderId]);
 
     if (result.rows.length === 0)
@@ -531,7 +542,8 @@ const getAllOrderIsAccepted = async (req, res) => {
 
   const riderId = riderResult.rows[0].id;
     const query =
-      "SELECT * FROM orders WHERE status='Accepted by Rider' AND rider_id =$1";
+      `SELECT orders.*,restaurants.name,users.first_name,users.last_name,users.address,users.phone_number FROM orders  INNER JOIN users ON orders.user_id = users.id 
+      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE status='Accepted by Rider' AND rider_id =$1`;
     const result = await pool.query(query,[riderId]);
 
     if (result.rows.length === 0)

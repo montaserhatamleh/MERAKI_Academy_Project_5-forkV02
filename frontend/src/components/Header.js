@@ -63,9 +63,23 @@ const Header = () => {
               )}
             
               {role === 'Rider' && (
-                <Button sx={{ color: 'white' }} component={Link} to="/Profile">
+                <>
+                <Button sx={{ color: 'white' }} component={Link} to="/rider/Profile">
                  Profile
                 </Button>
+                  <Button sx={{ color: 'white' }} component={Link} to="/rider/All_complete_order">
+                 Complete Orders
+                 </Button>
+                   <Button sx={{ color: 'white' }} component={Link} to="/rider/All_delivered_order">
+                   Delivered Orders
+                  </Button>
+                    <Button sx={{ color: 'white' }} component={Link} to="/rider/All__order_on_way">
+                    Oreder On Way
+                   </Button>
+                   <Button sx={{ color: 'white' }} component={Link} to="rider">
+                    Ready Orders
+                   </Button>
+                  </> 
               )}
               <Button sx={{ color: 'white' }} onClick={handleLogout}>
                 Sign Out

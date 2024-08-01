@@ -18,8 +18,14 @@ import Admin from '../pages/Admin/Admin';
 import Profile from '../pages/Riders/Profile'
 
 
+import OneRest from "../pages/Owner/OneRest";
+import PendingOrders from "../pages/Owner/PendingOrders";
 
-
+import AllCompletedOrders from "../pages/Riders/AllCompletedOrders";
+import AllOrdersDelivered from "../pages/Riders/AllOrdersDelivered";
+import AllOrdersOnWay from "../pages/Riders/AllOrdersOnWay";
+import AllOrdersReady from "../pages/Riders/AllOrdersReady";
+import Rider from "../pages/Riders/Rider";
 
 import Owner from "../pages/Owner/Owner";
 import ViewRestaurantInfo from "../pages/Owner/ViewRestaurantInfo";
@@ -29,13 +35,13 @@ import AddItem from "../pages/Owner/AddItem";
 import UpdateItem from "../pages/Owner/UpdateItem";
 import PendingOrders from "../pages/Owner/PendingOrders";
 
-import OneRest from "../pages/OneRest";
 import Restaurants from "../pages/Restaurants";
 import Mycart from '../pages/Mycart';
 import Cart from "../pages/Cart";
 import PreparedOrders from "../pages/Owner/PreparedOrders";
 import DeliveredOrders from "../pages/Owner/DeliveredOrders";
 import UserOrders from "../pages/UserOrders";
+
 
 
 export const router = createBrowserRouter([
@@ -110,19 +116,34 @@ export const router = createBrowserRouter([
 
         ],
       },
+
+
+
+    {
+        path:"rider" ,
+        element:<Rider/> ,
+        children:[
+          {path:"All_complete_order" ,element: <AllCompletedOrders/>},
+          {path:"All_delivered_order" , element: <AllOrdersDelivered/>},
+          {path:"All__order_on_way" , element: <AllOrdersOnWay/>  },
+          {path:"/rider",element: <AllOrdersReady/>},
+          {path:"profile", element:<Profile/>
+          }
+
+         ]
+    }
+   
   {
     path: '/cart',
     element: <Cart />,
-  },{
-    path:"profile",
-    element:<Profile/>
-    }
+  }
 ,
+ { path: "my_cart",
+   element: <Mycart />,
+ }
 
-      {
-        path: "my_cart",
-        element: <Mycart />,
-      }
     ],
   },
 ]);
+
+

@@ -11,13 +11,19 @@ import {
   Paper,
   
 } from "@mui/material";
-import AllOrders from "./AllOrders";
+
 
 const Profile = () => {
   const { userId } = useSelector((state) => ({
     userId: state.auth.userId,
   }));
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({
+ first_name:"",
+  last_name: "",
+  email: "",
+  phone_number: "",
+  address: "",
+  vehicle_details: ""});
   const findUserById = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/riders/${userId}`);
@@ -57,7 +63,7 @@ const Profile = () => {
 
   return (
     <>
-      <Container maxWidth="me" style={{ marginTop: 20 }}>
+      <Container maxWidth="la" style={{ marginTop: 20 }}>
         <Paper style={{ padding: 20 }}>
           <Grid style={{ margin: "auto" }}>
           <Typography variant="h5" gutterBottom>Profile</Typography>
@@ -162,7 +168,7 @@ const Profile = () => {
       </Container>
 
 
-      <AllOrders/>
+    
     </>
   );
 };

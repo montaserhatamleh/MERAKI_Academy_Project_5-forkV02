@@ -17,13 +17,16 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
-const AllOrders = () => {
+
+const AllOrdersReady = () => {
   const [id ,setId] = useState(null) ; 
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate() ;
   const { token } = useSelector((state) => ({
     token: state.auth.token,
   }));
@@ -36,7 +39,7 @@ const AllOrders = () => {
         },
       });
       setOrders(result.data.result);
-    
+      console.log(result.data.result);
     } catch (err) {
       console.log(err);
     }
@@ -49,17 +52,20 @@ const AllOrders = () => {
   const getItem = async (id) => {
     setId(id)
     setOpen(true)
+    setOrderItems([])
     try {
       const result = await axios.get(
         `http://localhost:5000/riders/order/items/${id}`
       );
-      setOrderItems(result.data.result);
+      setOrderItems(result.data.result); 
+      console.log(result.data.result)
     } catch (err) {
       console.log(err);
     }
   };
  
   const accept=async()=>{
+    setOpen(false)
     try {
     const result = await axios.put(
       `http://localhost:5000/riders/accept/${id}`,{},{
@@ -68,7 +74,13 @@ const AllOrders = () => {
         },
       }
     );
-    setOrderItems(result.data.result);
+    navigate("/rider/All__order_on_way")
+    console.log(result.data) ; 
+    setOrders(
+      orders.map((ele) => 
+        ele.id === id ? { ...ele, status: result.data.order.status } : ele
+      )
+    );
   } catch (err) {
     console.log(err);
   }
@@ -82,14 +94,10 @@ const AllOrders = () => {
   };
   return (
     <>
-      <Container maxWidth="lr">
-        <Typography variant="h4" gutterBottom>
-          Order Page
-        </Typography>
-
+      <Container maxWidth="la">
         <Paper style={{ padding: "20px", marginBottom: "20px" }}>
           <Typography variant="h5" gutterBottom>
-            Orders
+           All Orders Ready
           </Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -97,15 +105,17 @@ const AllOrders = () => {
                 <TableRow>
                   <TableCell>Restaurant</TableCell>
                   <TableCell>Address</TableCell>
+                  <TableCell>delivery_address</TableCell>
                   <TableCell>Total</TableCell>
                   <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map((order) => (
-                  <TableRow onClick={()=>getItem(order.id)} hover>
+                {orders?.map((order) => (
+                  <TableRow key={order.id} onClick={()=>getItem(order.id)} hover>
                     <TableCell>{order.name}</TableCell>
                     <TableCell>{order.address}</TableCell>
+                    <TableCell style={{width:"20%"}}>{order.delivery_address}</TableCell>
                     <TableCell>{order.total_price}</TableCell>
                     <TableCell>{order.status}</TableCell>
                   </TableRow>
@@ -125,20 +135,20 @@ const AllOrders = () => {
             },
           }}
         >
-          <DialogTitle> Order Items </DialogTitle>
+          <DialogTitle> <strong>Order Items</strong></DialogTitle>
           <DialogContent alignItems="center">
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Restaurant</TableCell>
+                    <TableCell>Product</TableCell>
                     <TableCell>Quantity</TableCell>
                     <TableCell>Price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {orderItems.map((order) => (
-                    <TableRow hover>
+                  {orderItems?.map((order) => (
+                    <TableRow key={order.id}  hover>
                       <TableCell>{order.name}</TableCell>
                       <TableCell>{order.quantity}</TableCell>
                       <TableCell>{order.price}</TableCell>
@@ -162,4 +172,4 @@ const AllOrders = () => {
   );
 };
 
-export default AllOrders;
+export default AllOrdersReady;
