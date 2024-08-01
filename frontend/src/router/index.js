@@ -42,7 +42,7 @@ import DeliveredOrders from "../pages/Owner/DeliveredOrders";
 //pages
 import Restaurants from "../pages/Restaurants";
 import Mycart from '../pages/Mycart';
-import Cart from "../pages/Cart";
+// import Cart from "../pages/Cart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
 
@@ -131,8 +131,7 @@ export const router = createBrowserRouter([
           {path:"All_delivered_order" , element: <AllOrdersDelivered/>},
           {path:"All__order_on_way" , element: <AllOrdersOnWay/>  },
           {path:"/rider",element: <AllOrdersReady/>},
-          {path:"profile", element:<Profile/>
-          }
+          {path:"profile", element:<Profile/>  }
 
          ]
     }
