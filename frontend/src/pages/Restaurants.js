@@ -22,6 +22,7 @@ import {
   CardHeader,
   IconButton,
   InputBase,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
@@ -34,58 +35,20 @@ function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(5),
-      width: "18rem",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  
   const fetchAllRestaurants = () => {
     axios
       .get("http://localhost:5000/restaurants/")
       .then((result) => {
         setRestaurants(result.data.result);
         // console.log(result.data.result);
+        setLoading(false);
       })
       .catch((err) => {
         console.log("fetch Restaurants not working", err);
+        setLoading(false);
       });
   };
   const categorySearch = (text) => {
@@ -125,6 +88,15 @@ function Restaurants() {
   const filteredRestaurants = restaurants.filter((elem) =>
     elem.name.toLowerCase().includes(search.toLowerCase())
   ); 
+
+  if (loading) return <CircularProgress />;
+
+  if (error)
+    return (
+      <Typography variant="h6" color="error">
+        {error}
+      </Typography>
+    );
   
   return (
     <div>
@@ -170,10 +142,10 @@ function Restaurants() {
             }}
           >
             <MenuItem value={"All"}>All</MenuItem>
-            <MenuItem value={"Syiran"}>Syiran</MenuItem>
-            <MenuItem value={"lebanese"}>lebanese</MenuItem>
-            <MenuItem value={"palestinian"}>palestinian</MenuItem>
-            <MenuItem value={"jordanian"}>jordanian</MenuItem>
+            <MenuItem value={"Syrian"}>Syrian</MenuItem>
+            <MenuItem value={"Lebanese"}>lebanese</MenuItem>
+            <MenuItem value={"Palestinian"}>palestinian</MenuItem>
+            <MenuItem value={"Jordanian"}>jordanian</MenuItem>
           </Select>
         </FormControl>
       </div>
@@ -181,7 +153,6 @@ function Restaurants() {
         <Grid
           container
           spacing={15}
-          //nav
         >
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>

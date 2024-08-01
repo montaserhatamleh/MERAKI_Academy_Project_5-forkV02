@@ -7,30 +7,15 @@ import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 
 
-
 import GetAllRiderRigertions from "../pages/Admin/getAllRegister"
 import GetAllRegistrationOwner from "../pages/Admin/getAllOwner"
 import GetAllUsers from '../pages/Admin/getAllUsers';
 import GetAllRiders from '../pages/Admin/getAllRiders'
 import GetAllRestaurants from '../pages/Admin/getAllRestaurants'
-import Restaurants from "../pages/Restaurants"
-
-import Owner from '../pages/Owner/Owner';
-
-import Mycart from '../pages/Mycart';
-import ViewRestaurantInfo from '../pages/Owner/ViewRestaurantInfo';
-import UpdateRestaurantInfo from '../pages/Owner/UpdateRestaurantInfo';
-import ViewItems from '../pages/Owner/ViewItems';
-import AddItem from '../pages/Owner/AddItem';
-import UpdateItem from '../pages/Owner/UpdateItem';
-import Admin from '../pages/Admin/Admin';
-
-import Profile from '../pages/Riders/Profile'
-
 import GetAllRider from "../pages/Admin/getAllRegister";
-
 import GetAllOwner from "../pages/Admin/getAllOwner";
-
+import Admin from '../pages/Admin/Admin';
+import Profile from '../pages/Riders/Profile'
 
 
 import OneRest from "../pages/Owner/OneRest";
@@ -41,8 +26,25 @@ import AllOrdersDelivered from "../pages/Riders/AllOrdersDelivered";
 import AllOrdersOnWay from "../pages/Riders/AllOrdersOnWay";
 import AllOrdersReady from "../pages/Riders/AllOrdersReady";
 import Rider from "../pages/Riders/Rider";
+
+import Owner from "../pages/Owner/Owner";
+import ViewRestaurantInfo from "../pages/Owner/ViewRestaurantInfo";
+import UpdateRestaurantInfo from "../pages/Owner/UpdateRestaurantInfo";
+import ViewItems from "../pages/Owner/ViewItems";
+import AddItem from "../pages/Owner/AddItem";
+import UpdateItem from "../pages/Owner/UpdateItem";
+import PendingOrders from "../pages/Owner/PendingOrders";
+
+import Restaurants from "../pages/Restaurants";
+import Mycart from '../pages/Mycart';
+import Cart from "../pages/Cart";
+import PreparedOrders from "../pages/Owner/PreparedOrders";
+import DeliveredOrders from "../pages/Owner/DeliveredOrders";
+import UserOrders from "../pages/UserOrders";
+
+
+
 export const router = createBrowserRouter([
-  
   {
     path: "/",
     element: <Main />,
@@ -68,30 +70,20 @@ export const router = createBrowserRouter([
         element: <BecomeRider />,
 
       },{
-        path: 'restaurants',
-        element: <Restaurants />,
+        path: 'userOrders',
+        element: <UserOrders />,
       },{    
       path:'admin',
       element:<Admin/>,
       children: [
-        {path: 'get_All_Rider_registretion',element: <GetAllRiderRigertions />,},
-        {path: '/admin',element: <GetAllUsers />,},
+        {path: 'get_All_Rider_registretion',element: <GetAllRiderRigertions />},
+        {path: '/admin',element: <GetAllUsers />},
         {path: 'get_All_registration_Owner', element: <GetAllRegistrationOwner />},
         {path:'get_all_riders',element:<GetAllRiders/>},
         {path:'get_all_restaurants',element:<GetAllRestaurants/>},
 
       ]},
-      {
-        path:'restaurant_owner',
-        element:<Owner/>,
-        children: [
-          {path: 'view-info', element: <ViewRestaurantInfo /> },
-          {path: 'update-info', element: <UpdateRestaurantInfo /> },
-          {path:'view-item',element:<ViewItems/>},
-          {path:'add-item',element:<AddItem/>},
-          {path:'update-item/:id',element:<UpdateItem/>},
-        ]
-      },
+
       {
         path: "get_All_Rider",
         element: <GetAllRider />,
@@ -118,11 +110,13 @@ export const router = createBrowserRouter([
           { path: "add-item", element: <AddItem /> },
           { path: "update-item/:id", element: <UpdateItem /> },
           { path: "pending-orders", element: <PendingOrders /> },
+          { path: "prepared-orders", element: <PreparedOrders /> },
+          
+          { path: "delivered-orders", element: <DeliveredOrders /> },
 
-
-        
         ],
       },
+
 
 
     {
@@ -138,12 +132,15 @@ export const router = createBrowserRouter([
 
          ]
     }
-,
-    {
-    path: "my_cart",
-    element: <Mycart />,
-    },
    
+  {
+    path: '/cart',
+    element: <Cart />,
+  }
+,
+ { path: "my_cart",
+   element: <Mycart />,
+ }
 
     ],
   },
