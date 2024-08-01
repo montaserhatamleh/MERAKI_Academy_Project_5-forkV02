@@ -244,6 +244,7 @@ const getRestaurantInfoById = async (req, res) => {
               name,
               description,
               price,
+              restaurant_id,
               sub_category,
               image_url,
               available,

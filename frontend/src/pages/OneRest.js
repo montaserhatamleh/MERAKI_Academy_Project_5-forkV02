@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Container,
   Typography,
+  
   Grid,
   Card,
   CardContent,
   CardMedia,
   CircularProgress,
   Box,
+  Button,
+  Modal,
+  IconButton,
+  Badge,
 } from "@mui/material";
+
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+
 const RestaurantDetails = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+  const [warningModal, setWarningModal] = useState(false);
+  const [loginPromptModal, setLoginPromptModal] = useState(false);
+  const [newItem, setNewItem] = useState(null);
+  const [cartRestaurantId, setCartRestaurantId] = useState(null);
 
 
-  const fetchRestaurantData = async () => {
+  useEffect(() => {
+    getRestaurantData();
+    if (token) getCartData();
+  }, [id, token,newItem]);
+
+  const getRestaurantData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:5000/restaurants/allInfo/${id}`
@@ -26,13 +49,71 @@ const RestaurantDetails = () => {
       setRestaurant(response.data.restaurant);
       setLoading(false);
     } catch (err) {
-      setError("Failed to fetch restaurant data.");
+      setError("Failed to get restaurant data.");
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchRestaurantData();
-  }, [id]);
+
+  const getCartData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/carts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCartItems(response.data.cart);
+
+      if (response.data.cart.length > 0) {
+        setCartRestaurantId(response.data.cart[0].restaurant_id);
+      }
+    } catch (error) {
+      console.error("Error getting cart data", error);
+    }
+  };
+
+  const addItemToCart = async (item) => {
+    if (!token) {
+      setLoginPromptModal(true);
+      return;
+    }
+
+    if (cartRestaurantId && cartRestaurantId != item.restaurant_id) {
+console.log(item);
+      setNewItem(item);
+      setWarningModal(true);
+    } else {
+      await handleAddItem(item);
+    }
+  };
+
+  const handleAddItem = async (item) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/carts",
+        { menu_item_id: item.id, quantity: 1, restaurant_id: id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if(cartRestaurantId!=id){
+        setCartItems([])
+      }
+      setCartItems((prevCartItems) => {
+        const itemIds = prevCartItems.map(cartItem => cartItem.menu_item_id);
+  
+        if (itemIds.includes(item.id)) {
+          return prevCartItems;
+        } else {
+          return [...prevCartItems, response.data.cart_item];
+        }
+      });
+      setCartRestaurantId(id);
+      setWarningModal(false);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
+  };
+
+  const handleConfirmReplace = async () => {
+    await handleAddItem(newItem);
+    setWarningModal(false);
+  };
 
   if (loading) return <CircularProgress />;
 
@@ -42,11 +123,21 @@ const RestaurantDetails = () => {
         {error}
       </Typography>
     );
+
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        {restaurant.name}
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography variant="h4" gutterBottom>
+          {restaurant.name}
+        </Typography>
+        {token && (
+          <IconButton color="inherit" onClick={() => navigate("/cart")}>
+            <Badge badgeContent={cartItems.length} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+        )}
+      </Box>
       <Box sx={{ display: "flex", marginBottom: 2 }}>
         <img
           src={restaurant.image_url}
@@ -78,7 +169,7 @@ const RestaurantDetails = () => {
         </Box>
       </Box>
       <Typography variant="h5" gutterBottom>
-        Menu 
+        Menu
       </Typography>
       {Object.keys(restaurant.menu_items).map((category) => (
         <Box key={category} sx={{ marginBottom: 4 }}>
@@ -111,6 +202,9 @@ const RestaurantDetails = () => {
                     >
                       {item.available ? "Available" : "Not Available"}
                     </Typography>
+                    {item.available &&  <IconButton color="primary" onClick={() => addItemToCart(item)}>
+    <AddShoppingCartIcon />
+  </IconButton>}
                   </CardContent>
                 </Card>
               </Grid>
@@ -118,6 +212,38 @@ const RestaurantDetails = () => {
           </Grid>
         </Box>
       ))}
+
+      <Modal open={warningModal} onClose={() => setWarningModal(false)}>
+        <Box sx={{ padding: 2, backgroundColor: "white", borderRadius: 2, margin: "auto", width: 400, mt: 10 }}>
+          <Typography>
+            Adding this item will replace the current items in your cart from a different restaurant. Do you want to proceed?
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleConfirmReplace}>
+              Yes
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={() => setWarningModal(false)}>
+              No
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      <Modal open={loginPromptModal} onClose={() => setLoginPromptModal(false)}>
+        <Box sx={{ padding: 2, backgroundColor: "white", borderRadius: 2, margin: "auto", width: 400, mt: 10 }}>
+          <Typography>
+            You need to be logged in to add items to the cart. Please log in to continue.
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+            <Button variant="contained" color="primary" onClick={() => navigate("/signin")}>
+              Sign In
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={() => setLoginPromptModal(false)}>
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Container>
   );
 };

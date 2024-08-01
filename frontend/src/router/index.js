@@ -6,7 +6,7 @@ import SignUp from "../pages/SignUp";
 import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 
-
+//Admin
 import GetAllRiderRigertions from "../pages/Admin/getAllRegister"
 import GetAllRegistrationOwner from "../pages/Admin/getAllOwner"
 import GetAllUsers from '../pages/Admin/getAllUsers';
@@ -15,18 +15,19 @@ import GetAllRestaurants from '../pages/Admin/getAllRestaurants'
 import GetAllRider from "../pages/Admin/getAllRegister";
 import GetAllOwner from "../pages/Admin/getAllOwner";
 import Admin from '../pages/Admin/Admin';
-import Profile from '../pages/Riders/Profile'
 
 
-import OneRest from "../pages/Owner/OneRest";
-import PendingOrders from "../pages/Owner/PendingOrders";
 
+
+// rider
 import AllCompletedOrders from "../pages/Riders/AllCompletedOrders";
 import AllOrdersDelivered from "../pages/Riders/AllOrdersDelivered";
 import AllOrdersOnWay from "../pages/Riders/AllOrdersOnWay";
 import AllOrdersReady from "../pages/Riders/AllOrdersReady";
 import Rider from "../pages/Riders/Rider";
+import Profile from '../pages/Riders/Profile'
 
+//res owner
 import Owner from "../pages/Owner/Owner";
 import ViewRestaurantInfo from "../pages/Owner/ViewRestaurantInfo";
 import UpdateRestaurantInfo from "../pages/Owner/UpdateRestaurantInfo";
@@ -34,13 +35,16 @@ import ViewItems from "../pages/Owner/ViewItems";
 import AddItem from "../pages/Owner/AddItem";
 import UpdateItem from "../pages/Owner/UpdateItem";
 import PendingOrders from "../pages/Owner/PendingOrders";
+import PreparedOrders from "../pages/Owner/PreparedOrders";
+import DeliveredOrders from "../pages/Owner/DeliveredOrders";
 
+
+//pages
 import Restaurants from "../pages/Restaurants";
 import Mycart from '../pages/Mycart';
 import Cart from "../pages/Cart";
-import PreparedOrders from "../pages/Owner/PreparedOrders";
-import DeliveredOrders from "../pages/Owner/DeliveredOrders";
 import UserOrders from "../pages/UserOrders";
+import OneRest from "../pages/OneRest";
 
 
 
@@ -132,12 +136,12 @@ export const router = createBrowserRouter([
 
          ]
     }
-   
-  {
-    path: '/cart',
+   ,
+ /*{
+  path: 'cart',
     element: <Cart />,
-  }
-,
+  }*/
+
  { path: "my_cart",
    element: <Mycart />,
  }

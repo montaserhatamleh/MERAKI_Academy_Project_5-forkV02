@@ -12,11 +12,12 @@ const addItemToCart = async (req, res) => {
           `SELECT id, restaurant_id FROM carts WHERE user_id = $1`,
           [userId]
       );
+      console.log(cartCheck.rows);
 
       let cart_id;
 
       if (cartCheck.rows.length > 0) {
-          if (cartCheck.rows[0].restaurant_id !== restaurant_id) {
+          if (cartCheck.rows[0].restaurant_id != restaurant_id) {
               await pool.query(
                   `UPDATE carts SET restaurant_id = $1 WHERE user_id = $2`,
                   [restaurant_id, userId]
@@ -24,7 +25,7 @@ const addItemToCart = async (req, res) => {
 
               await pool.query(
                   `DELETE FROM cart_items WHERE cart_id = $1`,
-                  [cartCheck.rows[0].cart_id]
+                  [cartCheck.rows[0].id]
               );
           }
           cart_id = cartCheck.rows[0].id;
