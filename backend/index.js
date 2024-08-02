@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-const authSocket = require("./middleware/auth_socket");
-const messagesHandler = require("./controllers/message")
+const { authSocket, socketDebug } = require("./middleware/auth_socket");
+const messagesHandler = require("./controllers/message");
 const { pool } = require("./models/db");
 
 const app = express();
@@ -17,11 +17,16 @@ io.use(authSocket);
 const clients = {};
 //
 io.on("connection", (socket) => {
+  socket.use(socketDebug);
   // console.log(socket.user);
   const user_id = socket.handshake.headers.user_id;
   clients[user_id] = { socket_id: socket.id, user_id };
   console.log(clients);
-  messagesHandler(socket, io)
+  messagesHandler(socket, io);
+  //Error handler
+  socket.on("error", (error) => {
+    socket.emit("error", { error: error.message });
+  });
   // for disconnect
   socket.on("disconnect", () => {
     console.log(socket.id);
