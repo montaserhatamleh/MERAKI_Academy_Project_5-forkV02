@@ -56,11 +56,11 @@ const RestaurantDetails = () => {
 
   const getCartData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/carts", {
+      const response = await axios.get("http://localhost:5000/carts/elements", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems(response.data.cart);
-
+console.log(response.data.cart);
       if (response.data.cart.length > 0) {
         setCartRestaurantId(response.data.cart[0].restaurant_id);
       }
