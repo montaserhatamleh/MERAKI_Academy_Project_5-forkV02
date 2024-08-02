@@ -60,7 +60,7 @@ const RestaurantDetails = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems(response.data.cart);
-
+console.log(response.data.cart);
       if (response.data.cart.length > 0) {
         setCartRestaurantId(response.data.cart[0].restaurant_id);
       }
