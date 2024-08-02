@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const authSocket = require("./middleware/auth_socket");
-
+const messagesHandler = require("./controllers/message")
 const { pool } = require("./models/db");
 
 const app = express();
@@ -15,12 +15,14 @@ const io = new Server(8080, { cors: { origin: "*" } });
 io.use(authSocket);
 
 const clients = {};
+//
 io.on("connection", (socket) => {
   // console.log(socket.user);
   const user_id = socket.handshake.headers.user_id;
   clients[user_id] = { socket_id: socket.id, user_id };
   console.log(clients);
-
+  messagesHandler(socket, io)
+  // for disconnect
   socket.on("disconnect", () => {
     console.log(socket.id);
     for (const key in clients) {
@@ -52,6 +54,7 @@ app.use("/restaurants", restaurantRouter);
 app.use("/riders", ridersRouter);
 const itemRouter = require("./routes/item");
 const auth_socket = require("./middleware/auth_socket");
+const messageHandler = require("./controllers/message");
 
 app.use("/items", itemRouter);
 
