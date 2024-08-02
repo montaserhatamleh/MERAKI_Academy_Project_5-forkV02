@@ -55,6 +55,12 @@ const Header = () => {
                     <Button sx={{ color: 'white' }} component={Link} to="/userOrders">
                     My Orders
                   </Button>
+
+                  <Button sx={{ color: 'white' }} component={Link} to="/profile_user">
+                    Profile
+                  </Button> 
+                </>
+
               )}
             
               {role === 'Rider' && (
