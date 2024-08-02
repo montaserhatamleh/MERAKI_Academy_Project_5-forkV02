@@ -182,7 +182,15 @@ const RestaurantDetails = () => {
           <Grid container spacing={2}>
             {restaurant.menu_items[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
-                <Card>
+                <Card 
+                 sx={{
+                  minWidth: 300,
+                  borderRadius: 2,
+                  boxShadow: 3,
+                  transition: "transform 0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+                >
                   <CardMedia
                     component="img"
                     height="140"
