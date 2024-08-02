@@ -23,6 +23,7 @@ import {
   IconButton,
   InputBase,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
@@ -37,7 +38,7 @@ function Restaurants() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   const fetchAllRestaurants = () => {
     axios
       .get("http://localhost:5000/restaurants/")
@@ -87,7 +88,7 @@ function Restaurants() {
 
   const filteredRestaurants = restaurants.filter((elem) =>
     elem.name.toLowerCase().includes(search.toLowerCase())
-  ); 
+  );
 
   if (loading) return <CircularProgress />;
 
@@ -97,35 +98,36 @@ function Restaurants() {
         {error}
       </Typography>
     );
-  
+
   return (
-    <div>
-      <div className="searchHolder">
-        <input
+    <div style={{ padding: "20px", backgroundColor:  ""}}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={3}
+        p={1}
+        bgcolor="white"
+        boxShadow={2}
+        borderRadius={2}
+      >
+        <TextField
+          variant="outlined"
           placeholder="Search…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: <SearchIcon />,
+          }}
+          sx={{ flex: 1, mr: 2 }}
         />
-        <FormControl
-          variant="outlined"
-          sx={{ mt: 2, ml: 5, width: "150px", color: "white" }}
-        >
-          <InputLabel id="demo-simple-select-label" xs={{ color: "white" }}>
-            Select Category
-          </InputLabel>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => {
-              filteredRestaurantsByDeliveryFees();
-            }}
-          >
-            Sort low fees
-          </Button>
+        <FormControl variant="outlined" sx={{ width: "400px", mr: 2 }}>
+          <InputLabel id="category-select-label">Select Category</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Select an Option"
+            labelId="category-select-label"
+            id="category-select"
+            label="Select Category"
+            onChange={(e) => categorySearch(e.target.value)}
             sx={{
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "primary.main",
@@ -137,61 +139,71 @@ function Restaurants() {
                 borderColor: "primary.light",
               },
             }}
-            onChange={(e) => {
-              categorySearch(e.target.value);
-            }}
           >
             <MenuItem value={"All"}>All</MenuItem>
             <MenuItem value={"Syrian"}>Syrian</MenuItem>
-            <MenuItem value={"Lebanese"}>lebanese</MenuItem>
-            <MenuItem value={"Palestinian"}>palestinian</MenuItem>
-            <MenuItem value={"Jordanian"}>jordanian</MenuItem>
+            <MenuItem value={"Lebanese"}>Lebanese</MenuItem>
+            <MenuItem value={"Palestinian"}>Palestinian</MenuItem>
+            <MenuItem value={"Jordanian"}>Jordanian</MenuItem>
           </Select>
         </FormControl>
-      </div>
-      <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Grid
-          container
-          spacing={15}
+        <Button
+          variant="contained"
+          size="large"
+          onClick={filteredRestaurantsByDeliveryFees}
+          sx={{ height: "56px" }}
         >
+          Sort Low Fees
+        </Button>
+      </Box>
+      <Container maxWidth="md">
+        <Grid container spacing={13}>
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
-              {/* <Paper> */}
-                <Card onClick={()=>{navigateRestaurantsById(elem.id)}}sx={{ minWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-                  <CardContent>
-                    <CardHeader
-                      action={<IconButton aria-label="settings"></IconButton>}
-                      title={elem.name}
-                      style={{ textAlign: "center" }}
+              <Card
+                onClick={() => navigateRestaurantsById(elem.id)}
+                sx={{
+                  minWidth: 300,
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  transition: "transform 0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+              >
+                <CardHeader
+                  action={<IconButton aria-label="settings"></IconButton>}
+                  title={elem.name}
+                  sx={{ textAlign: "center" }}
+                />
+                <CardContent>
+                  <div style={{ textAlign: "center" }}>
+                    <img
+                      src={elem.image_url}
+                      alt={elem.name}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "8px",
+                        maxHeight: "300px",
+                        objectFit: "cover",
+                      }}
                     />
-                    <div style={{ textAlign: "center" }}>
-                      <img
-                        src={elem.image_url}
-                        alt={elem.name}
-                        style={{
-                          width: "200px",
-                          height: "auto",
-                          borderRadius: "8px",
-                        }}
-                      />
-                    </div>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 2 }}
-                    >
-                      <strong>Phone:</strong> {elem.phone_number}
-                    </Typography>
-
-                    <Typography variant="body2" color="text.secondary">
-                      <strong>Delivery Fees:</strong> {elem.delivery_fees}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      <strong>Category:</strong> {elem.category}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              {/* </Paper> */}
+                  </div>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 2 }}
+                  >
+                    <strong>Phone:</strong> {elem.phone_number}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Delivery Fees:</strong> {elem.delivery_fees}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <strong>Category:</strong> {elem.category}
+                  </Typography>
+                </CardContent>
+              </Card>
             </Grid>
           ))}
         </Grid>

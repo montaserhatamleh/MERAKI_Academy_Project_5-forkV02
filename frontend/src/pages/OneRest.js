@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import {
   Container,
   Typography,
-  
   Grid,
   Card,
   CardContent,
@@ -18,9 +17,8 @@ import {
   Badge,
 } from "@mui/material";
 
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const RestaurantDetails = () => {
   const { id } = useParams();
@@ -35,11 +33,10 @@ const RestaurantDetails = () => {
   const [newItem, setNewItem] = useState(null);
   const [cartRestaurantId, setCartRestaurantId] = useState(null);
 
-
   useEffect(() => {
     getRestaurantData();
     if (token) getCartData();
-  }, [id, token,newItem]);
+  }, [id, token, newItem]);
 
   const getRestaurantData = async () => {
     try {
@@ -76,7 +73,7 @@ console.log(response.data.cart);
     }
 
     if (cartRestaurantId && cartRestaurantId != item.restaurant_id) {
-console.log(item);
+      console.log(item);
       setNewItem(item);
       setWarningModal(true);
     } else {
@@ -91,12 +88,12 @@ console.log(item);
         { menu_item_id: item.id, quantity: 1, restaurant_id: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if(cartRestaurantId!=id){
-        setCartItems([])
+      if (cartRestaurantId != id) {
+        setCartItems([]);
       }
       setCartItems((prevCartItems) => {
-        const itemIds = prevCartItems.map(cartItem => cartItem.menu_item_id);
-  
+        const itemIds = prevCartItems.map((cartItem) => cartItem.menu_item_id);
+
         if (itemIds.includes(item.id)) {
           return prevCartItems;
         } else {
@@ -126,7 +123,13 @@ console.log(item);
 
   return (
     <Container>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           {restaurant.name}
         </Typography>
@@ -179,7 +182,15 @@ console.log(item);
           <Grid container spacing={2}>
             {restaurant.menu_items[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
-                <Card>
+                <Card 
+                 sx={{
+                  minWidth: 300,
+                  borderRadius: 2,
+                  boxShadow: 3,
+                  transition: "transform 0.3s",
+                  "&:hover": { transform: "scale(1.05)" },
+                }}
+                >
                   <CardMedia
                     component="img"
                     height="140"
@@ -202,9 +213,14 @@ console.log(item);
                     >
                       {item.available ? "Available" : "Not Available"}
                     </Typography>
-                    {item.available &&  <IconButton color="primary" onClick={() => addItemToCart(item)}>
-    <AddShoppingCartIcon />
-  </IconButton>}
+                    {item.available && (
+                      <IconButton
+                        color="primary"
+                        onClick={() => addItemToCart(item)}
+                      >
+                        <AddShoppingCartIcon />
+                      </IconButton>
+                    )}
                   </CardContent>
                 </Card>
               </Grid>
@@ -214,15 +230,39 @@ console.log(item);
       ))}
 
       <Modal open={warningModal} onClose={() => setWarningModal(false)}>
-        <Box sx={{ padding: 2, backgroundColor: "white", borderRadius: 2, margin: "auto", width: 400, mt: 10 }}>
+        <Box
+          sx={{
+            padding: 2,
+            backgroundColor: "white",
+            borderRadius: 2,
+            margin: "auto",
+            width: 400,
+            mt: 10,
+          }}
+        >
           <Typography>
-            Adding this item will replace the current items in your cart from a different restaurant. Do you want to proceed?
+            Adding this item will replace the current items in your cart from a
+            different restaurant. Do you want to proceed?
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
-            <Button variant="contained" color="primary" onClick={handleConfirmReplace}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 2,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleConfirmReplace}
+            >
               Yes
             </Button>
-            <Button variant="outlined" color="secondary" onClick={() => setWarningModal(false)}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setWarningModal(false)}
+            >
               No
             </Button>
           </Box>
@@ -230,15 +270,39 @@ console.log(item);
       </Modal>
 
       <Modal open={loginPromptModal} onClose={() => setLoginPromptModal(false)}>
-        <Box sx={{ padding: 2, backgroundColor: "white", borderRadius: 2, margin: "auto", width: 400, mt: 10 }}>
+        <Box
+          sx={{
+            padding: 2,
+            backgroundColor: "white",
+            borderRadius: 2,
+            margin: "auto",
+            width: 400,
+            mt: 10,
+          }}
+        >
           <Typography>
-            You need to be logged in to add items to the cart. Please log in to continue.
+            You need to be logged in to add items to the cart. Please log in to
+            continue.
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
-            <Button variant="contained" color="primary" onClick={() => navigate("/signin")}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 2,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/signin")}
+            >
               Sign In
             </Button>
-            <Button variant="outlined" color="secondary" onClick={() => setLoginPromptModal(false)}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => setLoginPromptModal(false)}
+            >
               Cancel
             </Button>
           </Box>
