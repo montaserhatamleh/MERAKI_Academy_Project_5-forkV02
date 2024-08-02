@@ -131,7 +131,7 @@ console.log(item);
           {restaurant.name}
         </Typography>
         {token && (
-          <IconButton color="inherit" onClick={() => navigate("/cart")}>
+          <IconButton color="inherit" onClick={() => navigate("/my_cart")}>
             <Badge badgeContent={cartItems.length} color="error">
               <ShoppingCartIcon />
             </Badge>

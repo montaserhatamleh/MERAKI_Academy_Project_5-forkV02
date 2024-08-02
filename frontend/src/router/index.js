@@ -45,7 +45,7 @@ import Mycart from '../pages/Mycart';
 import Cart from "../pages/Cart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
-
+import ProfileUser from "../pages/ProfileUser"
 
 
 export const router = createBrowserRouter([
@@ -142,6 +142,11 @@ export const router = createBrowserRouter([
     element: <Cart />,
   }*/
 
+  {
+    path: "profile_user",
+    element: <ProfileUser />,
+  }
+,
  { path: "my_cart",
    element: <Mycart />,
  }
