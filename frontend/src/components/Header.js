@@ -51,7 +51,9 @@ const Header = () => {
                   My Restaurant
                 </Button>
               )}
+
                       {role === 'Customer' && (
+
                     <>
                     <Button sx={{ color: 'white' }} component={Link} to="/userOrders">
                     My Orders

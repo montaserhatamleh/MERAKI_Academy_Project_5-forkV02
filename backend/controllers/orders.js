@@ -114,7 +114,7 @@ const getOrderById = async (req, res) => {
 
 
 const getOrders = async (req, res) => {
-    const userId = req.token.id;
+    const userId = req.token.userId;
 
     const query = `SELECT * FROM orders WHERE user_id = $1`;
     pool
