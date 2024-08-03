@@ -6,15 +6,28 @@ import { useState, useEffect } from "react";
 function Socket() {
   const [user_id, setUser_id] = useState("");
   const [token, setToken] = useState("");
-  const [socket, seSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
 
-  
+  useEffect(() => {
+    socket?.on("connect", () => {
+      console.log(true);
+    });
+    socket?.on("connect_error", (error) => {
+      console.log(false);
+      console.log(error.message);
+    });
+    return () => {
+      socket?.close();
+      socket.removeAllListeners();
+    };
+  }, [socket]);
+
   return (
     <div>
       socket
       <input
         type="text"
-        placeholder="user_id"
+        placeholder="user id"
         onChange={(e) => {
           setUser_id(e.target.value);
         }}
@@ -28,7 +41,7 @@ function Socket() {
       ></input>
       <button
         onClick={() => {
-          seSocket(socketInit({ user_id, token }));
+          setSocket(socketInit({ user_id, token }));
         }}
       >
         connect
