@@ -17,6 +17,7 @@ io.use(authSocket);
 const clients = {};
 //
 io.on("connection", (socket) => {
+  console.log("connected");
   socket.use(socketDebug);
   // console.log(socket.user);
   const user_id = socket.handshake.headers.user_id;
