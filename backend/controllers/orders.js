@@ -1,10 +1,12 @@
 const {pool} = require("../models/db")
 //customer side
 const createOrder = async (req, res) => {
-    const userId = req.token.userId;
+console.log(req.token); 
+   const {userId} = req.token;
 
    const delivery_address = req.token.address // mn el token a7san 
 
+   const {payment_method,total_price} = req.body
     try {
 
 //hon get all carrt items from user id cart 
@@ -25,15 +27,15 @@ const createOrder = async (req, res) => {
         const cartItems = cartResult.rows;
 
         // Calculate total price of the order 
-        const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0); // momken to add delivery fees hon
+        // const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0); // momken to add delivery fees hon
 
         // Create a new order
         // momken to add paymentMethod hon 
 
         const orderResult = await pool.query(
-            `INSERT INTO orders (user_id, restaurant_id, total_price, status, delivery_address) 
-             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [userId, cartItems[0].restaurant_id, totalPrice, 'Pending' ,delivery_address ] // delivery fees column mn res fixed
+            `INSERT INTO orders (user_id, restaurant_id, total_price, status, delivery_address,payment_method) 
+             VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
+            [userId, cartItems[0].restaurant_id, total_price, 'Pending' ,delivery_address,payment_method ] // delivery fees column mn res fixed
 
         );
         const orderId = orderResult.rows[0].id;
