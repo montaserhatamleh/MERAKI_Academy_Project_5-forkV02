@@ -95,6 +95,8 @@ CREATE TABLE orders (
     restaurant_id INT REFERENCES restaurants(id) ON DELETE SET NULL ON UPDATE CASCADE,
     rider_id INT DEFAULT NULL REFERENCES riders(id) ON DELETE SET NULL ON UPDATE CASCADE,
     total_price DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+
     status VARCHAR(20) DEFAULT 'Pending',
     delivery_address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
