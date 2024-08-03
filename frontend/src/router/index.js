@@ -46,6 +46,7 @@ import Mycart from '../pages/Mycart';
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
 import ProfileUser from "../pages/ProfileUser"
+import Contact from "../pages/Contact";
 
 
 export const router = createBrowserRouter([
@@ -76,6 +77,11 @@ export const router = createBrowserRouter([
       },{
         path: 'userOrders',
         element: <UserOrders />,
+      },
+      
+      {
+        path: "contact",
+        element: <Contact />,
       },{    
       path:'admin',
       element:<Admin/>,
