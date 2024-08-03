@@ -41,9 +41,15 @@ import Mycart from "../pages/Mycart";
 // import Cart from "../pages/Cart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
+
 import ProfileUser from "../pages/ProfileUser";
 // import socket
 import Socket from "../components/socket"
+
+
+import Contact from "../pages/Contact";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +80,7 @@ export const router = createBrowserRouter([
         path: "userOrders",
         element: <UserOrders />,
       },
+
       {
         path: "admin",
         element: <Admin />,
@@ -91,6 +98,23 @@ export const router = createBrowserRouter([
           { path: "get_all_restaurants", element: <GetAllRestaurants /> },
         ],
       },
+
+      
+      {
+        path: "contact",
+        element: <Contact />,
+      },{    
+      path:'admin',
+      element:<Admin/>,
+      children: [
+        {path: 'get_All_Rider_registretion',element: <GetAllRiderRigertions />},
+        {path: '/admin',element: <GetAllUsers />},
+        {path: 'get_All_registration_Owner', element: <GetAllRegistrationOwner />},
+        {path:'get_all_riders',element:<GetAllRiders/>},
+        {path:'get_all_restaurants',element:<GetAllRestaurants/>},
+
+      ]},
+
 
       {
         path: "get_All_Rider",

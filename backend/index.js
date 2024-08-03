@@ -62,6 +62,10 @@ app.use("/restaurants", restaurantRouter);
 app.use("/riders", ridersRouter);
 const itemRouter = require("./routes/item");
 
+const email = require('./routes/email');
+app.use('/contact', email);
+
+
 const auth_socket = require("./middleware/auth_socket");
 const messageHandler = require("./controllers/message");
 
