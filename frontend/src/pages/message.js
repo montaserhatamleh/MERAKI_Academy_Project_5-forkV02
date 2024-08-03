@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-
-function Message({ socket, user_id }) {
+import { useSelector } from "react-redux";
+// raider_id
+function Message({ socket, raider_id }) {
   const [to, setTo] = useState("");
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
+  const { userId } = useSelector((state) => {
+    return {
+      userId: state.auth.userId,
+    };
+  });
 
   useEffect(() => {
     socket.on("message", receiveMessage);
@@ -17,7 +23,8 @@ function Message({ socket, user_id }) {
     console.log(data);
   };
   const sendMessage = () => {
-    socket.emit("message", { to, from: user_id, message });
+    //to : raider_id
+    socket.emit("message", { to: raider_id, from: userId, message });
   };
 
   return (
