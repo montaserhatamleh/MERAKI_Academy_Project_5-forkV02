@@ -51,7 +51,8 @@ const Header = () => {
                   My Restaurant
                 </Button>
               )}
-                  {role === 'Customer' && (
+                      {role === 'Customer' && (
+                    <>
                     <Button sx={{ color: 'white' }} component={Link} to="/userOrders">
                     My Orders
                   </Button>
