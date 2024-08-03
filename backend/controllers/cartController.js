@@ -60,40 +60,50 @@ const addItemToCart = async (req, res) => {
       });
   }
 };
-
 const getCartByUserId = async (req, res) => {
     const userId = req.token.userId;
-
-
-  try {
+  
+    try {
       const cartResult = await pool.query(
-          `SELECT carts.id, carts.restaurant_id, cart_items.id, cart_items.menu_item_id, cart_items.quantity, menu_items.name, menu_items.price, menu_items.description, menu_items.image_url
-           FROM carts
-           INNER JOIN cart_items ON carts.id = cart_items.cart_id
-           INNER JOIN menu_items ON menu_items.id = cart_items.menu_item_id
-           WHERE carts.user_id = $1`,
-          [userId]
+        `SELECT 
+            carts.id as cart_id,
+            carts.restaurant_id,
+            restaurants.delivery_fees as restaurant_delivery_fees,
+            cart_items.id as cart_item_id,
+            cart_items.menu_item_id,
+            cart_items.quantity,
+            menu_items.name as menu_item_name,
+            menu_items.price as menu_item_price,
+            menu_items.description as menu_item_description,
+            menu_items.image_url as menu_item_image_url
+         FROM carts
+         INNER JOIN cart_items ON carts.id = cart_items.cart_id
+         INNER JOIN menu_items ON menu_items.id = cart_items.menu_item_id
+         INNER JOIN restaurants ON restaurants.id = carts.restaurant_id
+         WHERE carts.user_id = $1`,
+        [userId]
       );
-
+  
       if (cartResult.rows.length === 0) {
-          return res.status(404).json({
-              success: false,
-              message: 'Cart is empty'
-          });
-      }
-
-      res.status(200).json({
-          success: true,
-          cart: cartResult.rows
-      });
-  } catch (err) {
-      res.status(500).json({
+        return res.status(404).json({
           success: false,
-          message: 'Server error',
-          error: err.stack
+          message: 'Cart is empty'
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        cart: cartResult.rows
       });
-  }
-};
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: 'Server error',
+        error: err.stack
+      });
+    }
+  };
+  
 
 
 
