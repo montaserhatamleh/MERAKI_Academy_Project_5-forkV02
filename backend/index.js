@@ -58,8 +58,12 @@ app.use("/roles", roleRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/riders", ridersRouter);
 const itemRouter = require("./routes/item");
+
 const auth_socket = require("./middleware/auth_socket");
 const messageHandler = require("./controllers/message");
+
+app.use('/create-payment-intent', require("./routes/stripe"));
+
 
 app.use("/items", itemRouter);
 
