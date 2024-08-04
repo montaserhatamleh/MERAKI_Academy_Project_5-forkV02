@@ -6,8 +6,10 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import CheckoutForm from "../components/CheckoutForm";
+import { useNavigate } from 'react-router-dom';
 
 const Mycart = () => {
+  const navigate = useNavigate() ; 
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -103,7 +105,8 @@ const Mycart = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(result);
+      console.log(result.data.order.id);
+      navigate(`/order_item/${result.data.order.id}`)
       // Use id from result and navigate to order using the appropriate function 
     } catch (err) {
       console.log(err);

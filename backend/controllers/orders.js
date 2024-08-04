@@ -75,12 +75,25 @@ console.log(req.token);
 
 const getOrderById = async (req, res) => {
     const { id } = req.params;
-
+     let ridersResult ; 
     try {
         const orderResult = await pool.query(
             `SELECT * FROM orders WHERE id = $1`,
             [id]
         );
+            
+            if(orderResult.rows[0].status == "Accepted by Rider"){
+            try{
+             ridersResult = await pool.query(`SELECT users.first_name,users.last_name,users.phone_number FROM orders 
+            INNER JOIN riders ON orders.rider_id = riders.id 
+            INNER JOIN users ON riders.user_id = users.id 
+            WHERE orders.id = $1`,[id]);
+            console.log(ridersResult)  ;
+            
+            }catch(err){
+                console.log(err) ; 
+            }}
+     
 
         if (orderResult.rows.length === 0) {
             return res.status(404).json({
@@ -89,7 +102,7 @@ const getOrderById = async (req, res) => {
             });
         }
 
-        const order = orderResult.rows[0];
+         order = orderResult.rows[0];
 
         const orderItemsResult = await pool.query(
             `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.image_url 
@@ -100,7 +113,7 @@ const getOrderById = async (req, res) => {
         );
 
         order.items = orderItemsResult.rows;
-
+        order.rider= ridersResult?.rows[0] ; 
         res.status(200).json({
             success: true,
             order: order
