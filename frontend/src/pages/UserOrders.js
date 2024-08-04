@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Container, Typography, Card, CardContent, CardActions, Button, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const UserOrders = () => {
   const token = useSelector(state => state.auth.token);
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState('');
 
@@ -41,13 +43,13 @@ const UserOrders = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6">Order ID: {order.id}</Typography>
-                <Typography variant="body1">Total Price: ${order.total_price.toFixed(2)}</Typography>
+                <Typography variant="body1">Total Price: ${order.total_price}</Typography>
                 <Typography variant="body2">Status: {order.status}</Typography>
                 <Typography variant="body2">Delivery Address: {order.delivery_address}</Typography>
                 <Typography variant="body2">Ordered at: {new Date(order.created_at).toLocaleString()}</Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button  onClick={()=>navigate(`/order_item/${order.id}`)} size="small" color="primary">
                   View Details
                 </Button> 
               </CardActions>

@@ -6,6 +6,6 @@ const authentication = require("../middleware/authentication")
 
 reviewRouter.get('/:restaurant_id', getReviewsForRestaurant);
 reviewRouter.get('/:id', getReviewById);
-reviewRouter.post('/:restaurant_id', authentication,createReview);
+reviewRouter.post('/rating/:id', authentication,createReview);
 
 module.exports = reviewRouter

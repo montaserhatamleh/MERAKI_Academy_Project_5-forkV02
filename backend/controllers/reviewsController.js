@@ -1,4 +1,4 @@
-const pool = require("../models/db");
+const {pool} = require("../models/db");
 
 
 
@@ -39,22 +39,25 @@ const getReviewsForRestaurant = async (req, res) => {
 
     // from 1 star to 5 stars
     // we can use two params
-    const { rating, comment, user_id } = req.body;
+    const { rating, user_id ,id} = req.body;
     const restaurant_id = req.params.id;
-  
+    
     try {
+      const query1 = `UPDATE orders SET deleted_at = true WHERE id = $1;`
+      const result1 = await pool.query(query1, [id]);
+
       const query = `
-        INSERT INTO reviews (rating, comment, user_id, restaurant_id)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO reviews (rating, user_id, restaurant_id)
+        VALUES ($1, $2, $3)
         RETURNING *
       `;
-      const values = [rating, comment, user_id, restaurant_id];
+      const values = [rating, user_id, restaurant_id];
       const result = await pool.query(query, values);
       await updateRestaurantAverageRating();
 
       return res.status(201).json({ success: true, message: "Review created successfully" });
     } catch (err) {
-      return res.status(500).json({ success: false, message: "Server error", err });
+      return res.status(500).json({ success: false, message: "Server error", err:err.message });
     }
   };
   
@@ -62,7 +65,7 @@ const getReviewsForRestaurant = async (req, res) => {
     try {
       const query = `
         UPDATE restaurants
-        SET average_rating = (
+        SET rating = (
        SELECT AVG(reviews.rating) FROM reviews WHERE reviews.restaurant_id = restaurants.id
 
         )

@@ -42,12 +42,15 @@ import Mycart from "../pages/Mycart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
 
-import ProfileUser from "../pages/ProfileUser";
-// import socket
+import ProfileUser from "../pages/ProfileUser"
+import OrderItems from "../pages/OrderItems";
+
+
 import Socket from "../components/socket"
 
 
 import Contact from "../pages/Contact";
+
 
 
 
@@ -168,11 +171,20 @@ export const router = createBrowserRouter([
     element: <Cart />,
   }*/
 
-      {
-        path: "profile_user",
-        element: <ProfileUser />,
-      },
-      { path: "my_cart", element: <Mycart /> },
+ orderDetails
+  {
+    path: "profile_user",
+    element: <ProfileUser />,
+  }
+,
+ { path: "my_cart",
+   element: <Mycart />,
+ },
+{
+path:"order_item/:id" , 
+element:<OrderItems/>
+}
+
     ],
   },
 ]);
