@@ -7,17 +7,14 @@ import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 
 //Admin
-import GetAllRiderRigertions from "../pages/Admin/getAllRegister"
-import GetAllRegistrationOwner from "../pages/Admin/getAllOwner"
-import GetAllUsers from '../pages/Admin/getAllUsers';
-import GetAllRiders from '../pages/Admin/getAllRiders'
-import GetAllRestaurants from '../pages/Admin/getAllRestaurants'
+import GetAllRiderRigertions from "../pages/Admin/getAllRegister";
+import GetAllRegistrationOwner from "../pages/Admin/getAllOwner";
+import GetAllUsers from "../pages/Admin/getAllUsers";
+import GetAllRiders from "../pages/Admin/getAllRiders";
+import GetAllRestaurants from "../pages/Admin/getAllRestaurants";
 import GetAllRider from "../pages/Admin/getAllRegister";
 import GetAllOwner from "../pages/Admin/getAllOwner";
-import Admin from '../pages/Admin/Admin';
-
-
-
+import Admin from "../pages/Admin/Admin";
 
 // rider
 import AllCompletedOrders from "../pages/Riders/AllCompletedOrders";
@@ -25,7 +22,7 @@ import AllOrdersDelivered from "../pages/Riders/AllOrdersDelivered";
 import AllOrdersOnWay from "../pages/Riders/AllOrdersOnWay";
 import AllOrdersReady from "../pages/Riders/AllOrdersReady";
 import Rider from "../pages/Riders/Rider";
-import Profile from '../pages/Riders/Profile'
+import Profile from "../pages/Riders/Profile";
 
 //res owner
 import Owner from "../pages/Owner/Owner";
@@ -38,15 +35,20 @@ import PendingOrders from "../pages/Owner/PendingOrders";
 import PreparedOrders from "../pages/Owner/PreparedOrders";
 import DeliveredOrders from "../pages/Owner/DeliveredOrders";
 
-
 //pages
 import Restaurants from "../pages/Restaurants";
-import Mycart from '../pages/Mycart';
+import Mycart from "../pages/Mycart";
 // import Cart from "../pages/Cart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
-import ProfileUser from "../pages/ProfileUser"
+
+import ProfileUser from "../pages/ProfileUser";
+// import socket
+import Socket from "../components/socket"
+
+
 import Contact from "../pages/Contact";
+
 
 
 export const router = createBrowserRouter([
@@ -73,11 +75,30 @@ export const router = createBrowserRouter([
       {
         path: "become-rider",
         element: <BecomeRider />,
-
-      },{
-        path: 'userOrders',
+      },
+      {
+        path: "userOrders",
         element: <UserOrders />,
       },
+
+      {
+        path: "admin",
+        element: <Admin />,
+        children: [
+          {
+            path: "get_All_Rider_registretion",
+            element: <GetAllRiderRigertions />,
+          },
+          { path: "/admin", element: <GetAllUsers /> },
+          {
+            path: "get_All_registration_Owner",
+            element: <GetAllRegistrationOwner />,
+          },
+          { path: "get_all_riders", element: <GetAllRiders /> },
+          { path: "get_all_restaurants", element: <GetAllRestaurants /> },
+        ],
+      },
+
       
       {
         path: "contact",
@@ -93,6 +114,7 @@ export const router = createBrowserRouter([
         {path:'get_all_restaurants',element:<GetAllRestaurants/>},
 
       ]},
+
 
       {
         path: "get_All_Rider",
@@ -111,6 +133,10 @@ export const router = createBrowserRouter([
         element: <OneRest />,
       },
       {
+        path: "socket",
+        element: <Socket />,
+      },
+      {
         path: "restaurant_owner",
         element: <Owner />,
         children: [
@@ -121,43 +147,32 @@ export const router = createBrowserRouter([
           { path: "update-item/:id", element: <UpdateItem /> },
           { path: "pending-orders", element: <PendingOrders /> },
           { path: "prepared-orders", element: <PreparedOrders /> },
-          
-          { path: "delivered-orders", element: <DeliveredOrders /> },
 
+          { path: "delivered-orders", element: <DeliveredOrders /> },
         ],
       },
 
-
-
-    {
-        path:"rider" ,
-        element:<Rider/> ,
-        children:[
-          {path:"All_complete_order" ,element: <AllCompletedOrders/>},
-          {path:"All_delivered_order" , element: <AllOrdersDelivered/>},
-          {path:"All__order_on_way" , element: <AllOrdersOnWay/>  },
-          {path:"/rider",element: <AllOrdersReady/>},
-          {path:"profile", element:<Profile/>  }
-
-         ]
-    }
-   ,
- /*{
+      {
+        path: "rider",
+        element: <Rider />,
+        children: [
+          { path: "All_complete_order", element: <AllCompletedOrders /> },
+          { path: "All_delivered_order", element: <AllOrdersDelivered /> },
+          { path: "All__order_on_way", element: <AllOrdersOnWay /> },
+          { path: "/rider", element: <AllOrdersReady /> },
+          { path: "profile", element: <Profile /> },
+        ],
+      },
+      /*{
   path: 'cart',
     element: <Cart />,
   }*/
 
-  {
-    path: "profile_user",
-    element: <ProfileUser />,
-  }
-,
- { path: "my_cart",
-   element: <Mycart />,
- }
-
+      {
+        path: "profile_user",
+        element: <ProfileUser />,
+      },
+      { path: "my_cart", element: <Mycart /> },
     ],
   },
 ]);
-
-
