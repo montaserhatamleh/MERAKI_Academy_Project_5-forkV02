@@ -42,18 +42,12 @@ import Mycart from "../pages/Mycart";
 import UserOrders from "../pages/UserOrders";
 import OneRest from "../pages/OneRest";
 
-import ProfileUser from "../pages/ProfileUser"
+import ProfileUser from "../pages/ProfileUser";
 import OrderItems from "../pages/OrderItems";
-=======
 
-
-import Socket from "../components/socket"
-
+import Socket from "../components/socket";
 
 import Contact from "../pages/Contact";
-
-
-
 
 export const router = createBrowserRouter([
   {
@@ -103,22 +97,27 @@ export const router = createBrowserRouter([
         ],
       },
 
-      
       {
         path: "contact",
         element: <Contact />,
-      },{    
-      path:'admin',
-      element:<Admin/>,
-      children: [
-        {path: 'get_All_Rider_registretion',element: <GetAllRiderRigertions />},
-        {path: '/admin',element: <GetAllUsers />},
-        {path: 'get_All_registration_Owner', element: <GetAllRegistrationOwner />},
-        {path:'get_all_riders',element:<GetAllRiders/>},
-        {path:'get_all_restaurants',element:<GetAllRestaurants/>},
-
-      ]},
-
+      },
+      {
+        path: "admin",
+        element: <Admin />,
+        children: [
+          {
+            path: "get_All_Rider_registretion",
+            element: <GetAllRiderRigertions />,
+          },
+          { path: "/admin", element: <GetAllUsers /> },
+          {
+            path: "get_All_registration_Owner",
+            element: <GetAllRegistrationOwner />,
+          },
+          { path: "get_all_riders", element: <GetAllRiders /> },
+          { path: "get_all_restaurants", element: <GetAllRestaurants /> },
+        ],
+      },
 
       {
         path: "get_All_Rider",
@@ -167,25 +166,15 @@ export const router = createBrowserRouter([
           { path: "profile", element: <Profile /> },
         ],
       },
-      /*{
-  path: 'cart',
-    element: <Cart />,
-  }*/
-
- orderDetails
-  {
-    path: "profile_user",
-    element: <ProfileUser />,
-  }
-,
- { path: "my_cart",
-   element: <Mycart />,
- },
-{
-path:"order_item/:id" , 
-element:<OrderItems/>
-}
-
+      {
+        path: "profile_user",
+        element: <ProfileUser />,
+      },
+      { path: "my_cart", element: <Mycart /> },
+      {
+        path: "order_item/:id",
+        element: <OrderItems />,
+      },
     ],
   },
 ]);

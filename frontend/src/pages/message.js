@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-// raider_id
+
 function Message({ socket, raider_id }) {
-  const [to, setTo] = useState("");
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const { userId } = useSelector((state) => {
@@ -12,56 +11,40 @@ function Message({ socket, raider_id }) {
   });
 
   useEffect(() => {
+    const receiveMessage = (data) => {
+      setAllMessages((prevMessages) => [...prevMessages, data]);
+    };
+
     socket.on("message", receiveMessage);
 
     return () => {
       socket.off("message", receiveMessage);
     };
-  }, [allMessages]);
-  const receiveMessage = (data) => {
-    setAllMessages([...allMessages, data]);
-    console.log(data);
-  };
+  }, [socket]);
+
   const sendMessage = () => {
-    //to : raider_id
     socket.emit("message", { to: raider_id, from: userId, message });
+    setMessage(""); // Clear the message input after sending
   };
 
   return (
     <div>
-      Message
+      <h2>Message</h2>
       <input
         type="text"
         placeholder="message"
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="to"
-        onChange={(e) => {
-          setTo(e.target.value);
-        }}
-      />
-      <button
-        onClick={() => {
-          sendMessage();
-        }}
-      >
-        send
-      </button>
+      <button onClick={sendMessage}>Send</button>
       {allMessages.length > 0 &&
-        allMessages.map((message) => {
-          return (
-            <p>
-              {" "}
-              <small>
-                From: {message.from} {message.message}
-              </small>
-            </p>
-          );
-        })}
+        allMessages.map((msg, index) => (
+          <p key={index}>
+            <small>
+              From: {msg.from} {msg.message}
+            </small>
+          </p>
+        ))}
     </div>
   );
 }

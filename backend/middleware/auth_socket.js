@@ -1,6 +1,6 @@
 const authSocket = (socket, next) => {
   const headers = socket.handshake.headers;
-  console.log(" error from auth"); console.log(headers);
+  console.log(" error from Socket auth"); console.log(headers);
   if (!headers.token) {
     console.log(headers.token);
     next(new Error("invalid"));
