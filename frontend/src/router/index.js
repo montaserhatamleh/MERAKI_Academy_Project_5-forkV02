@@ -171,7 +171,7 @@ export const router = createBrowserRouter([
     element: <Cart />,
   }*/
 
- orderDetails
+ 
   {
     path: "profile_user",
     element: <ProfileUser />,
