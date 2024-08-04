@@ -50,7 +50,7 @@ const Home = () => {
           </Box>
         </div>
         <div>
-          <img src={joinFamilyImage} alt="Join Our Family" />
+          <img src={joinFamilyImage} alt="Join Our Family" style={{width:"200%"}}/>
           <Box className="carousel-content">
             <Container maxWidth="md">
               <Typography variant="h3" gutterBottom>Join Our Family</Typography>
