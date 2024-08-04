@@ -202,6 +202,8 @@ function Restaurants() {
                   <Typography variant="body2" color="text.secondary">
                     <strong>Category:</strong> {elem.category}
                   </Typography>
+
+                  
                 </CardContent>
               </Card>
             </Grid>
