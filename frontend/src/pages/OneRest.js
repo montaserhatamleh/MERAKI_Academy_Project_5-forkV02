@@ -14,6 +14,7 @@ import {
   Button,
   Modal,
   IconButton,
+  Rating,
   Badge,
 } from "@mui/material";
 
@@ -166,7 +167,13 @@ console.log(response.data.cart);
             <strong>Delivery Fees:</strong> ${restaurant.delivery_fees}
           </Typography>
           <Typography variant="body1">
-            <strong>Rating:</strong> {restaurant.average_rating} (based on{" "}
+            <strong>Rating:</strong> <Rating
+  name={`average-rating-${restaurant.id}`} 
+  value={restaurant.average_rating} 
+  precision={0.1} 
+  size="large" 
+  sx={{ mt: 1 }}
+/> (based on{" "}
             {restaurant.rating_count} reviews)
           </Typography>
         </Box>
