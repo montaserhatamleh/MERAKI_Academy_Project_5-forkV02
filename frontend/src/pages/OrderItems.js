@@ -113,12 +113,7 @@ const OrderItems = () => {
   };
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Order Details</Typography>
-        </Toolbar>
-      </AppBar>
-      <Container>
+      <Container sx={{  paddingBottom: 6 }}>
         <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -193,6 +188,20 @@ const OrderItems = () => {
                   />
                 </ListItem>
               </List>
+              <div style={{ marginTop: "20px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    setSocket(
+                      socketInit({ user_id: userId, rider_id: rider_id })
+                    )
+                  }
+                >
+                  Connect
+                </Button>
+                {isConnected && <Message socket={socket} userId={userId} />}
+              </div>
             </Grid>
           </Grid>
         </Paper>
@@ -213,17 +222,6 @@ const OrderItems = () => {
           <Button onClick={ratinghandler}>Submit</Button>
         </DialogActions>
       </Dialog>
-
-      <div>
-        <button
-          onClick={() => {
-            setSocket(socketInit({ user_id: userId, rider_id: rider_id }));
-          }}
-        >
-          connect
-        </button>
-        {isConnected && <Message socket={socket} userId={userId} />}
-      </div>
     </div>
   );
 };

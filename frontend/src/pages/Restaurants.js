@@ -89,8 +89,21 @@ function Restaurants() {
   const filteredRestaurants = restaurants.filter((elem) =>
     elem.name.toLowerCase().includes(search.toLowerCase())
   );
-
-  if (loading) return <CircularProgress />;
+  
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
+        <CircularProgress size={80} />
+      </Box>
+    );
 
   if (error)
     return (
@@ -100,7 +113,7 @@ function Restaurants() {
     );
 
   return (
-    <div style={{ padding: "20px", backgroundColor:  ""}}>
+    <div style={{ padding: "20px", backgroundColor: "" }}>
       <Box
         display="flex"
         alignItems="center"
@@ -202,8 +215,6 @@ function Restaurants() {
                   <Typography variant="body2" color="text.secondary">
                     <strong>Category:</strong> {elem.category}
                   </Typography>
-
-                  
                 </CardContent>
               </Card>
             </Grid>
