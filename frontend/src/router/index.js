@@ -50,6 +50,9 @@ import Socket from "../components/socket"
 
 
 import Contact from "../pages/Contact";
+import Faq from "../components/Faq";
+import Terms from "../components/Terms";
+import Privacy from "../components/Privacy";
 
 export const router = createBrowserRouter([
   {
@@ -196,6 +199,20 @@ element:<OrderItems/>
         path: "order_item/:id",
         element: <OrderItems />,
       },
+      {
+        path: "Faq",
+        element: <Faq />,
+      },
+      {
+        path: "terms",
+        element: <Terms />,
+
+      },
+      {
+        path: "privacy",
+        element: <Privacy />,
+
+      }
     ],
   },
 ]);
