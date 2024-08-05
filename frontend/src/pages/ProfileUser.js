@@ -64,7 +64,7 @@ const ProfileUser = () => {
 
   return (
     <>
-      <Container maxWidth="la" style={{ marginTop: 20 }}>
+      <Container maxWidth="la" style={{ marginTop: 20 ,  paddingBottom: 30}}>
         <Paper style={{ padding: 20 }}>
           <Grid style={{ margin: "auto" }}>
           <Typography variant="h5" gutterBottom>Profile</Typography>

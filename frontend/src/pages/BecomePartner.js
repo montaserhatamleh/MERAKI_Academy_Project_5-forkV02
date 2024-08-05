@@ -60,16 +60,24 @@ const BecomePartner = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xl">
       <Box
         sx={{
+          width:"100%",
+          backgroundColor: "white",
+          padding: "20px",
+          margin: "auto",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          borderRadius: "8px",
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxWidth: "500px", 
+          marginBottom:"50px",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color="black">
           Become a Partner
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
@@ -84,10 +92,10 @@ const BecomePartner = () => {
             value={restaurant.username}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -100,10 +108,10 @@ const BecomePartner = () => {
             value={restaurant.email}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -117,10 +125,10 @@ const BecomePartner = () => {
             value={restaurant.password}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -133,10 +141,10 @@ const BecomePartner = () => {
             value={restaurant.first_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -149,10 +157,10 @@ const BecomePartner = () => {
             value={restaurant.last_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -165,10 +173,10 @@ const BecomePartner = () => {
             value={restaurant.address}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -181,22 +189,22 @@ const BecomePartner = () => {
             value={restaurant.phone_number}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel style={{ color: 'white' }}>Category</InputLabel>
+            <InputLabel style={{ color: 'black' }}>Category</InputLabel>
             <Select
               name="category"
               value={restaurant.category}
               onChange={handleChange}
               label="Category"
-              sx={{ color: 'white', borderColor: 'white' }}
+              sx={{ color: 'black', borderColor: 'black' }}
               InputLabelProps={{
-                style: { color: 'white' }
+                style: { color: 'black' }
               }}
             >
               <MenuItem value="Lebanese">Lebanese</MenuItem>
@@ -216,10 +224,10 @@ const BecomePartner = () => {
             value={restaurant.restaurant_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -232,10 +240,10 @@ const BecomePartner = () => {
             value={restaurant.restaurant_address}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -248,10 +256,10 @@ const BecomePartner = () => {
             value={restaurant.restaurant_phone_number}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -265,10 +273,10 @@ const BecomePartner = () => {
             value={restaurant.delivery_fees}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -277,11 +285,10 @@ const BecomePartner = () => {
             required
             fullWidth
             name="image"
-            label="Restaurant Image"
             type="file"
             onChange={handleChange}
             InputLabelProps={{
-              style: { color: 'white' }
+              
             }}
           />
           <Button

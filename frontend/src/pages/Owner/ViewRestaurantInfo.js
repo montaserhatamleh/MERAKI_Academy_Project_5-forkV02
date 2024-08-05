@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { Typography, Box, Container } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { Typography, Box, Container } from "@mui/material";
 
 const ViewRestaurantInfo = () => {
-  const token = useSelector(state => state.auth.token);
+  const token = useSelector((state) => state.auth.token);
   const [restaurant, setRestaurant] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const getRestaurantInfo = async () => {
       try {
-        const result = await axios.get("http://localhost:5000/restaurants/RestaurantById", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const result = await axios.get(
+          "http://localhost:5000/restaurants/RestaurantById",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setRestaurant(result.data.result);
       } catch (error) {
-        console.log(error)
-        setMessage('Error getting restaurant information. Please try again later.');
+        console.log(error);
+        setMessage(
+          "Error getting restaurant information. Please try again later."
+        );
       }
     };
 
@@ -29,7 +34,9 @@ const ViewRestaurantInfo = () => {
   if (!restaurant) {
     return (
       <Container>
-        <Typography variant="h5" color="error">{message}</Typography>
+        <Typography variant="h5" color="error">
+          {message}
+        </Typography>
         <Typography variant="h6">Loading...</Typography>
       </Container>
     );
@@ -37,13 +44,15 @@ const ViewRestaurantInfo = () => {
 
   return (
     <Container>
-      <Typography variant="h4">Restaurant Information</Typography>
-      <Typography variant="h6">Name: {restaurant.name}</Typography>
-      <Typography variant="h6">Address: {restaurant.address}</Typography>
-      <Typography variant="h6">Phone: {restaurant.phone_number}</Typography>
-      <Typography variant="h6">Category: {restaurant.category}</Typography>
-      <Typography variant="h6">Delivery Fees: {restaurant.delivery_fees}</Typography>
-      <Typography variant="h6">Image URL: {restaurant.image_url}</Typography>
+      <Typography variant="h4" color="black">Restaurant Information</Typography>
+      <Typography variant="h6" color="black">Name: {restaurant.name}</Typography>
+      <Typography variant="h6" color="black">Address: {restaurant.address}</Typography>
+      <Typography variant="h6" color="black">Phone: {restaurant.phone_number}</Typography>
+      <Typography variant="h6" color="black">Category: {restaurant.category}</Typography>
+      <Typography variant="h6" color="black">
+        Delivery Fees: {restaurant.delivery_fees}
+      </Typography>
+      <Typography variant="h6" color="black">Image URL: {restaurant.image_url}</Typography>
     </Container>
   );
 };

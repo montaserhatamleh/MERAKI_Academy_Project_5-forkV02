@@ -28,31 +28,12 @@ const AllOrdersReady = () => {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
-  //socket
-  const [socket, setSocket] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
+
   const navigate = useNavigate();
-  const { token, userId, rider_id } = useSelector((state) => ({
+  const { token } = useSelector((state) => ({
     token: state.auth.token,
-    userId: state.auth.userId,
-    rider_id: state.auth.rider_id,
   }));
-  useEffect(() => {
-    socket?.on("connect", () => {
-      setIsConnected(true);
-      console.log(true);
-    });
-    socket?.on("connect_error", (error) => {
-      console.log(false);
-      setIsConnected(false);
-      console.log(error.message);
-    });
-    return () => {
-      socket?.close();
-      socket?.removeAllListeners();
-    };
-  }, [socket]);
-  //socket
+
   const getAllOrders = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/riders/all/order`, {
@@ -200,16 +181,6 @@ const AllOrdersReady = () => {
           </DialogActions>
         </Dialog>
       </React.Fragment>
-      <div>
-        <button
-          onClick={() => {
-            setSocket(socketInit({ user_id: userId, rider_id: rider_id }));
-          }}
-        >
-          connect
-        </button>
-        {isConnected && <Message socket={socket} raider_id={rider_id} />}
-      </div>
     </>
   );
 };
