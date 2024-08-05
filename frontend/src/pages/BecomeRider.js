@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Container } from '@mui/material';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Box, Typography, Container } from "@mui/material";
+import axios from "axios";
 
 const BecomeRider = () => {
   const [rider, setRider] = useState({
@@ -12,9 +12,9 @@ const BecomeRider = () => {
     last_name: "",
     address: "",
     phone_number: "",
-    vehicle_details: ""
+    vehicle_details: "",
   });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,36 +24,51 @@ const BecomeRider = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post('http://localhost:5000/users/riderRegistration', rider);
+      const result = await axios.post(
+        "http://localhost:5000/users/riderRegistration",
+        rider
+      );
       setMessage(result.data.message);
       setTimeout(() => {
-        navigate('/');
+        navigate("/");
       }, 2000); // Redirect after 2 seconds
     } catch (error) {
-      console.error('Error during registration:', error);
+      console.error("Error during registration:", error);
       if (error.response && error.response.data.message) {
         setMessage(error.response.data.message);
       } else {
-        setMessage('An unexpected error occurred. Please try again.');
+        setMessage("An unexpected error occurred. Please try again.");
       }
     }
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xl">
       <Box
         sx={{
+         width:"100%",
+          backgroundColor: "white",
+          padding: "20px",
+          margin: "auto",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          borderRadius: "8px",
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxWidth: "500px", 
+          marginBottom:"50px",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color="black">
           Become a Rider
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
-        <Box component="form" onSubmit={(e) => e.preventDefault()} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={(e) => e.preventDefault()}
+          sx={{ mt: 1 }}
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -64,10 +79,10 @@ const BecomeRider = () => {
             value={rider.username}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -80,10 +95,10 @@ const BecomeRider = () => {
             value={rider.email}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -97,10 +112,10 @@ const BecomeRider = () => {
             value={rider.password}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -113,10 +128,10 @@ const BecomeRider = () => {
             value={rider.first_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -129,10 +144,10 @@ const BecomeRider = () => {
             value={rider.last_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -145,10 +160,10 @@ const BecomeRider = () => {
             value={rider.address}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -161,10 +176,10 @@ const BecomeRider = () => {
             value={rider.phone_number}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -177,10 +192,10 @@ const BecomeRider = () => {
             value={rider.vehicle_details}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <Button
@@ -189,7 +204,7 @@ const BecomeRider = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleSubmit}
-            style={{ color: 'white' }}
+            style={{ color: "white" }}
           >
             Register
           </Button>
