@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-// raider_id
+import {
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+
 function Message({ socket, raider_id }) {
-  const [to, setTo] = useState("");
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const { userId } = useSelector((state) => {
@@ -12,57 +21,63 @@ function Message({ socket, raider_id }) {
   });
 
   useEffect(() => {
+    const receiveMessage = (data) => {
+      setAllMessages((prevMessages) => [...prevMessages, data]);
+    };
+
     socket.on("message", receiveMessage);
 
     return () => {
       socket.off("message", receiveMessage);
     };
-  }, [allMessages]);
-  const receiveMessage = (data) => {
-    setAllMessages([...allMessages, data]);
-    console.log(data);
-  };
+  }, [socket]);
+
   const sendMessage = () => {
-    //to : raider_id
     socket.emit("message", { to: raider_id, from: userId, message });
+    setMessage(""); // Clear the message input after sending
   };
 
   return (
     <div>
-      Message
-      <input
-        type="text"
-        placeholder="message"
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
+    <Typography variant="h4" gutterBottom>
+      Messages
+    </Typography>
+    <Paper style={{ padding: '20px', marginBottom: '20px' }}>
+      <TextField
+        fullWidth
+        label="Message"
+        variant="outlined"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="to"
-        onChange={(e) => {
-          setTo(e.target.value);
-        }}
-      />
-      <button
-        onClick={() => {
-          sendMessage();
-        }}
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ marginTop: '10px' }}
+        onClick={sendMessage}
       >
-        send
-      </button>
-      {allMessages.length > 0 &&
-        allMessages.map((message) => {
-          return (
-            <p>
-              {" "}
-              <small>
-                From: {message.from} {message.message}
-              </small>
-            </p>
-          );
-        })}
-    </div>
+        Send
+      </Button>
+    </Paper>
+    {allMessages.length > 0 && (
+      <Paper style={{ padding: '20px' }}>
+        <Typography variant="h6" gutterBottom>
+          Message History
+        </Typography>
+        <Divider style={{ marginBottom: '10px' }} />
+        <List>
+          {allMessages.map((msg, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={`From: ${msg.from}`}
+                secondary={msg.message}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+    )}
+  </div>
   );
 }
 

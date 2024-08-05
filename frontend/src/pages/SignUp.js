@@ -38,16 +38,24 @@ const SignUp = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xl">
       <Box
         sx={{
+          width:"100%",
+          backgroundColor: "white",
+          padding: "20px",
+          margin: "auto",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          borderRadius: "8px",
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxWidth: "500px", 
+          marginBottom:"50px",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color="black">
           Sign Up
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
@@ -65,10 +73,10 @@ const SignUp = () => {
             value={user.email}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -81,10 +89,10 @@ const SignUp = () => {
             value={user.username}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -98,10 +106,10 @@ const SignUp = () => {
             value={user.password}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -114,10 +122,10 @@ const SignUp = () => {
             value={user.first_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -130,10 +138,10 @@ const SignUp = () => {
             value={user.last_name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -146,10 +154,10 @@ const SignUp = () => {
             value={user.address}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <TextField
@@ -162,10 +170,10 @@ const SignUp = () => {
             value={user.phone_number}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           />
           <Button
@@ -175,10 +183,10 @@ const SignUp = () => {
             sx={{ mt: 3, mb: 2 }}
             onClick={handleSignUp}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: 'black' }
             }}
           >
             Sign Up

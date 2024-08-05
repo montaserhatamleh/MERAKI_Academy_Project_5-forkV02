@@ -1,4 +1,6 @@
 import axios from "axios";
+import socketInit from "./socketServer";
+import Message from "../pages/message";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -31,8 +33,13 @@ const OrderItems = () => {
   const id = useParams().id;
   const [rating, setRating] = useState(0);
   const [open, setOpen] = useState(false);
-  const { token } = useSelector((state) => ({
+  const [socket, setSocket] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+
+  const { token, userId, rider_id } = useSelector((state) => ({
     token: state.auth.token,
+    userId: state.auth.userId,
+    rider_id: state.auth.rider_id,
   }));
   const [orderItems, setOrderItems] = useState();
   const getItemsOrder = async () => {
@@ -42,16 +49,33 @@ const OrderItems = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(result) ;
+      console.log(result);
       setOrderItems(result.data.order);
-      if (result.data.order.status === "Delivered" && result.data.order.deleted_at == false) {
+      if (
+        result.data.order.status === "Delivered" &&
+        result.data.order.deleted_at == false
+      ) {
         setOpen(true);
       }
-      
     } catch (err) {
       console.log(err);
     }
   };
+  useEffect(() => {
+    socket?.on("connect", () => {
+      setIsConnected(true);
+      console.log(true);
+    });
+    socket?.on("connect_error", (error) => {
+      console.log(false);
+      setIsConnected(false);
+      console.log(error.message);
+    });
+    return () => {
+      socket?.close();
+      socket?.removeAllListeners();
+    };
+  }, [socket]);
 
   useEffect(() => {
     getItemsOrder();
@@ -60,7 +84,6 @@ const OrderItems = () => {
   if (!orderItems) {
     return <div>{"loding ...."}</div>;
   }
-
 
   const handelClose = () => {
     setOpen(false);
@@ -71,31 +94,26 @@ const OrderItems = () => {
   };
 
   const ratinghandler = async () => {
-    const id = orderItems.restaurant_id ;
-    console.log(id);  
-        try {
-            const result = await axios.post(
-              `http://localhost:5000/reviews/rating/${id}`,
-              { rating, user_id: orderItems.user_id , id:orderItems.id },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            console.log(result);
-          } catch (err) {
-            console.log(err);
-          }
+    const id = orderItems.restaurant_id;
+    console.log(id);
+    try {
+      const result = await axios.post(
+        `http://localhost:5000/reviews/rating/${id}`,
+        { rating, user_id: orderItems.user_id, id: orderItems.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Order Details</Typography>
-        </Toolbar>
-      </AppBar>
-      <Container>
+      <Container sx={{  paddingBottom: 6 }}>
         <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -116,16 +134,18 @@ const OrderItems = () => {
               <Typography variant="subtitle1" gutterBottom>
                 Address: {orderItems.delivery_address}
               </Typography>
-              { orderItems.status === "Accepted by Rider" ?
-              <>
-                <Typography variant="subtitle1" gutterBottom>
-                Name Rider: {orderItems.rider.first_name}
-               </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                 Phone Number : {orderItems.rider.phone_number}
-               </Typography>
-               </> :" "
-              }
+              {orderItems.status === "Accepted by Rider" ? (
+                <>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Name Rider: {orderItems.rider.first_name}
+                  </Typography>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Phone Number : {orderItems.rider.phone_number}
+                  </Typography>
+                </>
+              ) : (
+                " "
+              )}
             </Grid>
             <Grid item xs={12}>
               <TableContainer component={Paper}>
@@ -168,12 +188,26 @@ const OrderItems = () => {
                   />
                 </ListItem>
               </List>
+              <div style={{ marginTop: "20px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    setSocket(
+                      socketInit({ user_id: userId, rider_id: rider_id })
+                    )
+                  }
+                >
+                  Connect
+                </Button>
+                {isConnected && <Message socket={socket} userId={userId} />}
+              </div>
             </Grid>
           </Grid>
         </Paper>
       </Container>
-     
-      <Dialog open={open} onClose={handelClose} >
+
+      <Dialog open={open} onClose={handelClose}>
         <DialogTitle>Start Review</DialogTitle>
         <DialogContent>
           <Rating
@@ -188,7 +222,6 @@ const OrderItems = () => {
           <Button onClick={ratinghandler}>Submit</Button>
         </DialogActions>
       </Dialog>
-   
     </div>
   );
 };
