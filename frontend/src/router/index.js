@@ -44,7 +44,6 @@ import OneRest from "../pages/OneRest";
 
 import ProfileUser from "../pages/ProfileUser"
 import OrderItems from "../pages/OrderItems";
-=======
 
 
 import Socket from "../components/socket"
@@ -172,7 +171,7 @@ export const router = createBrowserRouter([
     element: <Cart />,
   }*/
 
- orderDetails
+ ,
   {
     path: "profile_user",
     element: <ProfileUser />,
