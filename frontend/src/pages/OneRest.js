@@ -14,6 +14,7 @@ import {
   Button,
   Modal,
   IconButton,
+  Rating,
   Badge,
 } from "@mui/material";
 
@@ -57,7 +58,7 @@ const RestaurantDetails = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems(response.data.cart);
-console.log(response.data.cart);
+      console.log(response.data.cart);
       if (response.data.cart.length > 0) {
         setCartRestaurantId(response.data.cart[0].restaurant_id);
       }
@@ -112,7 +113,20 @@ console.log(response.data.cart);
     setWarningModal(false);
   };
 
-  if (loading) return <CircularProgress />;
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
+        <CircularProgress size={80} />
+      </Box>
+    );
 
   if (error)
     return (
@@ -122,80 +136,94 @@ console.log(response.data.cart);
     );
 
   return (
-    <Container>
+    <Container maxWidth="lg">
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 4, 
         }}
       >
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="black">
           {restaurant.name}
         </Typography>
         {token && (
-          <IconButton color="inherit" onClick={() => navigate("/my_cart")}>
+          <IconButton color="black" onClick={() => navigate("/my_cart")}>
             <Badge badgeContent={cartItems.length} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
         )}
       </Box>
-      <Box sx={{ display: "flex", marginBottom: 2 }}>
+
+      <Box sx={{ display: "flex", mb: 4, alignItems: "flex-start" }}>
         <img
           src={restaurant.image_url}
           alt={restaurant.name}
           style={{
             width: "200px",
             height: "200px",
-            borderRadius: "10px",
-            marginRight: "20px",
+            borderRadius: "8px", 
+            marginRight: "24px",
+            objectFit: "cover",
           }}
         />
         <Box>
-          <Typography variant="body1">
+          <Typography variant="body1" gutterBottom color="black">
             <strong>Address:</strong> {restaurant.address}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" gutterBottom color="black">
             <strong>Category:</strong> {restaurant.category}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" gutterBottom color="black">
             <strong>Phone:</strong> {restaurant.phone_number}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" gutterBottom color="black">
             <strong>Delivery Fees:</strong> ${restaurant.delivery_fees}
           </Typography>
-          <Typography variant="body1">
-            <strong>Rating:</strong> {restaurant.average_rating} (based on{" "}
-            {restaurant.rating_count} reviews)
+          <Typography variant="body1" gutterBottom color="black">
+            <strong>Rating:</strong>
+            <Rating
+              name={`average-rating-${restaurant.id}`}
+              value={restaurant.average_rating}
+              precision={0.1}
+              size="large"
+              sx={{ mt: 1 }}
+            />{" "}
+            ({restaurant.rating_count})
           </Typography>
         </Box>
       </Box>
-      <Typography variant="h5" gutterBottom>
+
+      <Typography variant="h5" gutterBottom color="black">
         Menu
       </Typography>
+
       {Object.keys(restaurant.menu_items).map((category) => (
-        <Box key={category} sx={{ marginBottom: 4 }}>
-          <Typography variant="h6" gutterBottom>
+        <Box key={category} sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom color="black">
             {category}
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             {restaurant.menu_items[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
-                <Card 
-                 sx={{
-                  minWidth: 300,
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  transition: "transform 0.3s",
-                  "&:hover": { transform: "scale(1.05)" },
-                }}
+                <Card
+                  sx={{
+                    minWidth: 300,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    transition: "transform 0.3s",
+                    "&:hover": { transform: "scale(1.05)" },
+                    overflow: "hidden", 
+                  }}
                 >
                   <CardMedia
                     component="img"
                     height="140"
                     image={item.image_url || "default_image_url.jpg"}
                     alt={item.name}
+                    sx={{ objectFit: "cover" }}y
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h6" component="div">
@@ -209,7 +237,7 @@ console.log(response.data.cart);
                     </Typography>
                     <Typography
                       variant="body2"
-                      color={item.available ? "green" : "red"}
+                      color={item.available ? "success.main" : "error.main"}
                     >
                       {item.available ? "Available" : "Not Available"}
                     </Typography>
@@ -217,6 +245,7 @@ console.log(response.data.cart);
                       <IconButton
                         color="primary"
                         onClick={() => addItemToCart(item)}
+                        sx={{ mt: 1 }}
                       >
                         <AddShoppingCartIcon />
                       </IconButton>
@@ -232,15 +261,16 @@ console.log(response.data.cart);
       <Modal open={warningModal} onClose={() => setWarningModal(false)}>
         <Box
           sx={{
-            padding: 2,
-            backgroundColor: "white",
+            padding: 3,
+            backgroundColor: "background.paper",
             borderRadius: 2,
-            margin: "auto",
             width: 400,
+            mx: "auto",
             mt: 10,
+            boxShadow: 3,
           }}
         >
-          <Typography>
+          <Typography variant="body1" gutterBottom>
             Adding this item will replace the current items in your cart from a
             different restaurant. Do you want to proceed?
           </Typography>
@@ -248,7 +278,7 @@ console.log(response.data.cart);
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              marginTop: 2,
+              mt: 2,
             }}
           >
             <Button
@@ -272,15 +302,16 @@ console.log(response.data.cart);
       <Modal open={loginPromptModal} onClose={() => setLoginPromptModal(false)}>
         <Box
           sx={{
-            padding: 2,
-            backgroundColor: "white",
+            padding: 3,
+            backgroundColor: "background.paper",
             borderRadius: 2,
-            margin: "auto",
             width: 400,
+            mx: "auto",
             mt: 10,
+            boxShadow: 3,
           }}
         >
-          <Typography>
+          <Typography variant="body1" gutterBottom>
             You need to be logged in to add items to the cart. Please log in to
             continue.
           </Typography>
@@ -288,7 +319,7 @@ console.log(response.data.cart);
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              marginTop: 2,
+              mt: 2,
             }}
           >
             <Button

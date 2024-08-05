@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Container,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const AddItem = () => { 
-    const token = useSelector(state => state.auth.token);
+const AddItem = () => {
+  const token = useSelector((state) => state.auth.token);
 
   const [item, setItem] = useState({
     name: "",
@@ -13,9 +23,9 @@ const AddItem = () => {
     price: "",
     sub_category: "",
     available: true,
-    image: null
+    image: null,
   });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -36,24 +46,27 @@ const AddItem = () => {
     });
 
     try {
-      const result = await axios.post('http://localhost:5000/items/addItems', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const result = await axios.post(
+        "http://localhost:5000/items/addItems",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
 
-          Authorization: `Bearer ${token}`,
-
-        },
-      });
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setMessage(result.data.message);
       setTimeout(() => {
-        navigate('/restaurant_owner/view-item'); 
+        navigate("/restaurant_owner/view-item");
       }, 2000);
     } catch (error) {
-      console.error('Error during item addition:', error);
+      console.error("Error during item addition:", error);
       if (error.response && error.response.data.message) {
         setMessage(error.response.data.message);
       } else {
-        setMessage('An unexpected error occurred. Please try again.');
+        setMessage("An unexpected error occurred. Please try again.");
       }
     }
   };
@@ -62,13 +75,22 @@ const AddItem = () => {
     <Container maxWidth="xs">
       <Box
         sx={{
+          width: "100%",
+          backgroundColor: "white",
+          padding: "20px",
+          margin: "auto",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          borderRadius: "8px",
+          marginLeft: 2,
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          maxWidth: "500px",
+          marginBottom: "50px",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color="black">
           Add New Item
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
@@ -83,10 +105,10 @@ const AddItem = () => {
             value={item.name}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -99,10 +121,10 @@ const AddItem = () => {
             value={item.description}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <TextField
@@ -116,22 +138,22 @@ const AddItem = () => {
             value={item.price}
             onChange={handleChange}
             InputProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
             InputLabelProps={{
-              style: { color: 'white' }
+              style: { color: "black" },
             }}
           />
           <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel style={{ color: 'white' }}>Sub Category</InputLabel>
+            <InputLabel style={{ color: "black" }}>Sub Category</InputLabel>
             <Select
               name="sub_category"
               value={item.sub_category}
               onChange={handleChange}
               label="Sub Category"
-              sx={{ color: 'white', borderColor: 'white' }}
+              sx={{ color: "black", borderColor: "white" }}
               InputLabelProps={{
-                style: { color: 'white' }
+                style: { color: "white" },
               }}
             >
               <MenuItem value="Appetizer">Appetizer</MenuItem>
@@ -146,19 +168,15 @@ const AddItem = () => {
             required
             fullWidth
             name="image"
-            label="Item Image"
             type="file"
             onChange={handleChange}
-            InputLabelProps={{
-              style: { color: 'white' }
-            }}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            style={{ color: 'white' }}
+            style={{ color: "white" }}
           >
             Add Item
           </Button>
@@ -166,6 +184,6 @@ const AddItem = () => {
       </Box>
     </Container>
   );
-}
+};
 
 export default AddItem;

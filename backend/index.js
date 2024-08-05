@@ -17,16 +17,19 @@ io.use(authSocket);
 const clients = {};
 //
 io.on("connection", (socket) => {
+  console.log("connected");
   socket.use(socketDebug);
-  // console.log(socket.user);
+  
   const user_id = socket.handshake.headers.user_id;
   clients[user_id] = { socket_id: socket.id, user_id };
-  console.log(clients);
+ 
   messagesHandler(socket, io);
+
   //Error handler
   socket.on("error", (error) => {
     socket.emit("error", { error: error.message });
   });
+
   // for disconnect
   socket.on("disconnect", () => {
     console.log(socket.id);
@@ -58,6 +61,10 @@ app.use("/roles", roleRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/riders", ridersRouter);
 const itemRouter = require("./routes/item");
+
+const email = require('./routes/email');
+app.use('/contact', email);
+
 
 const auth_socket = require("./middleware/auth_socket");
 const messageHandler = require("./controllers/message");

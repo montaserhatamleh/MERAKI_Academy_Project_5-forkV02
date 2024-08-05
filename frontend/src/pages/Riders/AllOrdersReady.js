@@ -1,6 +1,8 @@
 import axios from "axios";
+import socketInit from "../socketServer";
+import Message from "../message";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Typography,
@@ -18,15 +20,16 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-
+import { setRider_id } from "../../redux/auth";
 
 const AllOrdersReady = () => {
-  const [id ,setId] = useState(null) ; 
+  const dispatch = useDispatch();
+  const [id, setId] = useState(null);
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate() ;
+
+  const navigate = useNavigate();
   const { token } = useSelector((state) => ({
     token: state.auth.token,
   }));
@@ -50,44 +53,45 @@ const AllOrdersReady = () => {
   }, []);
 
   const getItem = async (id) => {
-    setId(id)
-    setOpen(true)
-    setOrderItems([])
+    setId(id);
+    setOpen(true);
+    setOrderItems([]);
     try {
       const result = await axios.get(
         `http://localhost:5000/riders/order/items/${id}`
       );
-      setOrderItems(result.data.result); 
-      console.log(result.data.result)
+      setOrderItems(result.data.result);
+      console.log(result.data.result);
     } catch (err) {
       console.log(err);
     }
   };
- 
-  const accept=async()=>{
-    setOpen(false)
+
+  const accept = async () => {
+    //id rider_id
+    setOpen(false);
     try {
-    const result = await axios.put(
-      `http://localhost:5000/riders/accept/${id}`,{},{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    navigate("/rider/All__order_on_way")
-    console.log(result.data) ; 
-    setOrders(
-      orders.map((ele) => 
-        ele.id === id ? { ...ele, status: result.data.order.status } : ele
-      )
-    );
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-  
-
+      const result = await axios.put(
+        `http://localhost:5000/riders/accept/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(setRider_id(result.data.order.rider_id));
+      navigate("/rider/All__order_on_way");
+      console.log(result.data);
+      setOrders(
+        orders.map((ele) =>
+          ele.id === id ? { ...ele, status: result.data.order.status } : ele
+        )
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -97,7 +101,7 @@ const AllOrdersReady = () => {
       <Container maxWidth="la">
         <Paper style={{ padding: "20px", marginBottom: "20px" }}>
           <Typography variant="h5" gutterBottom>
-           All Orders Ready
+            All Orders Ready
           </Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -112,10 +116,16 @@ const AllOrdersReady = () => {
               </TableHead>
               <TableBody>
                 {orders?.map((order) => (
-                  <TableRow key={order.id} onClick={()=>getItem(order.id)} hover>
+                  <TableRow
+                    key={order.id}
+                    onClick={() => getItem(order.id)}
+                    hover
+                  >
                     <TableCell>{order.name}</TableCell>
                     <TableCell>{order.address}</TableCell>
-                    <TableCell style={{width:"20%"}}>{order.delivery_address}</TableCell>
+                    <TableCell style={{ width: "20%" }}>
+                      {order.delivery_address}
+                    </TableCell>
                     <TableCell>{order.total_price}</TableCell>
                     <TableCell>{order.status}</TableCell>
                   </TableRow>
@@ -135,7 +145,10 @@ const AllOrdersReady = () => {
             },
           }}
         >
-          <DialogTitle> <strong>Order Items</strong></DialogTitle>
+          <DialogTitle>
+            {" "}
+            <strong>Order Items</strong>
+          </DialogTitle>
           <DialogContent alignItems="center">
             <TableContainer component={Paper}>
               <Table>
@@ -148,7 +161,7 @@ const AllOrdersReady = () => {
                 </TableHead>
                 <TableBody>
                   {orderItems?.map((order) => (
-                    <TableRow key={order.id}  hover>
+                    <TableRow key={order.id} hover>
                       <TableCell>{order.name}</TableCell>
                       <TableCell>{order.quantity}</TableCell>
                       <TableCell>{order.price}</TableCell>
