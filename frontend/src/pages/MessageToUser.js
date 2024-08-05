@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-function Message({ socket, raider_id }) {
+function MessageUser({ socket, raider_id }) {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const { userId } = useSelector((state) => {
@@ -34,7 +34,7 @@ function Message({ socket, raider_id }) {
 
   const sendMessage = () => {
     socket.emit("message", { to: raider_id, from: userId, message });
-    setMessage(""); // Clear the message input after sending
+    setMessage(""); 
   };
 
   return (
@@ -81,4 +81,4 @@ function Message({ socket, raider_id }) {
   );
 }
 
-export default Message;
+export default MessageUser;
