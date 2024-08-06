@@ -3,7 +3,7 @@ import { Box, Typography, Link, Container, Divider } from '@mui/material';
 
 const Footer = () => {
   return (
-    <Box sx={{ backgroundColor: '#044a7e', color: 'white', padding: '40px 0', borderTop: '1px solid #333' }}>
+    <Box sx={{ backgroundColor: '#333', color: 'white', padding: '40px 0', borderTop: '1px solid #444' }}>
       <Container maxWidth="lg">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
           <Box sx={{ flex: 1, minWidth: 180 }}>
@@ -21,14 +21,14 @@ const Footer = () => {
           </Box>
           <Box sx={{ flex: 1, minWidth: 180 }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Contact Us</Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>1234 Street Name, City, State, 56789</Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>Email: contact@company.com</Typography>
-            <Typography variant="body2">Phone: (123) 456-7890</Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>285 Amman, Jordan, State, 56789</Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>Email: contact@feedme.com</Typography>
+            <Typography variant="body2">Phone: (962) 456-7890</Typography>
           </Box>
         </Box>
-        <Divider sx={{ my: 3, backgroundColor: '#333' }} />
-        <Typography variant="body2" align="center">
-          © {new Date().getFullYear()} Company Name. All rights reserved.
+        <Divider sx={{ my: 3, backgroundColor: '#444' }} />
+        <Typography variant="body2" align="center" sx={{ color: '#bbb' }}>
+          © {new Date().getFullYear()} FeedMe. All rights reserved.
         </Typography>
       </Container>
     </Box>
