@@ -1,6 +1,6 @@
 import axios from "axios";
 import socketInit from "../socketServer";
-import Message from "../message";
+import MessageRider from "../MessageToRider";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -28,8 +28,6 @@ const AllOrdersOnWay = () => {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
-  const [socket, setSocket] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
   const { token, userId, rider_id } = useSelector((state) => ({
     token: state.auth.token,
@@ -48,26 +46,10 @@ const AllOrdersOnWay = () => {
         }
       );
       setOrders(result.data.result);
-      console.log(result.data);
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(() => {
-    socket?.on("connect", () => {
-      setIsConnected(true);
-      console.log(true);
-    });
-    socket?.on("connect_error", (error) => {
-      console.log(false);
-      setIsConnected(false);
-      console.log(error.message);
-    });
-    return () => {
-      socket?.close();
-      socket?.removeAllListeners();
-    };
-  }, [socket]);
 
   useEffect(() => {
     getAllOrders();
@@ -86,7 +68,6 @@ const AllOrdersOnWay = () => {
       console.log(err);
     }
   };
-
   const accept = async () => {
     setOpen(false);
     try {
@@ -136,7 +117,9 @@ const AllOrdersOnWay = () => {
                   {orders?.map((order) => (
                     <TableRow
                       key={order.id}
-                      onClick={() => getItem(order.id)}
+                      onClick={() =>{ getItem(order.id) ; 
+                        // setUser(order.user_id) ;
+                       } }
                       hover
                     >
                       <TableCell>{order.name}</TableCell>
@@ -205,16 +188,6 @@ const AllOrdersOnWay = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <div>
-          <button
-            onClick={() => {
-              setSocket(socketInit({ rider_id: rider_id, userId: userId }));
-            }}
-          >
-            connect
-          </button>
-          {isConnected && <Message socket={socket} rider_id={rider_id} />}
-        </div>
       </>
     </>
   );

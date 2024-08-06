@@ -45,9 +45,17 @@ import OneRest from "../pages/OneRest";
 import ProfileUser from "../pages/ProfileUser";
 import OrderItems from "../pages/OrderItems";
 
-import Socket from "../components/socket";
+
+import Socket from "../components/socket"
+
 
 import Contact from "../pages/Contact";
+import Faq from "../components/Faq";
+import Terms from "../components/Terms";
+import Privacy from "../components/Privacy";
+import AboutUs from "../components/Aboutus";
+import Services from "../components/Services";
+
 
 export const router = createBrowserRouter([
   {
@@ -186,6 +194,40 @@ path:"order_item/:id" ,
 element:<OrderItems/>
 }
 
+,
+      {
+        path: "profile_user",
+        element: <ProfileUser />,
+      },
+      { path: "my_cart", element: <Mycart /> },
+      {
+        path: "order_item/:id",
+        element: <OrderItems />,
+      },
+      {
+        path: "Faq",
+        element: <Faq />,
+      },
+      {
+        path: "terms",
+        element: <Terms />,
+
+      },
+      {
+        path: "privacy",
+        element: <Privacy />,
+
+      },
+      {
+        path: "about",
+        element: <AboutUs/>,
+
+      },
+      {
+        path: "services",
+        element: <Services/>,
+
+      },
 
     ],
   },
