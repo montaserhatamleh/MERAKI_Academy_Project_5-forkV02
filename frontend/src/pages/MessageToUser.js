@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-function MessageUser({ socket, raider_id }) {
+const MessageUser = ({ socket, raider_id }) => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
 
@@ -36,7 +36,7 @@ function MessageUser({ socket, raider_id }) {
   }, [socket]);
 
   const sendMessage = () => {
-    socket.emit("message", { 
+    socket.emit("message", {
       to: raider_id,
       from: userId,
       message,
@@ -108,6 +108,6 @@ function MessageUser({ socket, raider_id }) {
       </Paper>
     </Box>
   );
-}
+};
 
 export default MessageUser;

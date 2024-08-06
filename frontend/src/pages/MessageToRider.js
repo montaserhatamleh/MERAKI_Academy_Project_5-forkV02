@@ -16,26 +16,31 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 
-function MessageRider({ socket, user_id }) {
+const MessageRider = ({ socket, user_id }) => {
+
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [name, setName] = useState([]);
-
   const { userId } = useSelector((state) => ({
     userId: state.auth.userId,
   }));
+  console.log(userId);
+  // console.log(userId);
+  const getRiderById = () => {
+    
+    axios
+      .get(`http://localhost:5000/riders/${userId}`)
+      .then((result) => {
+        setName(result.data.result.first_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  // const getRiderById = (id) => {
-  //   axios
-  //     .get(`http://localhost:5000/riders/${id}`)
-  //     .then((result) => {
-  //       setName(result.data);
-  //       console.log(result.data, "hi");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  useEffect(() => {
+    getRiderById();
+  }, []);
 
   useEffect(() => {
     const receiveMessage = (data) => {
@@ -83,7 +88,7 @@ function MessageRider({ socket, user_id }) {
                 }}
               >
                 <ListItemText
-                  primary={`from: ${msg.from}`}
+                  primary={`${name}`}
                   secondary={msg.message}
                   style={{
                     textAlign:
@@ -132,6 +137,6 @@ function MessageRider({ socket, user_id }) {
       </Paper>
     </Box>
   );
-}
+};
 
 export default MessageRider;
