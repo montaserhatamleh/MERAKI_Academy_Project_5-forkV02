@@ -123,7 +123,7 @@ const Mycart = () => {
   return (
     <>
       <br />
-      <Box sx={{ width: '50%', bgcolor: 'background.paper', padding: 2, boxShadow: 3, borderRadius: 2, margin: 'auto' }}>
+      <Box sx={{ width: '50%', bgcolor: 'background.paper', padding: 2, boxShadow: 3, borderRadius: 2, margin: 'auto', marginBottom:3}}>
         <Typography variant="h5" component="div" style={{ color: 'black' }} gutterBottom>
           Shopping Cart
         </Typography>

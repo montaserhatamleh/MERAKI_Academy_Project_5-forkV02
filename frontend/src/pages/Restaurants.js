@@ -113,7 +113,7 @@ function Restaurants() {
     );
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "" }}>
+    <div style={{ padding: "20px"}}>
       <Box
         display="flex"
         alignItems="center"
