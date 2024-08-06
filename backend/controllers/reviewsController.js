@@ -47,11 +47,11 @@ const getReviewsForRestaurant = async (req, res) => {
       const result1 = await pool.query(query1, [id]);
 
       const query = `
-        INSERT INTO reviews (rating, user_id, restaurant_id)
-        VALUES ($1, $2, $3)
+        INSERT INTO reviews (rating, user_id, restaurant_id,order_id)
+        VALUES ($1, $2, $3,$4)
         RETURNING *
       `;
-      const values = [rating, user_id, restaurant_id];
+      const values = [rating, user_id, restaurant_id,id];
       const result = await pool.query(query, values);
       await updateRestaurantAverageRating();
 
