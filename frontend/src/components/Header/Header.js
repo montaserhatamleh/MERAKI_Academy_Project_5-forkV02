@@ -2,10 +2,10 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, IconButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLogout } from '../redux/auth';
-import TemporaryDrawer from "../pages/Admin/SideBar";
-import RestaurantIcon from '@mui/icons-material/Restaurant'; // Importing a sample icon
-
+import { setLogout } from '../../redux/auth';
+import TemporaryDrawer from "../../pages/Admin/SideBar";
+import RestaurantIcon from '@mui/icons-material/Restaurant'; 
+import './header.css'
 const Header = () => {
   const token = useSelector((state) => state.auth.token);
   const role = useSelector((state) => state.auth.role);
@@ -24,8 +24,8 @@ const Header = () => {
           <IconButton component={Link} to="/" sx={{ color: 'white', marginRight: 2 }}>
             <RestaurantIcon sx={{ fontSize: 40 }} /> 
           </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.5rem' }}>
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.5rem' }} className="feedme-logo">
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }} className="feedme-link">
               FeedMe
             </Link>
           </Typography>
