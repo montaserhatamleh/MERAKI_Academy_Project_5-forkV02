@@ -17,7 +17,7 @@ const Faq = () => {
     
     return ( <>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, p: 3 }}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" gutterBottom sx={{ color: 'black' }} >
         Frequently Asked Questions (FAQ)
       </Typography>
        
