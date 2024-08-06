@@ -9,6 +9,7 @@ import restaurantImage from "../../assets/images/image_3.jpg";
 import partnerImage from "../../assets/images/gallery-1.jpg";
 import riderImage from "../../assets/images/about.jpg";
 import joinFamilyImage from "../../assets/images/bg_2.jpg";
+import Comments from "../Comments";
 import "./Home.css";
 const Home = () => {
   return (
@@ -109,7 +110,9 @@ const Home = () => {
           </Box>
         </div>
       </Carousel>
-      
+     
+      <Comments/>
+    
     </div>
   );
 };
