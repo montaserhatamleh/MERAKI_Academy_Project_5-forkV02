@@ -1,6 +1,6 @@
 import axios from "axios";
 import socketInit from "../socketServer";
-import Message from "../message";
+import Message from "../MessageToUser";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -19,7 +19,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSubmit } from "react-router-dom";
 import { setRider_id } from "../../redux/auth";
 
 const AllOrdersReady = () => {
@@ -28,6 +28,7 @@ const AllOrdersReady = () => {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const [open, setOpen] = useState(false);
+  
 
   const navigate = useNavigate();
   const { token } = useSelector((state) => ({
@@ -68,7 +69,6 @@ const AllOrdersReady = () => {
   };
 
   const accept = async () => {
-    //id rider_id
     setOpen(false);
     try {
       const result = await axios.put(

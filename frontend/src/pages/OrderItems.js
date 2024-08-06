@@ -1,6 +1,6 @@
 import axios from "axios";
 import socketInit from "./socketServer";
-import Message from "../pages/message";
+import MessageUser from "./MessageToUser";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -61,6 +61,7 @@ const OrderItems = () => {
       console.log(err);
     }
   };
+  
   useEffect(() => {
     socket?.on("connect", () => {
       setIsConnected(true);
@@ -113,7 +114,7 @@ const OrderItems = () => {
   };
   return (
     <div>
-      <Container sx={{  paddingBottom: 6 }}>
+      <Container sx={{ paddingBottom: 6 }}>
         <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -188,20 +189,6 @@ const OrderItems = () => {
                   />
                 </ListItem>
               </List>
-              <div style={{ marginTop: "20px" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    setSocket(
-                      socketInit({ user_id: userId, rider_id: rider_id })
-                    )
-                  }
-                >
-                  Connect
-                </Button>
-                {isConnected && <Message socket={socket} userId={userId} />}
-              </div>
             </Grid>
           </Grid>
         </Paper>
@@ -222,6 +209,18 @@ const OrderItems = () => {
           <Button onClick={ratinghandler}>Submit</Button>
         </DialogActions>
       </Dialog>
+      <div style={{ marginTop: "20px" }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            setSocket(socketInit({ user_id: userId, rider_id: rider_id }))
+          }
+        >
+          Connect
+        </Button>
+        {isConnected && <MessageUser socket={socket} userId={userId} />}
+      </div>
     </div>
   );
 };
