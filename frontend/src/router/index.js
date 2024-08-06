@@ -45,7 +45,9 @@ import OneRest from "../pages/OneRest";
 import ProfileUser from "../pages/ProfileUser";
 import OrderItems from "../pages/OrderItems";
 
-import Socket from "../components/socket";
+
+import Socket from "../components/socket"
+
 
 import Contact from "../pages/Contact";
 import Faq from "../components/Faq";
@@ -172,6 +174,25 @@ export const router = createBrowserRouter([
           { path: "profile", element: <Profile /> },
         ],
       },
+      /*{
+  path: 'cart',
+    element: <Cart />,
+  }*/
+
+ 
+  {
+    path: "profile_user",
+    element: <ProfileUser />,
+  }
+,
+ { path: "my_cart",
+   element: <Mycart />,
+ },
+{
+path:"order_item/:id" , 
+element:<OrderItems/>
+}
+,
       {
         path: "profile_user",
         element: <ProfileUser />,
