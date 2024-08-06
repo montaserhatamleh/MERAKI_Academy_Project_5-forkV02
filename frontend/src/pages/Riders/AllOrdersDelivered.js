@@ -37,7 +37,6 @@ const AllOrdersDelivered = () => {
     rider_id: state.auth.rider_id,
   }));
 
-
   const getAllOrders = async () => {
     try {
       const result = await axios.get(
@@ -207,14 +206,16 @@ const AllOrdersDelivered = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <div>
-          <button
+        <div style={{ marginTop: "20px", marginLeft:"23px" }}>
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => {
               setSocket(socketInit({ rider_id: rider_id, userId: userId }));
             }}
           >
-            connect
-          </button>
+            Chat To Customer
+          </Button>
           {isConnected && <MessageRider socket={socket} user_id={user} />}
         </div>
       </>

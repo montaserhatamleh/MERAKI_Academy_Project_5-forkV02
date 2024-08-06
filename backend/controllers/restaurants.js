@@ -322,7 +322,7 @@ const getRestaurantOrders = async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'No pending orders found for this restaurant',
+        message: "No pending orders found for this restaurant",
       });
     }
 
@@ -333,12 +333,11 @@ const getRestaurantOrders = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Server Error',
+      message: "Server Error",
       error: err.message,
     });
   }
 };
-
 
 const changeStatusToPrepare = async (req, res) => {
   const { restaurant } = req.params;
@@ -421,8 +420,7 @@ const getRestaurantOrdersPrepare = async (req, res) => {
     });
   }
 };
-const   getRestaurantOrdersDelivered
-= async (req, res) => {
+const getRestaurantOrdersDelivered = async (req, res) => {
   const userId = req.token.userId;
 
   try {
@@ -478,7 +476,7 @@ const getAllRestaurantByDeliveryFees = (req, res) => {
         error: err.message,
       });
     });
-  }
+};
 
 module.exports = {
   getRestaurantInfoById,
@@ -493,7 +491,6 @@ module.exports = {
   changeStatusToPrepare,
   changeStatusReadyToPickup,
   getRestaurantOrdersPrepare,
-  getRestaurantOrdersDelivered
-  ,
+  getRestaurantOrdersDelivered,
   getAllRestaurantByDeliveryFees,
 };

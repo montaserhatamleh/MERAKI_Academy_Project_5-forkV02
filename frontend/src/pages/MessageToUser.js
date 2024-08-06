@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
+
 import {
   Typography,
   Paper,
@@ -18,12 +20,29 @@ import SendIcon from "@mui/icons-material/Send";
 const MessageUser = ({ socket, raider_id }) => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
+  const [user, setUser] = useState([]);
 
-  const { userId } = useSelector((state) => ({
+  const { userId, token } = useSelector((state) => ({
+    token: state.auth.token,
     userId: state.auth.userId,
   }));
 
+  const findUserById = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(result.data.user.first_name);
+      setUser(result.data.user.first_name);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
+    findUserById()
     const receiveMessage = (data) => {
       setAllMessages((prevMessages) => [...prevMessages, data]);
     };
@@ -38,7 +57,7 @@ const MessageUser = ({ socket, raider_id }) => {
   const sendMessage = () => {
     socket.emit("message", {
       to: raider_id,
-      from: userId,
+      from: user,
       message,
     });
     setMessage("");
@@ -68,12 +87,12 @@ const MessageUser = ({ socket, raider_id }) => {
                 }}
               >
                 <ListItemText
-                  primary={`from: ${msg.from}`}
-                  secondary={msg.message}
+                  primary={` ${msg.from}`}
+                  secondary={msg.message } 
                   style={{
-                    textAlign: msg.from === userId ? "right" : "left",
-                    marginLeft: msg.from === userId ? "0" : "10px",
-                    marginRight: msg.from === userId ? "10px" : "0",
+                    textAlign: msg.from === user ? "right" : "left",
+                    marginLeft: msg.from === user ? "0" : "10px",
+                    marginRight: msg.from === user ? "10px" : "0",
                   }}
                 />
               </ListItem>

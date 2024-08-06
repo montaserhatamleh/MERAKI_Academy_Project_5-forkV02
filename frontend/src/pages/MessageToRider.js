@@ -57,7 +57,7 @@ const MessageRider = ({ socket, user_id }) => {
   const sendMessage = () => {
     socket.emit("message", {
       to: user_id,
-      from: localStorage.getItem("rider_id"),
+      from: name,
       message,
     });
     setMessage("");
@@ -88,19 +88,19 @@ const MessageRider = ({ socket, user_id }) => {
                 }}
               >
                 <ListItemText
-                  primary={`${name}`}
+                  primary={`${msg.from}`}
                   secondary={msg.message}
                   style={{
                     textAlign:
-                      msg.from === localStorage.getItem("rider_id")
+                      msg.from === name
                         ? "right"
                         : "left",
                     marginLeft:
-                      msg.from !== localStorage.getItem("rider_id")
+                      msg.from !== name
                         ? "10px"
                         : "0",
                     marginRight:
-                      msg.from === localStorage.getItem("rider_id")
+                      msg.from === name
                         ? "10px"
                         : "0",
                   }}
