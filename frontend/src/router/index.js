@@ -53,6 +53,9 @@ import Contact from "../pages/Contact";
 import Faq from "../components/Faq";
 import Terms from "../components/Terms";
 import Privacy from "../components/Privacy";
+import AboutUs from "../components/Aboutus";
+import Services from "../components/Services";
+
 
 export const router = createBrowserRouter([
   {
@@ -212,7 +215,17 @@ element:<OrderItems/>
         path: "privacy",
         element: <Privacy />,
 
-      }
+      },
+      {
+        path: "about",
+        element: <AboutUs/>,
+
+      },
+      {
+        path: "services",
+        element: <Services/>,
+
+      },
     ],
   },
 ]);
