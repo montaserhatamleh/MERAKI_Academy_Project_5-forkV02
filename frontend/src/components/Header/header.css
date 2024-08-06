@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+.feedme-logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #ffcc00, #ff6600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.feedme-link {
+  color: inherit;
+  text-decoration: none;
+}
