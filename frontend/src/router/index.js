@@ -174,6 +174,7 @@ export const router = createBrowserRouter([
           { path: "profile", element: <Profile /> },
         ],
       },
+
       /*{
   path: 'cart',
     element: <Cart />,
@@ -192,6 +193,7 @@ export const router = createBrowserRouter([
 path:"order_item/:id" , 
 element:<OrderItems/>
 }
+
 ,
       {
         path: "profile_user",
@@ -226,6 +228,7 @@ element:<OrderItems/>
         element: <Services/>,
 
       },
+
     ],
   },
 ]);

@@ -9,6 +9,8 @@ import partnerImage from "../../assets/images/gallery-1.jpg";
 import riderImage from "../../assets/images/about.jpg";
 import joinFamilyImage from "../../assets/images/bg_2.jpg";
 
+import Comments from "../Comments";
+
 import "./Home.css";
 
 const Home = () => {
@@ -112,6 +114,10 @@ const Home = () => {
         </div>
       </Carousel>
 
+     
+      <Comments/>
+    
+
       {/* Top Rated Restaurants Section */}
       <Box sx={{ backgroundColor: '#f5f5f5', padding: '40px 0' }}>
         <Container maxWidth="lg">
@@ -182,6 +188,7 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
+
     </div>
   );
 };
