@@ -27,7 +27,7 @@ const SignUp = () => {
       setMessage(result.data.message);
       setTimeout(() => {
         navigate('/signin');
-      }, 2000); // 2 seconds delay before navigating
+      }, 2000);
     } catch (error) {
       console.error('Error during login:', error);
       if (error.response && error.response.data.message) {
