@@ -50,7 +50,7 @@ const AllOrdersDelivered = () => {
       setOrders(result.data.result);
       // adding user id 
       setUser(result.data.result[0].user_id);
-      console.log(result);
+      console.log();
     } catch (err) {
       console.log(err);
     }
