@@ -20,6 +20,7 @@ import {
 
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+  
 
 const RestaurantDetails = () => {
   const { id } = useParams();

@@ -17,7 +17,6 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 
 const MessageRider = ({ socket, user_id }) => {
-
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [name, setName] = useState([]);
@@ -27,7 +26,6 @@ const MessageRider = ({ socket, user_id }) => {
   console.log(userId);
   // console.log(userId);
   const getRiderById = () => {
-    
     axios
       .get(`http://localhost:5000/riders/${userId}`)
       .then((result) => {
@@ -64,11 +62,11 @@ const MessageRider = ({ socket, user_id }) => {
   };
 
   return (
-    <Box p={2}>
+    <Box p={2} style={{ width: 400 }}>
+
       <Typography variant="h4" gutterBottom>
         Messages
       </Typography>
-
       {allMessages.length > 0 && (
         <Paper style={{ padding: "20px" }}>
           <Typography variant="h6" gutterBottom>
@@ -77,12 +75,13 @@ const MessageRider = ({ socket, user_id }) => {
           <Divider style={{ marginBottom: "10px" }} />
           <List>
             {allMessages.map((msg, index) => (
+              
               <ListItem
                 key={index}
                 alignItems="flex-start"
                 style={{
                   justifyContent:
-                    msg.from === localStorage.getItem("rider_id")
+                    msg.from === name
                       ? "flex-end"
                       : "flex-start",
                 }}
@@ -91,18 +90,9 @@ const MessageRider = ({ socket, user_id }) => {
                   primary={`${msg.from}`}
                   secondary={msg.message}
                   style={{
-                    textAlign:
-                      msg.from === name
-                        ? "right"
-                        : "left",
-                    marginLeft:
-                      msg.from !== name
-                        ? "10px"
-                        : "0",
-                    marginRight:
-                      msg.from === name
-                        ? "10px"
-                        : "0",
+                    textAlign: msg.from === name ? "right" : "left",
+                    marginLeft: msg.from !== name ? "10px" : "0",
+                    marginRight: msg.from === name ? "10px" : "0",
                   }}
                 />
               </ListItem>

@@ -14,6 +14,7 @@ import {
   Box,
   Avatar,
   IconButton,
+  Container,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -64,8 +65,8 @@ const MessageUser = ({ socket, raider_id }) => {
   };
 
   return (
-    <Box p={2}>
-      <Typography variant="h4" gutterBottom>
+    <Box p={2} style={{width:400}} >
+      <Typography variant="h4" gutterBottom >
         Messages
       </Typography>
       {allMessages.length > 0 && (
@@ -104,6 +105,7 @@ const MessageUser = ({ socket, raider_id }) => {
         style={{ padding: "20px", marginBottom: "20px", marginTop: "20px" }}
       >
         <Box display="flex" alignItems="center">
+     
           <TextField
             fullWidth
             label="Message"
@@ -116,6 +118,7 @@ const MessageUser = ({ socket, raider_id }) => {
               }
             }}
           />
+     
           <IconButton
             color="primary"
             onClick={sendMessage}
