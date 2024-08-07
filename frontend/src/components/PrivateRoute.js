@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const PrivateRoute = ({ children, role: requiredRole }) => {
+const PrivateRoute = ({ children, requiredRole: requiredRole }) => {
 
     const token = useSelector((state) => state.auth.token);
   
@@ -11,6 +11,8 @@ const PrivateRoute = ({ children, role: requiredRole }) => {
   if (!token) {
     return <Navigate to="/signin" />;
   }
+console.log(requiredRole);
+console.log(role);
 
   if (!(requiredRole && requiredRole.includes(role)) ) {
     return <Navigate to="/" />;
