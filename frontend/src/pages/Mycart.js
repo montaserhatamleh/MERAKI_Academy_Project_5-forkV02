@@ -174,6 +174,8 @@ const Mycart = () => {
         </Button>
       )}
     </Box>
+    </>
+
   );
 }
 
