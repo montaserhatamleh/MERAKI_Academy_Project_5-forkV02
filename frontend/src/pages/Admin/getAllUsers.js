@@ -96,12 +96,12 @@ const GetAllUsers = () => {
           display: "flex",
           flexDirection: "column",
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-
+          background:"white" ,
           padding: "20px",
           borderRadius: "8px",
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography  style={{color:"black"}} variant="h5" gutterBottom>
           All Users
         </Typography>
         <List sx={{ width: "100%" }}>
@@ -110,6 +110,7 @@ const GetAllUsers = () => {
               display: "flex",
               alignItems: "center",
               borderBottom: "1px solid black",
+              color:"black"
             }}
           >
             <ListItemText primary="Name" sx={{ flex: 1, fontWeight: "bold" }} />
@@ -131,6 +132,7 @@ const GetAllUsers = () => {
                 alignItems: "center",
                 borderBottom: "1px solid #ddd",
                 padding: "11px",
+                color:"black"
               }}
             >
               <ListItemText primary={user.first_name} sx={{ flex: 1 }} />
@@ -144,7 +146,7 @@ const GetAllUsers = () => {
                     deletedUser(user.id);
                   }}
                   variant="contained"
-                  color="primary"
+                  color="error"
                   sx={{ marginRight: "10px" }}
                 >
                   Delete
@@ -154,7 +156,7 @@ const GetAllUsers = () => {
                     showDataUser(user.id);
                   }}
                   variant="contained"
-                  color="primary"
+                  color="success"
                   sx={{ marginRight: "10px" }}
                 >
                   show

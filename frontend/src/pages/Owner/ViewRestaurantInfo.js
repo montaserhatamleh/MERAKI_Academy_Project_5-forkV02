@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Typography, Box, Container } from "@mui/material";
+import { Container, Typography, Paper, Grid, Avatar } from '@mui/material';
 
 const ViewRestaurantInfo = () => {
   const token = useSelector((state) => state.auth.token);
@@ -33,7 +33,7 @@ const ViewRestaurantInfo = () => {
 
   if (!restaurant) {
     return (
-      <Container>
+      <Container style={{height:"700px"}}>
         <Typography variant="h5" color="error">
           {message}
         </Typography>
@@ -43,18 +43,43 @@ const ViewRestaurantInfo = () => {
   }
 
   return (
-    <Container>
-      <Typography variant="h4" color="black">Restaurant Information</Typography>
-      <Typography variant="h6" color="black">Name: {restaurant.name}</Typography>
-      <Typography variant="h6" color="black">Address: {restaurant.address}</Typography>
-      <Typography variant="h6" color="black">Phone: {restaurant.phone_number}</Typography>
-      <Typography variant="h6" color="black">Category: {restaurant.category}</Typography>
-      <Typography variant="h6" color="black">
-        Delivery Fees: {restaurant.delivery_fees}
-      </Typography>
-      <Typography variant="h6" color="black">Image URL: {restaurant.image_url}</Typography>
-    </Container>
-  );
-};
+    <Container style={{height:"500px"}}>
+    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <Avatar 
+            alt={restaurant.name}
+            src={restaurant.image_url}
+            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+            variant="square"
+          />
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="h4" color="textPrimary" gutterBottom>
+            Restaurant Information
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <strong>Name:</strong> {restaurant.name}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <strong>Address:</strong> {restaurant.address}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <strong>Phone:</strong> {restaurant.phone_number}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <strong>Category:</strong> {restaurant.category}
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            <strong>Delivery Fees:</strong> {restaurant.delivery_fees}
+          </Typography>
+
+        </Grid>
+      </Grid>
+    </Paper>
+  </Container>
+);
+}
+
 
 export default ViewRestaurantInfo;

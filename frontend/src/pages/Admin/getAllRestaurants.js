@@ -45,12 +45,12 @@ const GetAllRestaurants = ()=> {
           display: "flex",
           flexDirection: "column",
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-  
+          background:"white",
           padding: "20px",
           borderRadius: "8px",
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography style={{color:"black"}} variant="h5" gutterBottom>
           All Restaurants
         </Typography>
         <List sx={{ width: "100%" }}>
@@ -59,6 +59,7 @@ const GetAllRestaurants = ()=> {
               display: "flex",
               alignItems: "center",
               borderBottom: "1px solid black",
+              color:"black"
             }}
           >
             <ListItemText primary="Name" sx={{ flex: 1, fontWeight: "bold" }} />
@@ -74,6 +75,8 @@ const GetAllRestaurants = ()=> {
                 alignItems: "center",
                 borderBottom: "1px solid #ddd",
                 padding: "11px",
+                color:"black",
+                fontWeight:"bold"
               }}
             >
               <ListItemText primary={restaurant.name} sx={{ flex: 1 }} />
@@ -83,7 +86,7 @@ const GetAllRestaurants = ()=> {
                 <Button
                  onClick={()=>deletedRestaurant(restaurant.id)}
                   variant="contained"
-                  color="primary"
+                  color="success"
                   sx={{ marginRight: "10px" }}
                 >
                  Delete

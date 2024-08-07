@@ -77,18 +77,19 @@ const GetAllOwner = () => {
     <Container
       maxWidth="lr"
       sx={{
-        height: "100%",
+        height: "1000px",
         display: "flex",
         flexDirection: "column",
         boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         padding: "20px",
         borderRadius: "8px",
+        background:"white"
       }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom style={{color:"black"}}>
         All Owner Restaurants Registration Pending
       </Typography>
-      <List sx={{ width: "100%" }}>
+      <List sx={{ width: "100%", color:"black"  , fontWeight:"bold"}}>
         <ListItem
           sx={{
             display: "flex",
@@ -109,6 +110,7 @@ const GetAllOwner = () => {
               alignItems: "center",
               borderBottom: "1px solid #ddd",
               padding: "11px",
+              fontWeight: "bold"
             }}
           >
             <ListItemText primary={user.first_name} sx={{ flex: 1 }} />
@@ -120,7 +122,7 @@ const GetAllOwner = () => {
                   acceptPendingRiders(user.id);
                 }}
                 variant="contained"
-                color="primary"
+                color="success"
                 sx={{ marginRight: "10px" }}
               >
                 Accept

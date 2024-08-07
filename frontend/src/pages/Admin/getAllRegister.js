@@ -84,12 +84,12 @@ const GetAllRegister = () => {
         display: "flex",
         flexDirection: "column",
         boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-
+        background:"white",
         padding: "20px",
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom style={{color:"black"}}>
         All Riders Registration Pending
       </Typography>
       <List sx={{ width: "100%" }}>
@@ -98,6 +98,7 @@ const GetAllRegister = () => {
             display: "flex",
             alignItems: "center",
             borderBottom: "1px solid black",
+            color:"black"
           }}
         >
           <ListItemText primary="Name" sx={{ flex: 1, fontWeight: "bold" }} />
@@ -113,6 +114,7 @@ const GetAllRegister = () => {
               alignItems: "center",
               borderBottom: "1px solid #ddd",
               padding: "11px",
+              color:"black"
             }}
           >
             <ListItemText primary={user.first_name} sx={{ flex: 1 }} />
@@ -124,7 +126,7 @@ const GetAllRegister = () => {
                   acceptPendingRiders(user.id);
                 }}
                 variant="contained"
-                color="primary"
+                color="success"
                 sx={{ marginRight: "10px" }}
               >
                 Accept

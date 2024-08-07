@@ -64,7 +64,7 @@ const UpdateItem = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" >
       <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography component="h1" variant="h5">Update Item</Typography>
         {message && <Typography color="error">{message}</Typography>}

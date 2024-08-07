@@ -136,7 +136,7 @@ const RestaurantDetails = () => {
     );
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" >
       <Box
         sx={{
           display: "flex",
