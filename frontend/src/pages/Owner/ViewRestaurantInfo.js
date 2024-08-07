@@ -132,15 +132,7 @@ const ViewRestaurantInfo = () => {
             <DetailTypography variant="h6" sx={{ wordBreak: 'break-all' }}>
               <strong>Image URL:</strong> {restaurant.image_url}
             </DetailTypography>
-            <Box sx={{ textAlign: 'center', marginTop: 3 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => window.open(restaurant.image_url, "_blank")}
-              >
-                View Image
-              </Button>
-            </Box>
+        
           </CardContent>
         </Card>
       )}
