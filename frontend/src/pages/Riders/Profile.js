@@ -9,167 +9,168 @@ import {
   Button,
   Typography,
   Paper,
-  
+  Box,
+  Divider,
 } from "@mui/material";
-
 
 const Profile = () => {
   const { userId } = useSelector((state) => ({
     userId: state.auth.userId,
   }));
+  
   const [user, setUser] = useState({
- first_name:"",
-  last_name: "",
-  email: "",
-  phone_number: "",
-  address: "",
-  vehicle_details: ""});
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    address: "",
+    vehicle_details: ""
+  });
+
   const findUserById = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/riders/${userId}`);
-      console.log(result);
       setUser(result.data.result);
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching user data:", err);
     }
   };
 
-  const update = async () => {
+  const updateProfile = async () => {
     try {
-      const result = await axios.put(`http://localhost:5000/riders/${userId}`, {
+      await axios.put(`http://localhost:5000/riders/${userId}`, {
         vehicle_details: user.vehicle_details,
       });
-      console.log(result);
-      setUser(result.data.result);
-      const result1 = await axios.put(
-        `http://localhost:5000/users/${userId}`,
-        user
-      );
-      findUserById()
-      setUser(result.data.result);
+      await axios.put(`http://localhost:5000/users/${userId}`, user);
+      findUserById();
     } catch (err) {
-      console.log(err);
+      console.error("Error updating user data:", err);
     }
   };
+
   useEffect(() => {
     findUserById();
-  }, []);
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setUser({ ...user, [name]: value });
   };
 
   return (
-    <>
-      <Container maxWidth="la" style={{ marginTop: 20 }}>
-        <Paper style={{ padding: 20 }}>
-          <Grid style={{ margin: "auto" }}>
-          <Typography variant="h5" gutterBottom>Profile</Typography>
-          </Grid>
-          <Grid>
-            <Grid style={{ textAlign: "center" }}>
-              <Avatar
-                alt={user.first_name}
-                src="/static/images/avatar/1.jpg"
-                sx={{ width: 96, height: 96, margin: "0 auto" }}
-              />
-              <Typography variant="h6">{user.email}</Typography>
-            </Grid>
-            <Grid
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <TextField
-                style={{ width: "90%" }}
-                label="First Name"
-                margin="dense"
-                name="first_name"
-                type="text"
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-                value={user.first_name}
-                onChange={handleChange}
-              />
-              <TextField
-                label="Last Name"
-                margin="dense"
-                name="last_name"
-                type="text"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={user.last_name}
-                onChange={handleChange}
-                style={{ marginTop: 16, width: "90%" }}
-              />
-              <TextField
-                label="Email Address"
-                margin="dense"
-                name="email"
-                type="email"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={user.email}
-                onChange={handleChange}
-                style={{ marginTop: 16, width: "90%" }}
-              />
-              <TextField
-                label="Phone Number"
-                margin="dense"
-                name="phone_number"
-                type="text"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={user.phone_number}
-                onChange={handleChange}
-                style={{ marginTop: 16, width: "90%" }}
-              />
+    <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
+      <Paper elevation={3} sx={{ padding: 4, borderRadius: 2 }}>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography variant="h4" gutterBottom color="primary">
+            Profile
+          </Typography>
+          <Avatar
+            alt={`${user.first_name} ${user.last_name}`}
+            src="/static/images/avatar/1.jpg"
+            sx={{
+              width: 96,
+              height: 96,
+              margin: '0 auto',
+              border: '2px solid #1976d2',
+            }}
+          />
+          <Typography variant="h6" sx={{ mt: 1, fontWeight: 500 }}>
+            {user.email}
+          </Typography>
+        </Box>
 
-              <TextField
-                label="Address"
-                margin="dense"
-                name="address"
-                type="text"
-                fullWidth
-                value={user.address}
-                InputLabelProps={{ shrink: true }}
-                onChange={handleChange}
-                style={{ marginTop: 16, width: "90%" }}
-              />
-              <TextField
-                label="Vehicle Details"
-                margin="dense"
-                name="vehicle_details"
-                type="text"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={user.vehicle_details}
-                onChange={handleChange}
-                style={{ marginTop: 16, width: "90%" }}
-              />
-            </Grid>
+        <Divider sx={{ mb: 2 }} />
+
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="First Name"
+              margin="normal"
+              name="first_name"
+              value={user.first_name}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+            />
           </Grid>
-          <Grid
-            container
-            spacing={3}
-            style={{ marginTop: 20, justifyContent: "flex-end" }}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Last Name"
+              margin="normal"
+              name="last_name"
+              value={user.last_name}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Email Address"
+              margin="normal"
+              name="email"
+              type="email"
+              value={user.email}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+              disabled
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Phone Number"
+              margin="normal"
+              name="phone_number"
+              value={user.phone_number}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Address"
+              margin="normal"
+              name="address"
+              value={user.address}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Vehicle Details"
+              margin="normal"
+              name="vehicle_details"
+              value={user.vehicle_details}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={updateProfile}
+            sx={{ width: '50%' }} // Make the button fill half the width
           >
-            <Grid item>
-              <Button  variant="contained" onClick={update} color="primary">
-                Save
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Container>
-
-
-    
-    </>
+            Save Changes
+          </Button>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
