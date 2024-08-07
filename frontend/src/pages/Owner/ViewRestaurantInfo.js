@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
-
 import {
   Typography,
   Box,
@@ -11,7 +9,10 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
-  Button , Paper, Grid, Avatar
+  Button,
+  Paper,
+  Grid,
+  Avatar
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -40,7 +41,6 @@ const ImageContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   boxShadow: theme.shadows[3],
 }));
-
 
 const ViewRestaurantInfo = () => {
   const token = useSelector((state) => state.auth.token);
@@ -72,71 +72,30 @@ const ViewRestaurantInfo = () => {
 
   if (!restaurant && !message) {
     return (
-
-      <Container style={{height:"700px"}}>
+      <Container style={{ height: "700px" }}>
         <Typography variant="h5" color="error">
           {message}
         </Typography>
         <Typography variant="h6">Loading...</Typography>
 
-      <Container>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress size={80} />
-        </Box>
-
+        <Container>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress size={80} />
+          </Box>
+        </Container>
       </Container>
     );
   }
 
   return (
-
-    <Container style={{height:"500px"}}>
-    <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <Avatar 
-            alt={restaurant.name}
-            src={restaurant.image_url}
-            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-            variant="square"
-          />
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="h4" color="textPrimary" gutterBottom>
-            Restaurant Information
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <strong>Name:</strong> {restaurant.name}
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <strong>Address:</strong> {restaurant.address}
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <strong>Phone:</strong> {restaurant.phone_number}
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <strong>Category:</strong> {restaurant.category}
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            <strong>Delivery Fees:</strong> {restaurant.delivery_fees}
-          </Typography>
-
-        </Grid>
-      </Grid>
-    </Paper>
-  </Container>
-);
-}
-
-
     <Container maxWidth="md" sx={{ paddingY: 4 }}>
       {message ? (
         <ErrorTypography variant="h6" align="center">
@@ -175,7 +134,11 @@ const ViewRestaurantInfo = () => {
               <strong>Image URL:</strong> {restaurant.image_url}
             </DetailTypography>
             <Box sx={{ textAlign: 'center', marginTop: 3 }}>
-              <Button variant="outlined" color="primary" onClick={() => window.open(restaurant.image_url, "_blank")}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => window.open(restaurant.image_url, "_blank")}
+              >
                 View Image
               </Button>
             </Box>
@@ -185,6 +148,5 @@ const ViewRestaurantInfo = () => {
     </Container>
   );
 };
-
 
 export default ViewRestaurantInfo;
