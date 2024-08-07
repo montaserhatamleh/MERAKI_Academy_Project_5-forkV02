@@ -1,7 +1,6 @@
 const { pool } = require("../models/db");
 
-const cloudinary = require('../cloud'); 
-
+const cloudinary = require("../cloud");
 
 const getItemsByRestaurantOwner = (req, res) => {
   const userId = req.token.userId;
@@ -12,12 +11,13 @@ const getItemsByRestaurantOwner = (req, res) => {
     JOIN restaurants ON menu_items.restaurant_id = restaurants.id
     WHERE restaurants.user_id = $1 AND menu_items.deleted_at = false;
   `;
-  pool.query(query, [userId])
-    .then(result => {
+  pool
+    .query(query, [userId])
+    .then((result) => {
       if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          message: 'No menu items found for this restaurant.',
+          message: "No menu items found for this restaurant.",
         });
       }
       res.status(200).json({
@@ -25,11 +25,11 @@ const getItemsByRestaurantOwner = (req, res) => {
         result: result.rows,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: 'Server error',
+        message: "Server error",
         err: err.message,
       });
     });
@@ -53,14 +53,23 @@ const updateItemById = async (req, res) => {
   let image_url = null;
   if (req.files && req.files.image) {
     const result = await cloudinary.uploader.upload(req.files.image.path, {
-      folder: 'items-images',
+      folder: "items-images",
     });
     image_url = result.secure_url;
   }
 
-  const data = [name, description, price, sub_category, image_url, available, id];
-  pool.query(query, data)
-    .then(result => {
+  const data = [
+    name,
+    description,
+    price,
+    sub_category,
+    image_url,
+    available,
+    id,
+  ];
+  pool
+    .query(query, data)
+    .then((result) => {
       if (result.rowCount === 0) {
         return res.status(404).json({
           success: false,
@@ -73,11 +82,11 @@ const updateItemById = async (req, res) => {
         result: result.rows[0],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: 'Server error',
+        message: "Server error",
         error: err.message,
       });
     });
@@ -89,7 +98,7 @@ const addItem = async (req, res) => {
   let image_url = null;
   if (req.files && req.files.image) {
     const result = await cloudinary.uploader.upload(req.files.image.path, {
-      folder: 'items-images',
+      folder: "items-images",
     });
     image_url = result.secure_url;
   }
@@ -102,19 +111,20 @@ const addItem = async (req, res) => {
     VALUES ((SELECT id FROM restaurants WHERE user_id = $1), $2, $3, $4, $5, $6) 
     RETURNING *
   `;
-  pool.query(query, [userId, name, description, price, image_url, sub_category])
-    .then(result => {
+  pool
+    .query(query, [userId, name, description, price, image_url, sub_category])
+    .then((result) => {
       res.status(201).json({
         success: true,
-        message: 'Item added successfully',
+        message: "Item added successfully",
         result: result.rows[0],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: 'Server error',
+        message: "Server error",
         error: err.message,
       });
     });
@@ -131,19 +141,20 @@ const deleteItemById = (req, res) => {
     WHERE menu_items.restaurant_id = restaurants.id AND restaurants.user_id = $1 AND menu_items.id = $2 
     RETURNING *
   `;
-  pool.query(query, [userId, id])
-    .then(result => {
+  pool
+    .query(query, [userId, id])
+    .then((result) => {
       res.status(200).json({
         success: true,
-        message: 'Item deleted successfully',
+        message: "Item deleted successfully",
         result: result.rows[0],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: 'Server error',
+        message: "Server error",
         error: err.message,
       });
     });
@@ -159,44 +170,44 @@ const changeAvailability = (req, res) => {
     WHERE menu_items.restaurant_id = restaurants.id AND restaurants.user_id = $1 AND menu_items.id = $2 
     RETURNING *
   `;
-  pool.query(query, [userId, id])
-    .then(result => {
+  pool
+    .query(query, [userId, id])
+    .then((result) => {
       res.status(200).json({
         success: true,
-        message: 'Item availability updated successfully',
+        message: "Item availability updated successfully",
         result: result.rows[0],
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: 'Server error',
+        message: "Server error",
         error: err.message,
       });
     });
 };
 
-const getItemById = async (req,res) => {
-const {id} = req.params
+const getItemById = async (req, res) => {
+  const { id } = req.params;
 
+  try {
+    const item = await pool.query(`SELECT * FROM menu_items WHERE id =$1`, [
+      id,
+    ]);
 
-try {
-const item = await pool.query(`SELECT * FROM menu_items WHERE id =$1`,[id])
-
-res.status(200).json({
-  success:true,
-  result:item.rows[0]
-})
-}
-catch(error){
-res.status(500).json({
-  success:false,
-  err:error.message
-})
-}
-}
-
+    res.status(200).json({
+      success: true,
+      result: item.rows[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      err: error.message,
+    });
+  }
+};
 
 module.exports = {
   getItemsByRestaurantOwner,
@@ -204,6 +215,5 @@ module.exports = {
   addItem,
   deleteItemById,
   changeAvailability,
-  getItemById
-
+  getItemById,
 };

@@ -119,9 +119,11 @@ const Mycart = () => {
   };
 
   return (
-    <Box sx={{ width: { xs: '90%', sm: '80%', md: '70%' }, bgcolor: 'background.paper', padding: 3, boxShadow: 3, borderRadius: 2, margin: 'auto', mt: 4, mb: 8 }}>
-      <Typography variant="h4" component="div" gutterBottom align="center" color="#2E7D32">
-        Shopping Cart
+    <>
+      <br />
+      <Box sx={{ width: '50%', bgcolor: 'background.paper', padding: 2, boxShadow: 3, borderRadius: 2, margin: 'auto', marginBottom:3}}>
+        <Typography variant="h5" component="div" style={{ color: 'black' }} gutterBottom>
+          Shopping Cart
       </Typography>
       <List>
         {cartItems.map((item) => (
