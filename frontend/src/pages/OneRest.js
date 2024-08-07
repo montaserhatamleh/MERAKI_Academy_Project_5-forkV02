@@ -17,9 +17,27 @@ import {
   Rating,
   Badge,
 } from "@mui/material";
-
+import { styled } from "@mui/material/styles";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  color: theme.palette.text.primary,
+  padding: theme.spacing(1),
+  borderRadius: '50%',
+  boxShadow: theme.shadows[2],
+  '&:hover': {
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.common.white,
+    boxShadow: theme.shadows[6],
+    transform: 'scale(1.1)',
+    transition: 'transform 0.2s ease-in-out',
+  },
+  '&:active': {
+    transform: 'scale(1.05)',
+  }
+}));
 
 const RestaurantDetails = () => {
   const { id } = useParams();
@@ -73,8 +91,7 @@ const RestaurantDetails = () => {
       return;
     }
 
-    if (cartRestaurantId && cartRestaurantId != item.restaurant_id) {
-      console.log(item);
+    if (cartRestaurantId && cartRestaurantId !== item.restaurant_id) {
       setNewItem(item);
       setWarningModal(true);
     } else {
@@ -89,12 +106,11 @@ const RestaurantDetails = () => {
         { menu_item_id: item.id, quantity: 1, restaurant_id: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (cartRestaurantId != id) {
+      if (cartRestaurantId !== id) {
         setCartItems([]);
       }
       setCartItems((prevCartItems) => {
         const itemIds = prevCartItems.map((cartItem) => cartItem.menu_item_id);
-
         if (itemIds.includes(item.id)) {
           return prevCartItems;
         } else {
@@ -149,11 +165,11 @@ const RestaurantDetails = () => {
           {restaurant.name}
         </Typography>
         {token && (
-          <IconButton color="black" onClick={() => navigate("/my_cart")}>
+          <StyledIconButton onClick={() => navigate("/my_cart")}>
             <Badge badgeContent={cartItems.length} color="error">
-              <ShoppingCartIcon />
+              <ShoppingCartIcon fontSize="large" />
             </Badge>
-          </IconButton>
+          </StyledIconButton>
         )}
       </Box>
 
@@ -205,7 +221,7 @@ const RestaurantDetails = () => {
           <Typography variant="h6" gutterBottom color="black">
             {category}
           </Typography>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             {restaurant.menu_items[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
                 <Card
@@ -223,7 +239,7 @@ const RestaurantDetails = () => {
                     height="140"
                     image={item.image_url || "default_image_url.jpg"}
                     alt={item.name}
-                    sx={{ objectFit: "cover" }}y
+                    sx={{ objectFit: "cover" }}
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h6" component="div">
@@ -342,4 +358,5 @@ const RestaurantDetails = () => {
     </Container>
   );
 };
+
 export default RestaurantDetails;
