@@ -17,29 +17,8 @@ import {
   Rating,
   Badge,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-  
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
-  padding: theme.spacing(1),
-  borderRadius: '50%',
-  boxShadow: theme.shadows[2],
-  '&:hover': {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.white,
-    boxShadow: theme.shadows[6],
-    transform: 'scale(1.1)',
-    transition: 'transform 0.2s ease-in-out',
-  },
-  '&:active': {
-    transform: 'scale(1.05)',
-  }
-}));
-
 const RestaurantDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -52,12 +31,10 @@ const RestaurantDetails = () => {
   const [loginPromptModal, setLoginPromptModal] = useState(false);
   const [newItem, setNewItem] = useState(null);
   const [cartRestaurantId, setCartRestaurantId] = useState(null);
-
   useEffect(() => {
     getRestaurantData();
     if (token) getCartData();
   }, [id, token, newItem]);
-
   const getRestaurantData = async () => {
     try {
       const response = await axios.get(
@@ -70,7 +47,6 @@ const RestaurantDetails = () => {
       setLoading(false);
     }
   };
-
   const getCartData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/carts/elements", {
@@ -85,21 +61,19 @@ const RestaurantDetails = () => {
       console.error("Error getting cart data", error);
     }
   };
-
   const addItemToCart = async (item) => {
     if (!token) {
       setLoginPromptModal(true);
       return;
     }
-
-    if (cartRestaurantId && cartRestaurantId !== item.restaurant_id) {
+    if (cartRestaurantId && cartRestaurantId != item.restaurant_id) {
+      console.log(item);
       setNewItem(item);
       setWarningModal(true);
     } else {
       await handleAddItem(item);
     }
   };
-
   const handleAddItem = async (item) => {
     try {
       const response = await axios.post(
@@ -107,7 +81,7 @@ const RestaurantDetails = () => {
         { menu_item_id: item.id, quantity: 1, restaurant_id: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (cartRestaurantId !== id) {
+      if (cartRestaurantId != id) {
         setCartItems([]);
       }
       setCartItems((prevCartItems) => {
@@ -124,12 +98,10 @@ const RestaurantDetails = () => {
       console.error("Error adding item to cart:", error);
     }
   };
-
   const handleConfirmReplace = async () => {
     await handleAddItem(newItem);
     setWarningModal(false);
   };
-
   if (loading)
     return (
       <Box
@@ -144,14 +116,12 @@ const RestaurantDetails = () => {
         <CircularProgress size={80} />
       </Box>
     );
-
   if (error)
     return (
       <Typography variant="h6" color="error">
         {error}
       </Typography>
     );
-
   return (
     <Container maxWidth="lg">
       <Box
@@ -159,21 +129,20 @@ const RestaurantDetails = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 4, 
+          mb: 4,
         }}
       >
         <Typography variant="h4" gutterBottom color="black">
           {restaurant.name}
         </Typography>
         {token && (
-          <StyledIconButton onClick={() => navigate("/my_cart")}>
+          <IconButton color="black" onClick={() => navigate("/my_cart")}>
             <Badge badgeContent={cartItems.length} color="error">
-              <ShoppingCartIcon fontSize="large" />
+              <ShoppingCartIcon />
             </Badge>
-          </StyledIconButton>
+          </IconButton>
         )}
       </Box>
-
       <Box sx={{ display: "flex", mb: 4, alignItems: "flex-start" }}>
         <img
           src={restaurant.image_url}
@@ -181,7 +150,7 @@ const RestaurantDetails = () => {
           style={{
             width: "200px",
             height: "200px",
-            borderRadius: "8px", 
+            borderRadius: "8px",
             marginRight: "24px",
             objectFit: "cover",
           }}
@@ -212,17 +181,15 @@ const RestaurantDetails = () => {
           </Typography>
         </Box>
       </Box>
-
       <Typography variant="h5" gutterBottom color="black">
         Menu
       </Typography>
-
       {Object.keys(restaurant.menu_items).map((category) => (
         <Box key={category} sx={{ mb: 4 }}>
           <Typography variant="h6" gutterBottom color="black">
             {category}
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             {restaurant.menu_items[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.id}>
                 <Card
@@ -232,7 +199,7 @@ const RestaurantDetails = () => {
                     boxShadow: 3,
                     transition: "transform 0.3s",
                     "&:hover": { transform: "scale(1.05)" },
-                    overflow: "hidden", 
+                    overflow: "hidden",
                   }}
                 >
                   <CardMedia
@@ -240,7 +207,7 @@ const RestaurantDetails = () => {
                     height="140"
                     image={item.image_url || "default_image_url.jpg"}
                     alt={item.name}
-                    sx={{ objectFit: "cover" }}
+                    sx={{ objectFit: "cover" }}y
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h6" component="div">
@@ -274,7 +241,6 @@ const RestaurantDetails = () => {
           </Grid>
         </Box>
       ))}
-
       <Modal open={warningModal} onClose={() => setWarningModal(false)}>
         <Box
           sx={{
@@ -315,7 +281,6 @@ const RestaurantDetails = () => {
           </Box>
         </Box>
       </Modal>
-
       <Modal open={loginPromptModal} onClose={() => setLoginPromptModal(false)}>
         <Box
           sx={{
@@ -359,5 +324,4 @@ const RestaurantDetails = () => {
     </Container>
   );
 };
-
 export default RestaurantDetails;
