@@ -109,7 +109,7 @@ const getOrderById = async (req, res) => {
     order = orderResult.rows[0];
 
     const orderItemsResult = await pool.query(
-      `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.image_url 
+      `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.price, menu_items.image_url 
              FROM order_items 
              INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id 
              WHERE order_items.order_id = $1`,

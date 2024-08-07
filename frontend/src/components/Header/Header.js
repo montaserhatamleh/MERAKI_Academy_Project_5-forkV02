@@ -4,7 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLogout } from '../../redux/auth';
 import TemporaryDrawer from "../../pages/Admin/SideBar";
-import RestaurantIcon from '@mui/icons-material/Restaurant'; 
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import SidBarRider from "../../pages/Riders/SidBarRiders" 
+import SidBarOwner from "../../components/SidebarOwner"
 import './header.css'
 const Header = () => {
   const token = useSelector((state) => state.auth.token);
@@ -18,7 +20,9 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#2E7D32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+
+    <AppBar position="static"  sx={{ backgroundColor: '#D55E32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}   >
+
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '0 40px', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton component={Link} to="/" sx={{ color: 'white', marginRight: 2 }}>
@@ -52,9 +56,7 @@ const Header = () => {
                 <TemporaryDrawer />
               )}
               {role === 'Restaurant Owner' && (
-                <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/restaurant_owner">
-                  My Restaurant
-                </Button>
+               <SidBarOwner/>
               )}
               {role === 'Customer' && (
                 <>
@@ -68,21 +70,7 @@ const Header = () => {
               )}
               {role === 'Rider' && (
                 <>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/rider/Profile">
-                    Profile
-                  </Button>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/rider/All_complete_order">
-                    Complete Orders
-                  </Button>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/rider/All_delivered_order">
-                    Delivered Orders
-                  </Button>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/rider/All__order_on_way">
-                    Orders On Way
-                  </Button>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/rider">
-                    Ready Orders
-                  </Button>
+                 <SidBarRider/>
                 </>
               )}
               <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} onClick={handleLogout}>

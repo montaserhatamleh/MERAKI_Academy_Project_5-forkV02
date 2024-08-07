@@ -21,50 +21,14 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
-const SidebarOwner = () => {
-  const [open, setOpen] = useState(false);
+const SidebarOwner=()=>{
+const [open, setOpen] = React.useState(false);
+const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  }
 
-  const handleDrawerToggle = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleDrawerToggle}
-        sx={{
-          boxShadow: 1,
-          "&:hover": {
-            backgroundColor: "lightgray",
-          },
-          width: "100px",
-          height: "50px",
-        }}
-      >
-        {open ? "Close" : "Open"}
-      </Button>
-      <Drawer
-        variant="persistent"
-        anchor="left"
-        open={open}
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: 240,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Dashboard
-          </Typography>
-        </Toolbar>
-        <Divider />
-        <Box sx={{ overflow: "auto" }}>
+  const DrawerList = (
+    <Box sx={{ overflow: "auto" }}>
           <List>
             <ListItem button component={Link} to="/restaurant_owner/view-info">
               <ListItemIcon>
@@ -127,6 +91,21 @@ const SidebarOwner = () => {
             </ListItem>
           </List>
         </Box>
+  ) ;
+
+  return (
+    <>
+      <Button
+        component={Link}
+        to="/restaurant_owner"
+        sx={{ color: "white" }}
+        compone
+        onClick={toggleDrawer(true)}
+      >
+        Owner Dashbord
+      </Button>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+       {DrawerList}
       </Drawer>
     </>
   );
