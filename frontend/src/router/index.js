@@ -56,6 +56,8 @@ import Privacy from "../components/Privacy";
 import AboutUs from "../components/Aboutus";
 import Services from "../components/Services";
 
+//route
+import PrivateRoute from '../components/PrivateRoute'; 
 
 export const router = createBrowserRouter([
   {
@@ -84,18 +86,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "userOrders",
-        element: <UserOrders />,
+        element: <PrivateRoute requiredRole={['Customer']}><UserOrders /></PrivateRoute>,
       },
-
       {
         path: "admin",
-        element: <Admin />,
+        element: <PrivateRoute requiredRole={['Admin']}><Admin /></PrivateRoute>,
         children: [
           {
             path: "get_All_Rider_registretion",
             element: <GetAllRiderRigertions />,
           },
-          { path: "/admin", element: <GetAllUsers /> },
+          { path: "", element: <GetAllUsers /> },
           {
             path: "get_All_registration_Owner",
             element: <GetAllRegistrationOwner />,
@@ -104,36 +105,17 @@ export const router = createBrowserRouter([
           { path: "get_all_restaurants", element: <GetAllRestaurants /> },
         ],
       },
-
       {
         path: "contact",
         element: <Contact />,
       },
       {
-        path: "admin",
-        element: <Admin />,
-        children: [
-          {
-            path: "get_All_Rider_registretion",
-            element: <GetAllRiderRigertions />,
-          },
-          { path: "/admin", element: <GetAllUsers /> },
-          {
-            path: "get_All_registration_Owner",
-            element: <GetAllRegistrationOwner />,
-          },
-          { path: "get_all_riders", element: <GetAllRiders /> },
-          { path: "get_all_restaurants", element: <GetAllRestaurants /> },
-        ],
-      },
-
-      {
         path: "get_All_Rider",
-        element: <GetAllRider />,
+        element: <PrivateRoute requiredRole={['Admin']}><GetAllRider /></PrivateRoute>,
       },
       {
         path: "get_All_Owner",
-        element: <GetAllOwner />,
+        element: <PrivateRoute requiredRole={['Admin']}><GetAllOwner /></PrivateRoute>,
       },
       {
         path: "restaurants",
@@ -149,7 +131,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "restaurant_owner",
-        element: <Owner />,
+        element: <PrivateRoute requiredRole={['Restaurant Owner']}><Owner /></PrivateRoute>,
         children: [
           { path: "view-info", element: <ViewRestaurantInfo /> },
           { path: "update-info", element: <UpdateRestaurantInfo /> },
@@ -158,62 +140,52 @@ export const router = createBrowserRouter([
           { path: "update-item/:id", element: <UpdateItem /> },
           { path: "pending-orders", element: <PendingOrders /> },
           { path: "prepared-orders", element: <PreparedOrders /> },
-
           { path: "delivered-orders", element: <DeliveredOrders /> },
         ],
       },
-
       {
         path: "rider",
-        element: <Rider />,
+        element: <PrivateRoute requiredRole={['Rider']}><Rider /></PrivateRoute>,
         children: [
           { path: "All_complete_order", element: <AllCompletedOrders /> },
           { path: "All_delivered_order", element: <AllOrdersDelivered /> },
           { path: "All__order_on_way", element: <AllOrdersOnWay /> },
-          { path: "/rider", element: <AllOrdersReady /> },
+          { path: "", element: <AllOrdersReady /> },
           { path: "profile", element: <Profile /> },
         ],
       },
 
-      /*{
-  path: 'cart',
-    element: <Cart />,
-  }*/
-
- 
-,
       {
         path: "profile_user",
-        element: <ProfileUser />,
+        element: <PrivateRoute requiredRole={['Customer']}><ProfileUser /></PrivateRoute>,
       },
-      { path: "my_cart", element: <Mycart /> },
+      {
+        path: "my_cart",
+        element: <PrivateRoute requiredRole={['Customer']}><Mycart /></PrivateRoute>,
+      },
       {
         path: "order_item/:id",
-        element: <OrderItems />,
+        element: <PrivateRoute requiredRole={['Customer']}><OrderItems /></PrivateRoute>,
       },
       {
-        path: "Faq",
+        path: "faq",
         element: <Faq />,
       },
       {
         path: "terms",
         element: <Terms />,
-
       },
       {
         path: "privacy",
         element: <Privacy />,
-
       },
       {
         path: "about",
-        element: <AboutUs/>,
-
+        element: <AboutUs />,
       },
       {
         path: "services",
-        element: <Services/>,
-
+        element: <Services />,
       },
 
     ],

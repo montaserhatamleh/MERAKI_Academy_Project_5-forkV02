@@ -17,10 +17,8 @@ import {
   Rating,
   Badge,
 } from "@mui/material";
-
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 const RestaurantDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,12 +31,10 @@ const RestaurantDetails = () => {
   const [loginPromptModal, setLoginPromptModal] = useState(false);
   const [newItem, setNewItem] = useState(null);
   const [cartRestaurantId, setCartRestaurantId] = useState(null);
-
   useEffect(() => {
     getRestaurantData();
     if (token) getCartData();
   }, [id, token, newItem]);
-
   const getRestaurantData = async () => {
     try {
       const response = await axios.get(
@@ -51,7 +47,6 @@ const RestaurantDetails = () => {
       setLoading(false);
     }
   };
-
   const getCartData = async () => {
     try {
       const response = await axios.get("http://localhost:5000/carts/elements", {
@@ -66,13 +61,11 @@ const RestaurantDetails = () => {
       console.error("Error getting cart data", error);
     }
   };
-
   const addItemToCart = async (item) => {
     if (!token) {
       setLoginPromptModal(true);
       return;
     }
-
     if (cartRestaurantId && cartRestaurantId != item.restaurant_id) {
       console.log(item);
       setNewItem(item);
@@ -81,7 +74,6 @@ const RestaurantDetails = () => {
       await handleAddItem(item);
     }
   };
-
   const handleAddItem = async (item) => {
     try {
       const response = await axios.post(
@@ -94,7 +86,6 @@ const RestaurantDetails = () => {
       }
       setCartItems((prevCartItems) => {
         const itemIds = prevCartItems.map((cartItem) => cartItem.menu_item_id);
-
         if (itemIds.includes(item.id)) {
           return prevCartItems;
         } else {
@@ -107,12 +98,10 @@ const RestaurantDetails = () => {
       console.error("Error adding item to cart:", error);
     }
   };
-
   const handleConfirmReplace = async () => {
     await handleAddItem(newItem);
     setWarningModal(false);
   };
-
   if (loading)
     return (
       <Box
@@ -127,14 +116,12 @@ const RestaurantDetails = () => {
         <CircularProgress size={80} />
       </Box>
     );
-
   if (error)
     return (
       <Typography variant="h6" color="error">
         {error}
       </Typography>
     );
-
   return (
     <Container maxWidth="lg" >
       <Box
@@ -142,7 +129,7 @@ const RestaurantDetails = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 4, 
+          mb: 4,
         }}
       >
         <Typography variant="h4" gutterBottom color="black">
@@ -156,7 +143,6 @@ const RestaurantDetails = () => {
           </IconButton>
         )}
       </Box>
-
       <Box sx={{ display: "flex", mb: 4, alignItems: "flex-start" }}>
         <img
           src={restaurant.image_url}
@@ -164,7 +150,7 @@ const RestaurantDetails = () => {
           style={{
             width: "200px",
             height: "200px",
-            borderRadius: "8px", 
+            borderRadius: "8px",
             marginRight: "24px",
             objectFit: "cover",
           }}
@@ -195,11 +181,9 @@ const RestaurantDetails = () => {
           </Typography>
         </Box>
       </Box>
-
       <Typography variant="h5" gutterBottom color="black">
         Menu
       </Typography>
-
       {Object.keys(restaurant.menu_items).map((category) => (
         <Box key={category} sx={{ mb: 4 }}>
           <Typography variant="h6" gutterBottom color="black">
@@ -215,7 +199,7 @@ const RestaurantDetails = () => {
                     boxShadow: 3,
                     transition: "transform 0.3s",
                     "&:hover": { transform: "scale(1.05)" },
-                    overflow: "hidden", 
+                    overflow: "hidden",
                   }}
                 >
                   <CardMedia
@@ -257,7 +241,6 @@ const RestaurantDetails = () => {
           </Grid>
         </Box>
       ))}
-
       <Modal open={warningModal} onClose={() => setWarningModal(false)}>
         <Box
           sx={{
@@ -298,7 +281,6 @@ const RestaurantDetails = () => {
           </Box>
         </Box>
       </Modal>
-
       <Modal open={loginPromptModal} onClose={() => setLoginPromptModal(false)}>
         <Box
           sx={{

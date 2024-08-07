@@ -1,95 +1,88 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import {
   Card,
-  CardActions,
   CardContent,
-  CardMedia,
   Button,
   Typography,
-  Rating,
   Container,
   Grid,
-  Menu,
   MenuItem,
-  Autocomplete,
-  TextField,
+  Select,
   FormControl,
   InputLabel,
-  Select,
-  Paper,
-  CardHeader,
-  IconButton,
-  InputBase,
+  TextField,
   CircularProgress,
   Box,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
+import ClearIcon from "@mui/icons-material/Clear";
 
 function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchAllRestaurants();
+  }, []);
+
+  useEffect(() => {
+    if (category === "All") {
+      fetchAllRestaurants();
+    } else {
+      categorySearch(category);
+    }
+  }, [category]);
 
   const fetchAllRestaurants = () => {
     axios
       .get("http://localhost:5000/restaurants/")
       .then((result) => {
         setRestaurants(result.data.result);
-        // console.log(result.data.result);
         setLoading(false);
       })
       .catch((err) => {
         console.log("fetch Restaurants not working", err);
+        setError("Error fetching restaurants");
         setLoading(false);
       });
   };
+
   const categorySearch = (text) => {
-    //if fetch all restaurants
-    if (text == "All") {
-      fetchAllRestaurants();
-    }
     axios
       .get(`http://localhost:5000/restaurants/byCategory/${text}`)
       .then((result) => {
         setRestaurants(result.data.result);
-        // console.log(result.data);
       })
       .catch((err) => {
         console.log(err);
+        setError("Error fetching restaurants by category");
       });
   };
+
   const filteredRestaurantsByDeliveryFees = () => {
     axios
       .get(`http://localhost:5000/restaurants/getAllRestaurantByDeliveryFees`)
       .then((result) => {
         setRestaurants(result.data.result);
-        // console.log(result.data);
       })
       .catch((err) => {
         console.log(err);
+        setError("Error fetching restaurants by delivery fees");
       });
   };
-  const navigateRestaurantsById = (id) => {
-    navigate(`/one/${id}`);
-  };
-
-  useEffect(() => {
-    fetchAllRestaurants();
-  }, []);
 
   const filteredRestaurants = restaurants.filter((elem) =>
     elem.name.toLowerCase().includes(search.toLowerCase())
   );
-  
+
   if (loading)
     return (
       <Box
@@ -113,7 +106,7 @@ function Restaurants() {
     );
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "" }}>
+    <div style={{ padding: "20px"}}>
       <Box
         display="flex"
         alignItems="center"
@@ -130,17 +123,25 @@ function Restaurants() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           InputProps={{
-            startAdornment: <SearchIcon />,
+            startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+            endAdornment: search && (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setSearch("")} edge="end">
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
           sx={{ flex: 1, mr: 2 }}
         />
-        <FormControl variant="outlined" sx={{ width: "400px", mr: 2 }}>
+        <FormControl variant="outlined" sx={{ width: "200px", mr: 2 }}>
           <InputLabel id="category-select-label">Select Category</InputLabel>
           <Select
             labelId="category-select-label"
             id="category-select"
             label="Select Category"
-            onChange={(e) => categorySearch(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             sx={{
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "primary.main",
@@ -153,18 +154,18 @@ function Restaurants() {
               },
             }}
           >
-            <MenuItem value={"All"}>All</MenuItem>
-            <MenuItem value={"Syrian"}>Syrian</MenuItem>
-            <MenuItem value={"Lebanese"}>Lebanese</MenuItem>
-            <MenuItem value={"Palestinian"}>Palestinian</MenuItem>
-            <MenuItem value={"Jordanian"}>Jordanian</MenuItem>
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Syrian">Syrian</MenuItem>
+            <MenuItem value="Lebanese">Lebanese</MenuItem>
+            <MenuItem value="Palestinian">Palestinian</MenuItem>
+            <MenuItem value="Jordanian">Jordanian</MenuItem>
           </Select>
         </FormControl>
         <Button
           variant="contained"
           size="large"
           onClick={filteredRestaurantsByDeliveryFees}
-          sx={{ height: "56px" }}
+          sx={{ color: 'white',  backgroundColor: "#2E7D32", fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }}
         >
           Sort Low Fees
         </Button>
@@ -174,7 +175,7 @@ function Restaurants() {
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
               <Card
-                onClick={() => navigateRestaurantsById(elem.id)}
+                onClick={() => navigate(`/one/${elem.id}`)}
                 sx={{
                   minWidth: 300,
                   borderRadius: 3,
@@ -183,11 +184,6 @@ function Restaurants() {
                   "&:hover": { transform: "scale(1.05)" },
                 }}
               >
-                <CardHeader
-                  action={<IconButton aria-label="settings"></IconButton>}
-                  title={elem.name}
-                  sx={{ textAlign: "center" }}
-                />
                 <CardContent>
                   <div style={{ textAlign: "center" }}>
                     <img
@@ -225,4 +221,4 @@ function Restaurants() {
   );
 }
 
-export default Restaurants;
+export default Restaurants

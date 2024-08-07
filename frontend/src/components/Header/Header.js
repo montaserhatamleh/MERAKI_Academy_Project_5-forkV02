@@ -20,7 +20,9 @@ const Header = () => {
   };
 
   return (
+
     <AppBar position="static"  sx={{ backgroundColor: '#D55E32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}   >
+
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '0 40px', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton component={Link} to="/" sx={{ color: 'white', marginRight: 2 }}>

@@ -61,7 +61,7 @@ const OrderItems = () => {
       console.log(err);
     }
   };
-  
+
   useEffect(() => {
     socket?.on("connect", () => {
       setIsConnected(true);
@@ -192,6 +192,18 @@ const OrderItems = () => {
             </Grid>
           </Grid>
         </Paper>
+        <div style={{ marginTop: "20px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              setSocket(socketInit({ user_id: userId, rider_id: rider_id }))
+            }
+          >
+            Chat To Rider
+          </Button>
+          {isConnected && <MessageUser socket={socket} userId={userId} />}
+        </div>
       </Container>
 
       <Dialog open={open} onClose={handelClose}>
@@ -209,18 +221,6 @@ const OrderItems = () => {
           <Button onClick={ratinghandler}>Submit</Button>
         </DialogActions>
       </Dialog>
-      <div style={{ marginTop: "20px" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            setSocket(socketInit({ user_id: userId, rider_id: rider_id }))
-          }
-        >
-          Connect
-        </Button>
-        {isConnected && <MessageUser socket={socket} userId={userId} />}
-      </div>
     </div>
   );
 };

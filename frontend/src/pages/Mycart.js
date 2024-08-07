@@ -9,7 +9,7 @@ import CheckoutForm from "../components/CheckoutForm";
 import { useNavigate } from 'react-router-dom';
 
 const Mycart = () => {
-  const navigate = useNavigate() ; 
+  const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -107,15 +107,13 @@ const Mycart = () => {
       });
       console.log(result.data.order.id);
       navigate(`/order_item/${result.data.order.id}`)
-      // Use id from result and navigate to order using the appropriate function 
+      
     } catch (err) {
       console.log(err);
     }
   };
-
   const handleCheckout = async () => {
-    if (paymentMethod === 'cash') {
-      // Proceed with order creation
+    if (paymentMethod === 'Cash') {
       await createOrder();
     }
   };
@@ -123,56 +121,62 @@ const Mycart = () => {
   return (
     <>
       <br />
-      <Box sx={{ width: '50%', bgcolor: 'background.paper', padding: 2, boxShadow: 3, borderRadius: 2, margin: 'auto' }}>
+      <Box sx={{ width: '50%', bgcolor: 'background.paper', padding: 2, boxShadow: 3, borderRadius: 2, margin: 'auto', marginBottom:3}}>
         <Typography variant="h5" component="div" style={{ color: 'black' }} gutterBottom>
           Shopping Cart
+      </Typography>
+      <List>
+        {cartItems.map((item) => (
+          <React.Fragment key={item.cart_item_id}>
+            <ListItem sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <img src={item.menu_item_image_url} alt={item.menu_item_name} style={{ width: 100, height: 100, borderRadius: 1 }} />
+                <ListItemText sx={{ ml: 2 }}>
+                  <Typography variant="body1" color="text.primary">{item.menu_item_name}</Typography>
+                  <Typography variant="body2" color="text.secondary">${item.menu_item_price}</Typography>
+                </ListItemText>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <IconButton onClick={() => handleIncrement(item.cart_item_id)} color="primary"> <AddIcon /> </IconButton>
+                <Typography variant="body2" color="text.primary" sx={{ mx: 1 }}>{item.quantity}</Typography>
+                <IconButton onClick={() => handleDecrement(item.cart_item_id)} color="primary"> <RemoveIcon /> </IconButton>
+                <IconButton onClick={() => handleDelete(item.cart_item_id)} color="error"> <DeleteIcon /> </IconButton>
+              </Box>
+            </ListItem>
+            <Divider />
+          </React.Fragment>
+        ))}
+      </List>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', mt: 2 }}>
+        <Typography variant="h6" color="text.primary">
+          Delivery Fees: ${Number(fees).toFixed(2)}
         </Typography>
-        <List>
-          {cartItems.map((item) => (
-            <React.Fragment key={item.cart_item_id}>
-              <ListItem style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <img src={item.menu_item_image_url} style={{ width: '100px', height: '100px' }} />
-                <ListItemText style={{ marginLeft: '20px', color: 'black' }} primary={item.menu_item_name} secondary={`$${item.menu_item_price}`} />
-                <IconButton onClick={() => handleIncrement(item.cart_item_id)}> <AddIcon /> </IconButton>
-                <Typography style={{ color: "black" }}>{item.quantity}</Typography>
-                <IconButton onClick={() => handleDecrement(item.cart_item_id)}> <RemoveIcon /> </IconButton>
-                <IconButton onClick={() => handleDelete(item.cart_item_id)} edge="end" aria-label="delete" >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItem>
-              <Divider />
-            </React.Fragment>
-          ))}
-        </List>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginTop: 2 }}>
-  <Typography variant="h6" color="black" sx={{ fontWeight: 'bold' }}>
-    Delivery Fees: ${Number(fees).toFixed(2)}
-  </Typography>
-  <Typography variant="h5" color="black" sx={{ fontWeight: 'bold', mt: 1 }}>
-    Total: ${Number(totalPrice).toFixed(2)}
-  </Typography>
-</Box>
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel>Payment Method</InputLabel>
-          <Select
-            value={paymentMethod}
-            label="Payment Method"
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          >
-            <MenuItem value="cash">Cash on Delivery</MenuItem>
-            <MenuItem value="online">Online Payment</MenuItem>
-          </Select>
-        </FormControl>
-        {paymentMethod === 'online' ? (
-          <CheckoutForm totalAmount={totalPrice} createOrder={createOrder} />
-        ) : (
-          <Button onClick={handleCheckout} variant="contained" color="primary" sx={{ mt: 2 }} disabled={!paymentMethod}>
-            Checkout and submit order
-          </Button>
-        )}
+        <Typography variant="h5" color="text.primary" sx={{ fontWeight: 'bold', mt: 1 }}>
+          Total: ${Number(totalPrice).toFixed(2)}
+        </Typography>
       </Box>
+      <FormControl fullWidth sx={{ mt: 3 }}>
+        <InputLabel>Payment Method</InputLabel>
+        <Select
+          value={paymentMethod}
+          label="Payment Method"
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
+          <MenuItem value="Cash">Cash on Delivery</MenuItem>
+          <MenuItem value="Online">Online Payment</MenuItem>
+        </Select>
+      </FormControl>
+      {paymentMethod === 'Online' ? (
+        <CheckoutForm totalAmount={totalPrice} createOrder={createOrder} sx={{ mt: 2 }} />
+      ) : (
+        <Button onClick={handleCheckout} variant="contained" color="primary" sx={{ mt: 2 }} disabled={!paymentMethod}>
+          Checkout and Submit Order
+        </Button>
+      )}
+    </Box>
     </>
   );
+  
 }
 
 export default Mycart;

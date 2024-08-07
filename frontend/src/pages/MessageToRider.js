@@ -16,26 +16,29 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 
-function MessageRider({ socket, user_id }) {
+const MessageRider = ({ socket, user_id }) => {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [name, setName] = useState([]);
-
   const { userId } = useSelector((state) => ({
     userId: state.auth.userId,
   }));
+  console.log(userId);
+  // console.log(userId);
+  const getRiderById = () => {
+    axios
+      .get(`http://localhost:5000/riders/${userId}`)
+      .then((result) => {
+        setName(result.data.result.first_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  // const getRiderById = (id) => {
-  //   axios
-  //     .get(`http://localhost:5000/riders/${id}`)
-  //     .then((result) => {
-  //       setName(result.data);
-  //       console.log(result.data, "hi");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  useEffect(() => {
+    getRiderById();
+  }, []);
 
   useEffect(() => {
     const receiveMessage = (data) => {
@@ -52,18 +55,18 @@ function MessageRider({ socket, user_id }) {
   const sendMessage = () => {
     socket.emit("message", {
       to: user_id,
-      from: localStorage.getItem("rider_id"),
+      from: name,
       message,
     });
     setMessage("");
   };
 
   return (
-    <Box p={2}>
+    <Box p={2} style={{ width: 400 }}>
+
       <Typography variant="h4" gutterBottom>
         Messages
       </Typography>
-
       {allMessages.length > 0 && (
         <Paper style={{ padding: "20px" }}>
           <Typography variant="h6" gutterBottom>
@@ -72,32 +75,24 @@ function MessageRider({ socket, user_id }) {
           <Divider style={{ marginBottom: "10px" }} />
           <List>
             {allMessages.map((msg, index) => (
+              
               <ListItem
                 key={index}
                 alignItems="flex-start"
                 style={{
                   justifyContent:
-                    msg.from === localStorage.getItem("rider_id")
+                    msg.from === name
                       ? "flex-end"
                       : "flex-start",
                 }}
               >
                 <ListItemText
-                  primary={`from: ${msg.from}`}
+                  primary={`${msg.from}`}
                   secondary={msg.message}
                   style={{
-                    textAlign:
-                      msg.from === localStorage.getItem("rider_id")
-                        ? "right"
-                        : "left",
-                    marginLeft:
-                      msg.from !== localStorage.getItem("rider_id")
-                        ? "10px"
-                        : "0",
-                    marginRight:
-                      msg.from === localStorage.getItem("rider_id")
-                        ? "10px"
-                        : "0",
+                    textAlign: msg.from === name ? "right" : "left",
+                    marginLeft: msg.from !== name ? "10px" : "0",
+                    marginRight: msg.from === name ? "10px" : "0",
                   }}
                 />
               </ListItem>
@@ -132,6 +127,6 @@ function MessageRider({ socket, user_id }) {
       </Paper>
     </Box>
   );
-}
+};
 
 export default MessageRider;

@@ -9,6 +9,8 @@ import partnerImage from "../../assets/images/gallery-1.jpg";
 import riderImage from "../../assets/images/about.jpg";
 import joinFamilyImage from "../../assets/images/bg_2.jpg";
 
+import Comments from "../Comments";
+
 import "./Home.css";
 
 const Home = () => {
@@ -33,8 +35,22 @@ const Home = () => {
                 Explore a wide variety of cuisines and dishes
               </Typography>
               <Button
-                variant="contained"
-                color="primary"
+                sx={{
+                  color: 'white',
+                  fontWeight: '500',
+                  borderRadius: '20px',
+                  padding: '10px 20px',
+                  textTransform: 'none',
+                  backgroundColor: '#2E7D32',
+                  '&:hover': {
+                    backgroundColor: '#388e3c',
+                    color: '#ffd700',
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#4CAF50',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
                 component={Link}
                 to="/restaurants"
               >
@@ -54,8 +70,22 @@ const Home = () => {
                 Grow your business with us
               </Typography>
               <Button
-                variant="contained"
-                color="secondary"
+                sx={{
+                  color: 'white',
+                  fontWeight: '500',
+                  borderRadius: '20px',
+                  padding: '10px 20px',
+                  textTransform: 'none',
+                  backgroundColor: '#2E7D32',
+                  '&:hover': {
+                    backgroundColor: '#388e3c',
+                    color: '#ffd700',
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#4CAF50',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
                 component={Link}
                 to="/become-partner"
               >
@@ -75,8 +105,22 @@ const Home = () => {
                 Earn money on your schedule
               </Typography>
               <Button
-                variant="contained"
-                color="success"
+                sx={{
+                  color: 'white',
+                  fontWeight: '500',
+                  borderRadius: '20px',
+                  padding: '10px 20px',
+                  textTransform: 'none',
+                  backgroundColor: '#2E7D32',
+                  '&:hover': {
+                    backgroundColor: '#388e3c',
+                    color: '#ffd700',
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#4CAF50',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
                 component={Link}
                 to="/become-rider"
               >
@@ -100,8 +144,22 @@ const Home = () => {
                 Sign up and start your journey with us
               </Typography>
               <Button
-                variant="contained"
-                color="info"
+                sx={{
+                  color: 'white',
+                  fontWeight: '500',
+                  borderRadius: '20px',
+                  padding: '10px 20px',
+                  textTransform: 'none',
+                  backgroundColor: '#2E7D32',
+                  '&:hover': {
+                    backgroundColor: '#388e3c',
+                    color: '#ffd700',
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#4CAF50',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
                 component={Link}
                 to="/signup"
               >
@@ -111,6 +169,10 @@ const Home = () => {
           </Box>
         </div>
       </Carousel>
+
+     
+      <Comments/>
+    
 
       {/* Top Rated Restaurants Section */}
       <Box sx={{ backgroundColor: '#f5f5f5', padding: '40px 0' }}>
@@ -182,6 +244,7 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
+
     </div>
   );
 };

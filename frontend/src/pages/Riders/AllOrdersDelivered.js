@@ -1,6 +1,6 @@
 import axios from "axios";
-import socketInit from "../socketServer"
-import MessageRider from "../MessageToRider"
+import socketInit from "../socketServer";
+import MessageRider from "../MessageToRider";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -48,7 +48,7 @@ const AllOrdersDelivered = () => {
         }
       );
       setOrders(result.data.result);
-      // adding user id 
+      // adding user id
       setUser(result.data.result[0].user_id);
       console.log();
     } catch (err) {
@@ -87,7 +87,7 @@ const AllOrdersDelivered = () => {
       console.log(err);
     }
   };
-  
+
   const accept = async () => {
     setOpen(false);
     try {
@@ -110,7 +110,7 @@ const AllOrdersDelivered = () => {
       console.log(err);
     }
   };
-console.log(orders);
+  console.log(orders);
   const handleClose = () => {
     setOpen(false);
   };
@@ -206,14 +206,16 @@ console.log(orders);
             </Button>
           </DialogActions>
         </Dialog>
-        <div>
-          <button
+        <div style={{ marginTop: "20px", marginLeft:"23px" }}>
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => {
               setSocket(socketInit({ rider_id: rider_id, userId: userId }));
             }}
           >
-            connect
-          </button>
+            Chat To Customer
+          </Button>
           {isConnected && <MessageRider socket={socket} user_id={user} />}
         </div>
       </>
