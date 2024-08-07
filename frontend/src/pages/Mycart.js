@@ -175,8 +175,8 @@ const Mycart = () => {
       )}
     </Box>
     </>
-
   );
+  
 }
 
 export default Mycart;
