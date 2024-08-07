@@ -154,6 +154,7 @@ export const router = createBrowserRouter([
           { path: "profile", element: <Profile /> },
         ],
       },
+
       {
         path: "profile_user",
         element: <PrivateRoute requiredRole={['Customer']}><ProfileUser /></PrivateRoute>,
@@ -186,6 +187,7 @@ export const router = createBrowserRouter([
         path: "services",
         element: <Services />,
       },
+
     ],
   },
 ]);

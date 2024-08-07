@@ -123,7 +123,7 @@ const RestaurantDetails = () => {
       </Typography>
     );
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" >
       <Box
         sx={{
           display: "flex",

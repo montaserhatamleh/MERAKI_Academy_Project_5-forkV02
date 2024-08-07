@@ -59,7 +59,7 @@ const ViewItems = () => {
 
   if (!items.length) {
     return (
-      <Container>
+      <Container style={{height:"700px"}}>
         {message && (
           <Typography variant="h5" color="error">
             {message}
@@ -71,7 +71,7 @@ const ViewItems = () => {
   }
 
   return (
-    <Container>
+    <Container style={{alignItems:"center" , background:"white" , padding:"15px" , height:"100%"}}>
       <Typography variant="h4" gutterBottom color="black">
         Menu Items
       </Typography>

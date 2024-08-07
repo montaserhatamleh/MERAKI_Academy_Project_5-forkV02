@@ -42,7 +42,7 @@ const PreparedOrders = () => {
 
   if (!orders.length) {
     return (
-      <Container>
+      <Container style={{height:"700px"}}>
         {message && <Typography variant="h5" color="error">{message}</Typography>}
         <Typography variant="h6">Loading...</Typography>
       </Container>
@@ -50,7 +50,7 @@ const PreparedOrders = () => {
   }
 
   return (
-    <Container>
+    <Container style={{height:"500px"}}>
       <Typography variant="h4" gutterBottom>Prepared Orders</Typography>
       <Grid container spacing={3}>
         {orders.map(order => (
