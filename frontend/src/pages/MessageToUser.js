@@ -43,7 +43,7 @@ const MessageUser = ({ socket, raider_id }) => {
   };
 
   useEffect(() => {
-    findUserById()
+    findUserById();
     const receiveMessage = (data) => {
       setAllMessages((prevMessages) => [...prevMessages, data]);
     };
@@ -65,8 +65,13 @@ const MessageUser = ({ socket, raider_id }) => {
   };
 
   return (
-    <Box p={2} style={{width:400}} >
-      <Typography variant="h4" gutterBottom >
+    <Box
+      p={2}
+      style={{
+        width: 400,
+      }}
+    >
+      <Typography variant="h4" gutterBottom>
         Messages
       </Typography>
       {allMessages.length > 0 && (
@@ -89,7 +94,7 @@ const MessageUser = ({ socket, raider_id }) => {
               >
                 <ListItemText
                   primary={` ${msg.from}`}
-                  secondary={msg.message } 
+                  secondary={msg.message}
                   style={{
                     textAlign: msg.from === user ? "right" : "left",
                     marginLeft: msg.from === user ? "0" : "10px",
@@ -105,7 +110,6 @@ const MessageUser = ({ socket, raider_id }) => {
         style={{ padding: "20px", marginBottom: "20px", marginTop: "20px" }}
       >
         <Box display="flex" alignItems="center">
-     
           <TextField
             fullWidth
             label="Message"
@@ -118,7 +122,7 @@ const MessageUser = ({ socket, raider_id }) => {
               }
             }}
           />
-     
+
           <IconButton
             color="primary"
             onClick={sendMessage}

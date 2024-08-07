@@ -18,11 +18,11 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#2E7D32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#D55E32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '0 40px', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton component={Link} to="/" sx={{ color: 'white', marginRight: 2 }}>
-            <RestaurantIcon sx={{ fontSize: 40 }} /> 
+            <RestaurantIcon sx={{ fontSize: 40 }} />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.5rem' }} className="feedme-logo">
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }} className="feedme-link">

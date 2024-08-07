@@ -3,9 +3,9 @@ import { Box, Typography, Link, Container, Divider } from '@mui/material';
 
 const Footer = () => {
   return (
-    <Box sx={{ backgroundColor: '#333', color: 'white', padding: '40px 0', borderTop: '1px solid #444' }}>
+    <Box sx={{ backgroundColor: '#333', color: 'white', padding: '.5rem', borderTop: '1px solid #444' }}>
       <Container maxWidth="lg">
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
           <Box sx={{ flex: 1, minWidth: 180 }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>Company</Typography>
             <Link href="/" color="inherit" underline="hover" sx={{ display: 'block', mb: 1 }}>Home</Link>
