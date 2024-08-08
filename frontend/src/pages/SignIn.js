@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import rr from "../assets/images/restaurants11.jpg"
+import rr from "../assets/images/loging_reg_1x.jpg"
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken, setUserId, setRole } from "../redux/auth";
