@@ -20,11 +20,11 @@ const TemporaryDrawer = () => {
     setOpen(newOpen);
   };
 
-  const handelRiderRegistretion = () => {
-    navigate("/admin/get_All_Rider_registretion");
+  const handelRiderRegistration = () => {
+    navigate("/admin/get_All_Rider_Registration");
   };
   const handelUser = () => {
-    navigate("/admin");
+    navigate("/admin/get_all_users");
   };
   const handelRider = () => {
     navigate("admin/get_all_riders");
@@ -61,7 +61,7 @@ const TemporaryDrawer = () => {
             <ListItemIcon>
               <RestaurantIcon />
             </ListItemIcon>
-            <ListItemText primary={"get all owner or Restaurants"} />
+            <ListItemText primary={"get all Restaurants"} />
           </ListItemButton>
         </ListItem>
 
@@ -70,16 +70,16 @@ const TemporaryDrawer = () => {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={"get all owner Resgertion pending"} />
+            <ListItemText primary={"get all owner Registration pending"} />
           </ListItemButton>
         </ListItem>
 
         <ListItem disablePadding>
-          <ListItemButton onClick={handelRiderRegistretion}>
+          <ListItemButton onClick={handelRiderRegistration}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={"get all riders Resgertion pending"} />
+            <ListItemText primary={"get all riders Registration pending"} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -96,8 +96,7 @@ const TemporaryDrawer = () => {
         compone
         onClick={toggleDrawer(true)}
       >
-        Dash Bord
-      </Button>
+Admin Dashboard      </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

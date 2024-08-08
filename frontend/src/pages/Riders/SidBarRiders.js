@@ -25,7 +25,7 @@ const Profile = () => {
  };
 
  const handelAllOrderReady = () => {
-    navigate("/rider");
+    navigate("/rider/ready");
 };
 
   const handelAllOnTheWay = () => {
