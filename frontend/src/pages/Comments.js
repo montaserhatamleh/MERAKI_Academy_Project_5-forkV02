@@ -5,7 +5,7 @@ import siomn from "../assets/images/big-breakfast.jpg";
 import person from "../assets/images/4f3f09ae980b9192aaf66d0cc0bb26a9.jpg";
 const comments = [
   {
-    name: "Omer",
+    name: "Omar",
     image:siomn,
     comment: "The website is very user-friendly and easy to navigate. I found the information I needed without any hassle",
 

@@ -87,9 +87,11 @@ const getOrderById = async (req, res) => {
     if (orderResult.rows[0].status == "Accepted by Rider") {
       try {
         ridersResult = await pool.query(
-          `SELECT users.first_name,users.last_name, users.phone_number FROM orders 
+          `SELECT users.first_name,users.last_name, users.phone_number,restaurants.name FROM orders 
             INNER JOIN riders ON orders.rider_id = riders.id 
             INNER JOIN users ON riders.user_id = users.id 
+            INNER JOIN restaurants ON orders.restaurant_id = restaurants.id 
+
             WHERE orders.id = $1`,
           [id]
         );
