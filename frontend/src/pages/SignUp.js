@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Container } from '@mui/material';
+import { TextField, Button, Box, Typography } from '@mui/material';
 import axios from 'axios';
-
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import order from "../assets/images/order.jpg"
 const SignUp = () => {
   const [user, setUser] = useState({
     email: "",
@@ -20,7 +24,7 @@ const SignUp = () => {
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-
+  
   const handleSignUp = async () => {
     try {
       const result = await axios.post('http://localhost:5000/users/signup', user);
@@ -37,29 +41,43 @@ const SignUp = () => {
       }    }
   };
 
+   const defaultTheme = createTheme();
   return (
-    <Container maxWidth="xl">
-      <Box
-        sx={{
-          width:"100%",
-          backgroundColor: "white",
-          padding: "20px",
-          margin: "auto",
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-          borderRadius: "8px",
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          maxWidth: "500px", 
-          marginBottom:"50px",
-        }}
-      >
+     <ThemeProvider theme={defaultTheme}>
+       <Grid container component="main" sx={{ height: '100vh' }}>
+         <CssBaseline />
+         <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              `url(${order})`,
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'left',
+          }}
+        />
+        <Grid style={{display:"flex" , justifyContent:"center"}} item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width:"70%", 
+              justifyContent:"center"
+
+            }}
+          >
         <Typography component="h1" variant="h5" color="black">
           Sign Up
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
-        <Box component="form" onSubmit={(e) => e.preventDefault()} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={(e) => e.preventDefault()}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -193,7 +211,10 @@ const SignUp = () => {
           </Button>
         </Box>
       </Box>
-    </Container>
+      </Grid>
+      </Grid>
+      </ThemeProvider>
+
   );
 };
 

@@ -64,11 +64,11 @@ const UpdateItem = () => {
   };
 
   return (
-    <Container maxWidth="md" >
-      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container style={{background:"white"}} maxWidth="md" >
+      <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' , color:"black" }}>
         <Typography component="h1" variant="h5">Update Item</Typography>
         {message && <Typography color="error">{message}</Typography>}
-        <Box component="form" sx={{ mt: 3 }} onSubmit={handleUpdate}>
+        <Box component="form" sx={{ mt: 3 , color:"black" }} onSubmit={handleUpdate}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -78,8 +78,8 @@ const UpdateItem = () => {
             label="Item Name"
             value={item.name}
             onChange={handleChange}
-            InputProps={{ style: { color: 'white' } }}
-            InputLabelProps={{ style: { color: 'white' } }}
+            InputProps={{ style: { color: 'black' } }}
+            InputLabelProps={{ style: { color: 'black' } }}
             sx={{ marginBottom: 2 }}
           />
           <TextField
@@ -92,8 +92,8 @@ const UpdateItem = () => {
             onChange={handleChange}
             multiline
             rows={4}
-            InputProps={{ style: { color: 'white' } }}
-            InputLabelProps={{ style: { color: 'white' } }}
+            InputProps={{ style: { color: 'black' } }}
+            InputLabelProps={{ style: { color: 'black' } }}
             sx={{ marginBottom: 2 }}
           />
           <TextField
@@ -105,8 +105,8 @@ const UpdateItem = () => {
             type="number"
             value={item.price}
             onChange={handleChange}
-            InputProps={{ style: { color: 'white' } }}
-            InputLabelProps={{ style: { color: 'white' } }}
+            InputProps={{ style: { color: 'black' } }}
+            InputLabelProps={{ style: { color: 'black' } }}
             sx={{ marginBottom: 2 }}
           />
           <TextField
@@ -117,8 +117,8 @@ const UpdateItem = () => {
             label="Sub Category"
             value={item.sub_category}
             onChange={handleChange}
-            InputProps={{ style: { color: 'white' } }}
-            InputLabelProps={{ style: { color: 'white' } }}
+            InputProps={{ style: { color: 'black' } }}
+            InputLabelProps={{ style: { color: 'black' } }}
             sx={{ marginBottom: 2 }}
           />
           <TextField
@@ -129,8 +129,8 @@ const UpdateItem = () => {
             label="Available"
             value={item.available ? "Available" : "Not Available"}
             onChange={handleChange}
-            InputProps={{ style: { color: 'white' } }}
-            InputLabelProps={{ style: { color: 'white' } }}
+            InputProps={{ style: { color: 'black' } }}
+            InputLabelProps={{ style: { color: 'black' } }}
             sx={{ marginBottom: 2 }}
           />
           <TextField
@@ -140,8 +140,8 @@ const UpdateItem = () => {
             name="image"
             label="Item Image"
             type="file"
+            InputLabelProps={{ shrink: true }}
             onChange={handleChange}
-            InputLabelProps={{ style: { color: 'white' } }}
             sx={{ marginBottom: 2 }}
           />
           <Button

@@ -30,7 +30,7 @@ const toggleDrawer = (newOpen) => () => {
   const DrawerList = (
     <Box sx={{ overflow: "auto" }}>
           <List>
-            <ListItem button component={Link} to="/restaurant_owner/view-info">
+            <ListItem button component={Link} to="/restaurant_owner">
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
