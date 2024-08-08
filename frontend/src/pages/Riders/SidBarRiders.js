@@ -54,7 +54,7 @@ const Profile = () => {
             <ListItemIcon>
               <TwoWheelerIcon />
             </ListItemIcon>
-            <ListItemText primary={"All Order Ready"} />
+            <ListItemText primary={"ready to pick up orders"} />
           </ListItemButton>
         </ListItem>
 
@@ -63,7 +63,7 @@ const Profile = () => {
             <ListItemIcon>
               <RestaurantIcon />
             </ListItemIcon>
-            <ListItemText primary={"All Order On Way"} />
+            <ListItemText primary={"Accepted Orders"} />
           </ListItemButton>
         </ListItem>
 
@@ -72,7 +72,7 @@ const Profile = () => {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={"All Delivered Orders"} />
+            <ListItemText primary={"on the way orders"} />
           </ListItemButton>
         </ListItem>
 
@@ -81,7 +81,7 @@ const Profile = () => {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={"All Complete Order"} />
+            <ListItemText primary={"orders history"} />
           </ListItemButton>
         </ListItem>
       </List>
