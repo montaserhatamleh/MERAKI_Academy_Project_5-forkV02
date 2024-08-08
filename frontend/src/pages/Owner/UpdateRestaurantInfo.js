@@ -40,7 +40,7 @@ const UpdateRestaurantInfo = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{height:"700px"}}>
+    <Container maxWidth="md" style={{height:"700px" , background:"white"}}>
       <Box
         sx={{
           width: "100%",

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Box, Typography, Container } from "@mui/material";
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
+import riderImge from "../assets/images/food.jpeg"
 
 const BecomeRider = () => {
   const [rider, setRider] = useState({
@@ -41,33 +46,48 @@ const BecomeRider = () => {
       }
     }
   };
+  const defaultTheme = createTheme();
 
   return (
-    <Container maxWidth="xl">
-      <Box
-        sx={{
-         width:"100%",
-          backgroundColor: "white",
-          padding: "20px",
-          margin: "auto",
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-          borderRadius: "8px",
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          maxWidth: "500px", 
-          marginBottom:"50px",
-        }}
-      >
+    <ThemeProvider theme={defaultTheme}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+       item
+       xs={false}
+       sm={4}
+       md={7}
+       sx={{
+         backgroundImage:
+           `url(${riderImge})`,
+         backgroundColor: (t) =>
+           t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[800],
+         backgroundSize: 'cover',
+         backgroundPosition: 'left',
+       }}
+     />
+     <Grid item  style={{display:"flex" , justifyContent:"center"}} xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+       <Box
+         sx={{
+           my: 8,
+           mx: 4,
+           display: 'flex',
+           flexDirection: 'column',
+           alignItems: 'center',
+           width:"70%", 
+           justifyContent:"center"
+         }}
+       >
+
         <Typography component="h1" variant="h5" color="black">
           Become a Rider
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
         <Box
           component="form"
+          noValidate
           onSubmit={(e) => e.preventDefault()}
-          sx={{ mt: 1 }}
+          
         >
           <TextField
             variant="outlined"
@@ -210,7 +230,9 @@ const BecomeRider = () => {
           </Button>
         </Box>
       </Box>
-    </Container>
+      </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 };
 

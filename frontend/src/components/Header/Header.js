@@ -37,16 +37,16 @@ const Header = () => {
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           {!token ? (
             <>
-              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/signin">
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/signin">
                 Sign In
               </Button>
-              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/signup">
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/signup">
                 Sign Up
               </Button>
-              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/become-partner">
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/become-partner">
                 Become a Partner
               </Button>
-              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/become-rider">
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/become-rider">
                 Become a Rider
               </Button>
             </>
@@ -60,10 +60,10 @@ const Header = () => {
               )}
               {role === 'Customer' && (
                 <>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/userOrders">
+                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/userOrders">
                     My Orders
                   </Button>
-                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} component={Link} to="/profile_user">
+                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/profile_user">
                     Profile
                   </Button>
                 </>
@@ -73,7 +73,7 @@ const Header = () => {
                  <SidBarRider/>
                 </>
               )}
-              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }} onClick={handleLogout}>
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} onClick={handleLogout}>
                 Sign Out
               </Button>
             </>

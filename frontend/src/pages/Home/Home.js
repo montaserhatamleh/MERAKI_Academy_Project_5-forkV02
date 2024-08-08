@@ -11,6 +11,7 @@ import joinFamilyImage from "../../assets/images/bg_2.jpg";
 
 import Comments from "../Comments";
 
+
 import "./Home.css";
 
 const Home = () => {
@@ -244,6 +245,8 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
+
+ 
 
     </div>
   );

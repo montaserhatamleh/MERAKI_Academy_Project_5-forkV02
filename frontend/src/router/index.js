@@ -133,7 +133,7 @@ export const router = createBrowserRouter([
         path: "restaurant_owner",
         element: <PrivateRoute requiredRole={['Restaurant Owner']}><Owner /></PrivateRoute>,
         children: [
-          { path: "view-info", element: <ViewRestaurantInfo /> },
+          { path: "/restaurant_owner", element: <ViewRestaurantInfo /> },
           { path: "update-info", element: <UpdateRestaurantInfo /> },
           { path: "view-item", element: <ViewItems /> },
           { path: "add-item", element: <AddItem /> },
