@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
   List,
+  Box,
   ListItem,
   ListItemText,
   Divider,
@@ -112,100 +113,111 @@ const OrderItems = () => {
       console.log(err);
     }
   };
-  return (
-    <div>
-      <Container sx={{ paddingBottom: 6 }}>
-        <Paper elevation={3} style={{ padding: "20px", marginTop: "20px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h5" gutterBottom>
-                Order
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Date: {new Date(orderItems.created_at).toLocaleString()}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Payment Method: {orderItems.payment_method}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Status: {orderItems.status}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Address: {orderItems.delivery_address}
-              </Typography>
-              {orderItems.status === "Accepted by Rider" ? (
-                <>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Name Rider: {orderItems.rider.first_name}
-                  </Typography>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Phone Number : {orderItems.rider.phone_number}
-                  </Typography>
-                </>
-              ) : (
-                " "
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Image</TableCell>
-                      <TableCell>Item</TableCell>
-                      <TableCell>Price</TableCell>
-                      <TableCell>Quantity</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {orderItems.items.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <img
-                            style={{ width: "100px", height: "100px" }}
-                            alt={item.name}
-                            src={item.image_url}
-                            variant="square"
-                          />
-                        </TableCell>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.price}</TableCell>
-                        <TableCell>{item.quantity}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid>
-            <Grid item xs={12}>
-              <Divider />
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary="Total"
-                    secondary={orderItems.total_price}
-                  />
-                </ListItem>
-              </List>
-            </Grid>
+  return  (
+    <Container sx={{ paddingBottom: 6 }}>
+      <Paper elevation={3} sx={{ padding: 3, marginTop: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h5" gutterBottom>
+              <strong>Order Details</strong>
+            </Typography>
           </Grid>
-        </Paper>
-        <div style={{ marginTop: "20px" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              setSocket(socketInit({ user_id: userId, rider_id: rider_id }))
-            }
-          >
-            Chat To Rider
-          </Button>
-          {isConnected && <MessageUser socket={socket} userId={userId} />}
-        </div>
-      </Container>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>Date:</strong> {new Date(orderItems.created_at).toLocaleString()}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>Payment Method:</strong> {orderItems.payment_method}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>Restaurant Name:</strong> {orderItems.rider.name}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>Status:</strong> {orderItems.status}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>Address:</strong> {orderItems.delivery_address}
+            </Typography>
+            {(orderItems.status === "Accepted by Rider" || orderItems.status === "On the Way") && (
+              <>
+                <Typography variant="subtitle1" gutterBottom>
+                  <strong>Rider Name:</strong> {orderItems.rider.first_name}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  <strong>Rider Phone Number:</strong> {orderItems.rider.phone_number}
+                </Typography>
+                
+                <Typography variant="subtitle1" gutterBottom>
+                  <strong>Rider Vehicle:</strong> {orderItems.rider.vehicle_details}
+                </Typography>
+                <Box sx={{ marginTop: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      setSocket(socketInit({ user_id: userId, rider_id: rider_id }))
+                    }
+                  >
+                    Chat To Rider
+                  </Button>
+                </Box>
+              </>
+            )}
+            {isConnected && (
+              <Box
+              >
+                <MessageUser socket={socket} userId={userId} />
+              </Box>
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell><strong>Image</strong></TableCell>
+                    <TableCell><strong>Item</strong></TableCell>
+                    <TableCell><strong>Price</strong></TableCell>
+                    <TableCell><strong>Quantity</strong></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {orderItems.items.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <img
+                          style={{ width: "100px", height: "100px" }}
+                          alt={item.name}
+                          src={item.image_url}
+                          variant="square"
+                        />
+                      </TableCell>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>${item.price}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+            <List>
+              <ListItem>
+                <ListItemText
+                  primary="Total"
+                  secondary={<Typography variant="h6"><strong>${orderItems.total_price}</strong></Typography>}
+                />
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
+      </Paper>
 
+      <Typography variant="subtitle1" gutterBottom sx={{ marginTop: 2, textAlign: 'center', color: 'gray' }}>
+        If you have any problem with your order, contact us at <strong>+962787068115</strong>
+      </Typography>
       <Dialog open={open} onClose={handelClose}>
         <DialogTitle>Start Review</DialogTitle>
         <DialogContent>
@@ -221,8 +233,8 @@ const OrderItems = () => {
           <Button onClick={ratinghandler}>Submit</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Container>
   );
-};
+}
 
 export default OrderItems;

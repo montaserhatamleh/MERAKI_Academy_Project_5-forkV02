@@ -100,16 +100,17 @@ const AllOrdersOnWay = () => {
         <Container maxWidth="la">
           <Paper style={{ padding: "20px", marginBottom: "20px" }}>
             <Typography variant="h5" gutterBottom>
-              All OrdersOn The Way
-            </Typography>
+All my accepted orders            </Typography>
 
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>Restaurant</TableCell>
-                    <TableCell>Address</TableCell>
+                    <TableCell>delivery_address</TableCell>
                     <TableCell>Total</TableCell>
+                    <TableCell>payment_method</TableCell>
+
                     <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
@@ -125,6 +126,7 @@ const AllOrdersOnWay = () => {
                       <TableCell>{order.name}</TableCell>
                       <TableCell>{order.address}</TableCell>
                       <TableCell>{order.total_price}</TableCell>
+                      <TableCell>{order.payment_method}</TableCell>
                       <TableCell>{order.status}</TableCell>
                     </TableRow>
                   ))}
@@ -184,8 +186,7 @@ const AllOrdersOnWay = () => {
               Close
             </Button>
             <Button onClick={accept} color="primary">
-              Accept
-            </Button>
+Set to on the way            </Button>
           </DialogActions>
         </Dialog>
       </>

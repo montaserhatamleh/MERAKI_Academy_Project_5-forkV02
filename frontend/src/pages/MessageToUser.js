@@ -65,7 +65,16 @@ const MessageUser = ({ socket, raider_id }) => {
   };
 
   return (
-    <Box p={2} style={{width:400}} >
+    <>
+    <Box  sx={{
+      width: '100%',
+      height: "400px",
+      border: '1px solid #ccc',
+      borderRadius: 2,
+      overflow: 'scroll',
+      backgroundColor: '#fff',
+      marginTop: 2
+    }} >
       <Typography variant="h4" gutterBottom >
         Messages
       </Typography>
@@ -101,34 +110,34 @@ const MessageUser = ({ socket, raider_id }) => {
           </List>
         </Paper>
       )}
-      <Paper
-        style={{ padding: "20px", marginBottom: "20px", marginTop: "20px" }}
-      >
-        <Box display="flex" alignItems="center">
      
-          <TextField
-            fullWidth
-            label="Message"
-            variant="outlined"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-          />
-     
-          <IconButton
-            color="primary"
-            onClick={sendMessage}
-            style={{ marginLeft: "10px" }}
-          >
-            <SendIcon />
-          </IconButton>
-        </Box>
-      </Paper>
+      
     </Box>
+      <Box display="flex" alignItems="center">
+     
+      <TextField
+        fullWidth
+        label="Message"
+        variant="outlined"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        }}
+      />
+ 
+      <IconButton
+        color="primary"
+        onClick={sendMessage}
+        style={{ marginLeft: "10px" }}
+      >
+        <SendIcon />
+      </IconButton>
+    </Box>
+
+    </>
   );
 };
 

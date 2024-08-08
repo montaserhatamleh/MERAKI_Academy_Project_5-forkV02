@@ -17,7 +17,6 @@ import "./Home.css";
 const Home = () => {
   return (
     <div className="home">
-      {/* Carousel Section */}
       <Carousel
         autoPlay
         infiniteLoop
