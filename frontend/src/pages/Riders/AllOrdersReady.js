@@ -101,16 +101,18 @@ const AllOrdersReady = () => {
       <Container maxWidth="la">
         <Paper style={{ padding: "20px", marginBottom: "20px" }}>
           <Typography variant="h5" gutterBottom>
-            All Orders Ready
+All Ready to Pick Up Orders
           </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Restaurant</TableCell>
-                  <TableCell>Address</TableCell>
+                  <TableCell>Restaurant_Address</TableCell>
                   <TableCell>delivery_address</TableCell>
                   <TableCell>Total</TableCell>
+                  <TableCell>payment_method</TableCell>
+
                   <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
@@ -127,6 +129,8 @@ const AllOrdersReady = () => {
                       {order.delivery_address}
                     </TableCell>
                     <TableCell>{order.total_price}</TableCell>
+                    <TableCell>{order.payment_method}</TableCell>
+
                     <TableCell>{order.status}</TableCell>
                   </TableRow>
                 ))}

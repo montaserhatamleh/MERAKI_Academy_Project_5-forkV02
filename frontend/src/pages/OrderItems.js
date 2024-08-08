@@ -138,13 +138,17 @@ const OrderItems = () => {
             <Typography variant="subtitle1" gutterBottom>
               <strong>Address:</strong> {orderItems.delivery_address}
             </Typography>
-            {orderItems.status === "Accepted by Rider" && (
+            {(orderItems.status === "Accepted by Rider" || orderItems.status === "On the Way") && (
               <>
                 <Typography variant="subtitle1" gutterBottom>
                   <strong>Rider Name:</strong> {orderItems.rider.first_name}
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   <strong>Rider Phone Number:</strong> {orderItems.rider.phone_number}
+                </Typography>
+                
+                <Typography variant="subtitle1" gutterBottom>
+                  <strong>Rider Vehicle:</strong> {orderItems.rider.vehicle_details}
                 </Typography>
                 <Box sx={{ marginTop: 2 }}>
                   <Button

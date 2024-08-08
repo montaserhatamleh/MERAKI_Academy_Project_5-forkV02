@@ -76,16 +76,16 @@ const AllCompletedOrders = () => {
            
         <Paper style={{ padding: '20px', marginBottom: '20px' }}>
           <Typography variant="h5" gutterBottom>
-          All Completed Orders 
-          </Typography>
+my order History          </Typography>
       
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Restaurant</TableCell>
-                  <TableCell>Address</TableCell>
+                  <TableCell>delivery_address</TableCell>
                   <TableCell>Total</TableCell>
+                  <TableCell>method</TableCell>
                   <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
@@ -93,8 +93,11 @@ const AllCompletedOrders = () => {
                 {orders?.map((order) => (
                   <TableRow key={order.id} onClick={() => getItem(order.id)} hover>
                     <TableCell>{order.name}</TableCell>
-                    <TableCell>{order.address}</TableCell>
+                    <TableCell>{order.delivery_address}</TableCell>
                     <TableCell>{order.total_price}</TableCell>
+                    <TableCell>{order.payment_method
+                    }</TableCell>
+
                     <TableCell>{order.status}</TableCell>
                   </TableRow>
                 ))}
