@@ -68,7 +68,7 @@ const MessageUser = ({ socket, raider_id }) => {
     <>
       <Box
         sx={{
-          width: "100%",
+          width: "400px",
           height: "400px",
           border: "1px solid #ccc",
           borderRadius: 2,
@@ -113,7 +113,8 @@ const MessageUser = ({ socket, raider_id }) => {
           </Paper>
         )}
       </Box>
-      <Box display="flex" alignItems="center">
+      <Box   sx={{
+          width: "400px" }}  display="flex" alignItems="center">
         <TextField
           fullWidth
           label="Message"
