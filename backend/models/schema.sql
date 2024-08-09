@@ -81,6 +81,7 @@ CREATE TABLE restaurants (
   address TEXT,
   category VARCHAR,
   phone_number VARCHAR,
+  status VARCHAR(10) DEFAULT 'open',
   rating DECIMAL(5,2) DEFAULT 0.00,
   image_url TEXT, 
   delivery_fees DECIMAL(3,2) DEFAULT 0.00 ,
@@ -151,7 +152,7 @@ CREATE TABLE reviews (
     restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE ON UPDATE CASCADE,
     order_id INT REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
     rating INT CHECK (rating >= 1 AND rating <= 5),
-    comment TEXT,
+comment VARCHAR(50) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at BOOLEAN DEFAULT FALSE
 )

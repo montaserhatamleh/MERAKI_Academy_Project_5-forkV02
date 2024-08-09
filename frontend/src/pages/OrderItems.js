@@ -26,12 +26,15 @@ import {
   DialogActions,
   Button,
   Rating,
+  TextField
 } from "@mui/material";
 
 const OrderItems = () => {
   const id = useParams().id;
   console.log(id) ; 
   const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const [open, setOpen] = useState(false);
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -98,14 +101,17 @@ const OrderItems = () => {
   const handleRatingChange = (event, newValue) => {
     setRating(newValue);
   };
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
 
-  const ratinghandler = async () => {
+  const ratingHandler = async () => {
     const id = orderItems.restaurant_id;
     console.log(id);
     try {
       const result = await axios.post(
         `http://localhost:5000/reviews/rating/${id}`,
-        { rating, user_id: orderItems.user_id, id: orderItems.id },
+        { rating, comment,user_id: orderItems.user_id, id: orderItems.id },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -236,10 +242,20 @@ const OrderItems = () => {
             onChange={handleRatingChange}
             size="large"
           />
+            <TextField
+          label="Comment"
+          multiline
+          fullWidth
+          rows={4}
+          value={comment}
+          onChange={handleCommentChange}
+          variant="outlined"
+          margin="normal"
+        />
         </DialogContent>
         <DialogActions>
           <Button onClick={handelClose}>Cancel</Button>
-          <Button onClick={ratinghandler}>Submit</Button>
+          <Button onClick={ratingHandler}>Submit</Button>
         </DialogActions>
       </Dialog>
     </Container>

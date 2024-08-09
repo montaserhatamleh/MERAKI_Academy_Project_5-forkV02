@@ -45,7 +45,7 @@ const getReviewById = async (req, res) => {
 const createReview = async (req, res) => {
   // from 1 star to 5 stars
   // we can use two params
-  const { rating, user_id, id } = req.body;
+  const { rating, user_id, id,comment } = req.body;
   const restaurant_id = req.params.id;
 
   try {
@@ -53,11 +53,11 @@ const createReview = async (req, res) => {
     const result1 = await pool.query(query1, [id]);
 
     const query = `
-        INSERT INTO reviews (rating, user_id, restaurant_id,order_id)
-        VALUES ($1, $2, $3,$4)
+        INSERT INTO reviews (rating, user_id, restaurant_id,order_id,comment)
+        VALUES ($1, $2, $3,$4,$5)
         RETURNING *
       `;
-    const values = [rating, user_id, restaurant_id, id];
+    const values = [rating, user_id, restaurant_id, id,comment];
     const result = await pool.query(query, values);
     await updateRestaurantAverageRating();
 
