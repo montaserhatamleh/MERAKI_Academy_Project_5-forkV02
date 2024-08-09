@@ -42,7 +42,7 @@ const OrderItems = () => {
     userId: state.auth.userId,
     rider_id: state.auth.rider_id,
   }));
-  const [orderItems, setOrderItems] = useState();
+  const [orderItems, setOrderItems] = useState("");
   const getItemsOrder = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/orders/${id}`, {
@@ -80,11 +80,16 @@ const OrderItems = () => {
   }, [socket]);
 
   useEffect(() => {
-    getItemsOrder();
-  }, [id, token]);
+    getItemsOrder(); 
 
+    const intervalId = setInterval(() => {
+      getItemsOrder(); 
+    }, 5000); 
+
+    return () => clearInterval(intervalId);
+  }, [id, token]);
   if (!orderItems) {
-    return <div>{"loding ...."}</div>;
+    return <div>{"loading ...."}</div>;
   }
 
   const handelClose = () => {
@@ -108,6 +113,8 @@ const OrderItems = () => {
           },
         }
       );
+      setOpen(false);
+
       console.log(result);
     } catch (err) {
       console.log(err);
@@ -130,7 +137,7 @@ const OrderItems = () => {
               <strong>Payment Method:</strong> {orderItems.payment_method}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
-              <strong>Restaurant Name:</strong> {orderItems.rider.name}
+              <strong>Restaurant Name:</strong> {orderItems.items[0].res_name}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
               <strong>Status:</strong> {orderItems.status}

@@ -84,7 +84,7 @@ const getOrderById = async (req, res) => {
       id,
     ]);
 
-    if (orderResult.rows[0].status == "Accepted by Rider") {
+    if (orderResult.rows[0].status == "Accepted by Rider"||orderResult.rows[0].status == "On the Way") {
       try {
         ridersResult = await pool.query(
           `SELECT users.first_name,users.last_name, users.phone_number,restaurants.name,riders.vehicle_details FROM orders 
@@ -111,9 +111,11 @@ const getOrderById = async (req, res) => {
     order = orderResult.rows[0];
 
     const orderItemsResult = await pool.query(
-      `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.price, menu_items.image_url 
+      `SELECT order_items.*, menu_items.name, menu_items.description, menu_items.price, menu_items.image_url ,    restaurants.name AS res_name
              FROM order_items 
              INNER JOIN menu_items ON order_items.menu_item_id = menu_items.id 
+                 INNER JOIN restaurants ON menu_items.restaurant_id = restaurants.id 
+
              WHERE order_items.order_id = $1`,
       [id]
     );
