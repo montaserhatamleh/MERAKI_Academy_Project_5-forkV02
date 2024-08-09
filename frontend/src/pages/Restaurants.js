@@ -175,13 +175,19 @@ function Restaurants() {
           {filteredRestaurants.map((elem, i) => (
             <Grid item xs={12} sm={6} md={4} key={i}>
               <Card
-                onClick={() => navigate(`/one/${elem.id}`)}
+                onClick={() => {
+                  if (elem.status !== "busy" && elem.status !== "closed") {
+                    navigate(`/one/${elem.id}`);
+                  }
+                }}
                 sx={{
                   minWidth: 300,
                   borderRadius: 3,
                   boxShadow: 3,
                   transition: "transform 0.3s",
-                  "&:hover": { transform: "scale(1.05)" },
+                  height:"400px",
+                  "&:hover": { transform: elem.status !== "busy" && elem.status !== "closed" ? "scale(1.05)" : "none" },
+                  backgroundColor: elem.status === "closed" ? "#f8d7da" : elem.status === "busy" ? "#fff3cd" : "inherit",
                 }}
               >
                 <CardContent>
@@ -211,6 +217,13 @@ function Restaurants() {
                   <Typography variant="body2" color="text.secondary">
                     <strong>Category:</strong> {elem.category}
                   </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontWeight: "bold", color: elem.status === "closed" ? "red" : elem.status === "busy" ? "orange" : "green" }}
+                  >
+                    <strong>Status:</strong> {elem.status}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -221,4 +234,4 @@ function Restaurants() {
   );
 }
 
-export default Restaurants
+export default Restaurants;

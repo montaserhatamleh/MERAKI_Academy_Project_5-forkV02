@@ -11,6 +11,10 @@ import {
   Paper,
   Box,
   Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 const Profile = () => {
@@ -24,7 +28,8 @@ const Profile = () => {
     email: "",
     phone_number: "",
     address: "",
-    vehicle_details: ""
+    vehicle_details: "",
+    status: "available" 
   });
 
   const findUserById = async () => {
@@ -40,10 +45,16 @@ const Profile = () => {
     try {
       await axios.put(`http://localhost:5000/riders/${userId}`, {
         vehicle_details: user.vehicle_details,
+        status: user.status, 
       });
       await axios.put(`http://localhost:5000/users/${userId}`, user);
       findUserById();
-    } catch (err) {
+
+      window.location.reload();
+
+    } 
+    
+    catch (err) {
       console.error("Error updating user data:", err);
     }
   };
@@ -82,6 +93,7 @@ const Profile = () => {
         <Divider sx={{ mb: 2 }} />
 
         <Grid container spacing={3}>
+          {/* Existing Fields */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -156,6 +168,21 @@ const Profile = () => {
               variant="outlined"
             />
           </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Status</InputLabel>
+              <Select
+                name="status"
+                value={user.status}
+                onChange={handleChange}
+                label="Status"
+              >
+                <MenuItem value="available">Available</MenuItem>
+                <MenuItem value="not available">Not Available</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -164,7 +191,7 @@ const Profile = () => {
             color="primary"
             size="large"
             onClick={updateProfile}
-            sx={{ width: '50%' }} // Make the button fill half the width
+            sx={{ width: '50%' }} 
           >
             Save Changes
           </Button>

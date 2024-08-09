@@ -2,20 +2,20 @@ const { pool } = require("../models/db");
 
 const updateRider = async (req, res) => {
   const { id } = req.params;
-  const { vehicle_details } = req.body;
+  const { vehicle_details, status } = req.body; 
   try {
     const query =
-      "UPDATE riders SET vehicle_details = COALESCE($1,vehicle_details) WHERE user_id= $2 RETURNING *";
-    const result = await pool.query(query, [vehicle_details, id]);
+      "UPDATE riders SET vehicle_details = COALESCE($1,vehicle_details), status = COALESCE($2, status) WHERE user_id = $3 RETURNING *";
+    const result = await pool.query(query, [vehicle_details, status, id]);
     if (result.rowCount === 0) {
       return res.status(200).json({
         success: false,
-        message: "Erorr Update",
+        message: "Error Update",
       });
     }
     res.status(200).json({
       success: true,
-      message: "updated successfully",
+      message: "Updated successfully",
       result: result.rows[0],
     });
   } catch (err) {
@@ -26,6 +26,8 @@ const updateRider = async (req, res) => {
     });
   }
 };
+
+
 //for admin
 const findAllRiders = async (req, res) => {
   try {
@@ -419,7 +421,7 @@ const getAllOrderIsDelivered = async (req, res) => {
     const query = `SELECT orders.*,restaurants.name,restaurants.address,users.first_name,users.last_name,users.phone_number FROM orders 
       INNER JOIN restaurants ON orders.restaurant_id = restaurants.id
       INNER JOIN users ON orders.user_id = users.id
-       WHERE status='Delivered' AND rider_id =$1`;
+       WHERE orders.status='Delivered' AND rider_id =$1`;
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)
@@ -461,7 +463,7 @@ const getAllOrderIsOnTheWay = async (req, res) => {
     const riderId = riderResult.rows[0].id;
     console.log(riderId);
     const query =
-      "SELECT orders.*,restaurants.name,restaurants.address FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id  WHERE status='On the Way' AND rider_id =$1";
+      "SELECT orders.*,restaurants.name,restaurants.address FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id  WHERE orders.status='On the Way' AND rider_id =$1";
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)
@@ -501,7 +503,7 @@ const getAllOrderIsAccepted = async (req, res) => {
 
     const riderId = riderResult.rows[0].id;
     const query = `SELECT orders.*,restaurants.name,users.first_name,users.last_name,users.address,users.phone_number FROM orders  INNER JOIN users ON orders.user_id = users.id 
-      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE status='Accepted by Rider' AND rider_id =$1`;
+      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE orders.status='Accepted by Rider' AND rider_id =$1`;
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)

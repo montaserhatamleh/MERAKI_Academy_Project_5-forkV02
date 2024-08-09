@@ -53,6 +53,8 @@ const GetAllOwner = () => {
       );
       console.log(accepted);
       setMessage(accepted.data.message);
+          window.location.reload();
+
     } catch (err) {
       console.log(err);
     }
@@ -69,6 +71,8 @@ const GetAllOwner = () => {
         }
       );
       setMessage(reject.data.message);
+      window.location.reload();
+
     } catch (err) {
       console.log(err);
     }

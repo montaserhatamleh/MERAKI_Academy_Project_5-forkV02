@@ -54,6 +54,8 @@ const GetAllRegister = () => {
           },
       );
       setMessage(accepted.data.message);
+      window.location.reload();
+
     } catch (err) {
       console.log(err);
     }
@@ -70,6 +72,8 @@ const GetAllRegister = () => {
       );
       console.log(reject);
       setMessage(reject.data.message);
+      window.location.reload();
+
     } catch (err) {
       console.log(err);
     }

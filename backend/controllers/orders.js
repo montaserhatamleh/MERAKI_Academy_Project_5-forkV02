@@ -80,11 +80,11 @@ const getOrderById = async (req, res) => {
   const { id } = req.params;
   let ridersResult;
   try {
-    const orderResult = await pool.query(`SELECT * FROM orders WHERE id = $1`, [
+    const orderResult = await pool.query(`SELECT orders.*,restaurants.name FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE orders.id = $1`, [
       id,
     ]);
-
     if (orderResult.rows[0].status == "Accepted by Rider"||orderResult.rows[0].status == "On the Way") {
+
       try {
         ridersResult = await pool.query(
           `SELECT users.first_name,users.last_name, users.phone_number,restaurants.name,riders.vehicle_details FROM orders 

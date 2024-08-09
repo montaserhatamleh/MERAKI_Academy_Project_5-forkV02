@@ -133,21 +133,46 @@ ORDER BY rating DESC LIMIT 5;`
     });
 };
 
-//function to update restaurant by id
 const updateRestaurantById = (req, res) => {
   const id = req.token.userId;
-  const { name, address, category, phone_number, delivery_fees, image_url } =
-    req.body;
+  const {
+    name,
+    address,
+    category,
+    phone_number,
+    delivery_fees,
+    image_url,
+    status,
+  } = req.body;
+
+  const updatedName = name || null;
+  const updatedAddress = address || null;
+  const updatedCategory = category || null;
+  const updatedPhoneNumber = phone_number || null;
+  const updatedDeliveryFees = delivery_fees !== '' ? delivery_fees : null; // Ensure delivery_fees is not an empty string
+  const updatedImageUrl = image_url || null;
+  const updatedStatus = status || null;
+
   pool
     .query(
       `UPDATE restaurants SET name = COALESCE($1, name), 
-                                     address = COALESCE($2, address), 
-                                     image_url = COALESCE($3, image_url),
-                                     category = COALESCE($4, category), 
-                                     phone_number = COALESCE($5, phone_number),
-                                       delivery_fees = COALESCE($6, delivery_fees)
-            WHERE user_id = $7 RETURNING *`,
-      [name, address, image_url, category, phone_number, delivery_fees, id]
+                              address = COALESCE($2, address), 
+                              image_url = COALESCE($3, image_url),
+                              category = COALESCE($4, category), 
+                              phone_number = COALESCE($5, phone_number),
+                              delivery_fees = COALESCE($6, delivery_fees),
+                              status = COALESCE($7, status)
+       WHERE user_id = $8 RETURNING *`,
+      [
+        updatedName,
+        updatedAddress,
+        updatedImageUrl,
+        updatedCategory,
+        updatedPhoneNumber,
+        updatedDeliveryFees,
+        updatedStatus,
+        id,
+      ]
     )
     .then((result) => {
       if (result.rows.length === 0) {
@@ -171,6 +196,7 @@ const updateRestaurantById = (req, res) => {
       });
     });
 };
+
 // soft delete Restaurant by id === THIS FUNCTION FOR ADMIN
 const deleteRestaurantById = (req, res) => {
   const restaurant_id = req.params.id;
