@@ -1,13 +1,20 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { setLogout } from '../../redux/auth';
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setLogout } from "../../redux/auth";
 import TemporaryDrawer from "../../pages/Admin/SideBar";
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import SidBarRider from "../../pages/Riders/SidBarRiders" 
-import SidBarOwner from "../../components/SidebarOwner"
-import './header.css'
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import SidBarRider from "../../pages/Riders/SidBarRiders";
+import SidBarOwner from "../../components/SidebarOwner";
+import "./header.css";
 const Header = () => {
   const token = useSelector((state) => state.auth.token);
   const role = useSelector((state) => state.auth.role);
@@ -16,25 +23,48 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(setLogout());
-    navigate('/');
+    navigate("/");
   };
 
   return (
-
-    <AppBar position="static"  sx={{ backgroundColor: '#D55E32', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}   >
-
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', padding: '0 40px', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton component={Link} to="/" sx={{ color: 'white', marginRight: 2 }}>
-            <RestaurantIcon sx={{ fontSize: 40 }} /> 
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "#D55E32",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "0 40px",
+          alignItems: "center",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <IconButton
+            component={Link}
+            to="/"
+            sx={{ color: "white", marginRight: 2 }}
+          >
+            <RestaurantIcon sx={{ fontSize: 40 }} />
           </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'white', fontSize: '1.5rem' }} className="feedme-logo">
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }} className="feedme-link">
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "bold", color: "white", fontSize: "1.5rem" }}
+            className="feedme-logo"
+          >
+            <Link
+              to="/"
+              style={{ color: "inherit", textDecoration: "none" }}
+              className="feedme-link"
+            >
               FeedMe
             </Link>
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
           {!token ? (
             <>
               <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/signin">
@@ -52,13 +82,9 @@ const Header = () => {
             </>
           ) : (
             <>
-              {role === 'Admin' && (
-                <TemporaryDrawer />
-              )}
-              {role === 'Restaurant Owner' && (
-               <SidBarOwner/>
-              )}
-              {role === 'Customer' && (
+              {role === "Admin" && <TemporaryDrawer />}
+              {role === "Restaurant Owner" && <SidBarOwner />}
+              {role === "Customer" && (
                 <>
                   <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/userOrders">
                     My Orders
@@ -68,9 +94,9 @@ const Header = () => {
                   </Button>
                 </>
               )}
-              {role === 'Rider' && (
+              {role === "Rider" && (
                 <>
-                 <SidBarRider/>
+                  <SidBarRider />
                 </>
               )}
               <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} onClick={handleLogout}>

@@ -66,7 +66,6 @@ const ViewRestaurantInfo = () => {
         );
       }
     };
-
     getRestaurantInfo();
   }, [token]);
 
