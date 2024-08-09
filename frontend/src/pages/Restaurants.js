@@ -217,9 +217,9 @@ function Restaurants() {
                       alt={elem.name}
                       style={{
                         width: "100%",
-                        height: "300px",
+                        height: "270px",
                         borderRadius: "8px",
-                        maxHeight: "300px",
+                        maxHeight: "270px",
                         objectFit: "cover",
                       }}
                     />
