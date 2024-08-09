@@ -185,6 +185,7 @@ function Restaurants() {
                   borderRadius: 3,
                   boxShadow: 3,
                   transition: "transform 0.3s",
+                  height:"400px",
                   "&:hover": { transform: elem.status !== "busy" && elem.status !== "closed" ? "scale(1.05)" : "none" },
                   backgroundColor: elem.status === "closed" ? "#f8d7da" : elem.status === "busy" ? "#fff3cd" : "inherit",
                 }}
