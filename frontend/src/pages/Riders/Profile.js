@@ -49,7 +49,12 @@ const Profile = () => {
       });
       await axios.put(`http://localhost:5000/users/${userId}`, user);
       findUserById();
-    } catch (err) {
+
+      window.location.reload();
+
+    } 
+    
+    catch (err) {
       console.error("Error updating user data:", err);
     }
   };

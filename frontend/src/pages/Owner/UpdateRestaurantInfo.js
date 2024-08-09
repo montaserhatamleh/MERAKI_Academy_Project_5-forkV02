@@ -33,6 +33,9 @@ const UpdateRestaurantInfo = () => {
       );
       setMessage("Restaurant updated successfully!");
       setRestaurant(result.data.result);
+
+      window.location.reload();
+
     } catch (error) {
       setMessage(
         "Error updating restaurant information. Please try again later."
