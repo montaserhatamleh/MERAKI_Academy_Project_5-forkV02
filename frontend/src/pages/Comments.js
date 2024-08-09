@@ -19,7 +19,7 @@ const comments = [
   {
     name: "Mohammad",
     image: person,
-    comment: "The website maintains a consistent look and feel throughout, which makes it easier to use and more professiona",
+    comment: "The website maintains a consistent look and feel throughout, which makes it easier to use and more professional",
     
   }
 ];
