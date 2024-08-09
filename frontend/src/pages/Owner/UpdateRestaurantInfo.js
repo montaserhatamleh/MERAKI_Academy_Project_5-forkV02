@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { TextField, Button, Container, Box, Typography } from "@mui/material";
+import { TextField, Button, Container, Box, Typography, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
 const UpdateRestaurantInfo = () => {
   const token = useSelector((state) => state.auth.token);
@@ -12,6 +12,7 @@ const UpdateRestaurantInfo = () => {
     category: "",
     delivery_fees: "",
     image_url: "",
+    status: "open", 
   });
   const [message, setMessage] = useState("");
 
@@ -143,7 +144,24 @@ const UpdateRestaurantInfo = () => {
             onChange={handleChange}
             InputProps={{ style: { color: "black" } }}
             InputLabelProps={{ style: { color: "black" } }}
+            sx={{ marginBottom: 2 }}
           />
+
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              name="status"
+              value={restaurant.status}
+              onChange={handleChange}
+              label="Status"
+              sx={{ color: "black" }}
+            >
+              <MenuItem value="open">Open</MenuItem>
+              <MenuItem value="closed">Closed</MenuItem>
+              <MenuItem value="busy">Busy</MenuItem>
+            </Select>
+          </FormControl>
+
           <Button
             type="button"
             fullWidth
