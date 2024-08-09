@@ -421,7 +421,7 @@ const getAllOrderIsDelivered = async (req, res) => {
     const query = `SELECT orders.*,restaurants.name,restaurants.address,users.first_name,users.last_name,users.phone_number FROM orders 
       INNER JOIN restaurants ON orders.restaurant_id = restaurants.id
       INNER JOIN users ON orders.user_id = users.id
-       WHERE status='Delivered' AND rider_id =$1`;
+       WHERE orders.status='Delivered' AND rider_id =$1`;
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)
@@ -463,7 +463,7 @@ const getAllOrderIsOnTheWay = async (req, res) => {
     const riderId = riderResult.rows[0].id;
     console.log(riderId);
     const query =
-      "SELECT orders.*,restaurants.name,restaurants.address FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id  WHERE status='On the Way' AND rider_id =$1";
+      "SELECT orders.*,restaurants.name,restaurants.address FROM orders INNER JOIN restaurants ON orders.restaurant_id = restaurants.id  WHERE orders.status='On the Way' AND rider_id =$1";
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)
@@ -503,7 +503,7 @@ const getAllOrderIsAccepted = async (req, res) => {
 
     const riderId = riderResult.rows[0].id;
     const query = `SELECT orders.*,restaurants.name,users.first_name,users.last_name,users.address,users.phone_number FROM orders  INNER JOIN users ON orders.user_id = users.id 
-      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE status='Accepted by Rider' AND rider_id =$1`;
+      INNER JOIN restaurants ON orders.restaurant_id = restaurants.id WHERE orders.status='Accepted by Rider' AND rider_id =$1`;
     const result = await pool.query(query, [riderId]);
 
     if (result.rows.length === 0)
