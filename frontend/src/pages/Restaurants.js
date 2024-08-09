@@ -106,7 +106,7 @@ function Restaurants() {
     );
 
   return (
-    <div style={{ padding: "20px"}}>
+    <div style={{ padding: "20px" }}>
       <Box
         display="flex"
         alignItems="center"
@@ -123,7 +123,11 @@ function Restaurants() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
             endAdornment: search && (
               <InputAdornment position="end">
                 <IconButton onClick={() => setSearch("")} edge="end">
@@ -165,7 +169,13 @@ function Restaurants() {
           variant="contained"
           size="large"
           onClick={filteredRestaurantsByDeliveryFees}
-          sx={{ color: 'white',  backgroundColor: "#2E7D32", fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#388e3c', color: '#ffd700' } }}
+          sx={{
+            color: "white",
+            backgroundColor: "#2E7D32",
+            fontWeight: "500",
+            borderRadius: "20px",
+            "&:hover": { backgroundColor: "#388e3c", color: "#ffd700" },
+          }}
         >
           Sort Low Fees
         </Button>
@@ -185,9 +195,19 @@ function Restaurants() {
                   borderRadius: 3,
                   boxShadow: 3,
                   transition: "transform 0.3s",
-                  height:"400px",
-                  "&:hover": { transform: elem.status !== "busy" && elem.status !== "closed" ? "scale(1.05)" : "none" },
-                  backgroundColor: elem.status === "closed" ? "#f8d7da" : elem.status === "busy" ? "#fff3cd" : "inherit",
+                  height: "400px",
+                  "&:hover": {
+                    transform:
+                      elem.status !== "busy" && elem.status !== "closed"
+                        ? "scale(1.05)"
+                        : "none",
+                  },
+                  backgroundColor:
+                    elem.status === "closed"
+                      ? "#f8d7da"
+                      : elem.status === "busy"
+                      ? "#fff3cd"
+                      : "inherit",
                 }}
               >
                 <CardContent>
@@ -197,7 +217,7 @@ function Restaurants() {
                       alt={elem.name}
                       style={{
                         width: "100%",
-                        height: "auto",
+                        height: "300px",
                         borderRadius: "8px",
                         maxHeight: "300px",
                         objectFit: "cover",
@@ -220,7 +240,15 @@ function Restaurants() {
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ fontWeight: "bold", color: elem.status === "closed" ? "red" : elem.status === "busy" ? "orange" : "green" }}
+                    sx={{
+                      fontWeight: "bold",
+                      color:
+                        elem.status === "closed"
+                          ? "red"
+                          : elem.status === "busy"
+                          ? "orange"
+                          : "green",
+                    }}
                   >
                     <strong>Status:</strong> {elem.status}
                   </Typography>

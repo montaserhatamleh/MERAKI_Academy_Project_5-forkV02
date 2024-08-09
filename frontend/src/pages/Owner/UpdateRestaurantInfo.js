@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { TextField, Button, Container, Box, Typography, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Box,
+  Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 
 const UpdateRestaurantInfo = () => {
   const token = useSelector((state) => state.auth.token);
@@ -12,7 +22,7 @@ const UpdateRestaurantInfo = () => {
     category: "",
     delivery_fees: "",
     image_url: "",
-    status: "open", 
+    status: "open",
   });
   const [message, setMessage] = useState("");
 
@@ -35,7 +45,6 @@ const UpdateRestaurantInfo = () => {
       setRestaurant(result.data.result);
 
       window.location.reload();
-
     } catch (error) {
       setMessage(
         "Error updating restaurant information. Please try again later."
@@ -44,7 +53,7 @@ const UpdateRestaurantInfo = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{height:"700px" , background:"white"}}>
+    <Container maxWidth="md" style={{}}>
       <Box
         sx={{
           width: "100%",
@@ -60,6 +69,8 @@ const UpdateRestaurantInfo = () => {
           alignItems: "center",
           maxWidth: "500px",
           marginBottom: "50px",
+          position:"relative",
+          left:"150px",
         }}
       >
         <Typography
