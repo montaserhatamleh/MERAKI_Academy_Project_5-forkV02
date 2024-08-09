@@ -42,14 +42,15 @@ const GetAllUsers = () => {
   };
 
   const showDataUser = async (id) => {
+    console.log(id) ; 
     try {
-      const result = await axios.get(`http://localhost:5000/users/${id}`, {
+      const result = await axios.get(`http://localhost:5000/users/data/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setOpen(true)
       setData(result.data.user);
+      setOpen(true) 
     } catch (err) {
       console.log(err.response.data.message);
     }

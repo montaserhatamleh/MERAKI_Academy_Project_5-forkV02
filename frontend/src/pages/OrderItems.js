@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Container,
   Paper,
@@ -32,6 +30,7 @@ import {
 
 const OrderItems = () => {
   const id = useParams().id;
+  console.log(id) ; 
   const [rating, setRating] = useState(0);
   const [open, setOpen] = useState(false);
   const [socket, setSocket] = useState(null);
@@ -116,6 +115,7 @@ const OrderItems = () => {
       setOpen(false);
 
       console.log(result);
+      setOpen(false)
     } catch (err) {
       console.log(err);
     }
@@ -137,6 +137,8 @@ const OrderItems = () => {
               <strong>Payment Method:</strong> {orderItems.payment_method}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
+
+             
               <strong>Restaurant Name:</strong> {orderItems.items[0].res_name}
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
@@ -148,14 +150,14 @@ const OrderItems = () => {
             {(orderItems.status === "Accepted by Rider" || orderItems.status === "On the Way") && (
               <>
                 <Typography variant="subtitle1" gutterBottom>
-                  <strong>Rider Name:</strong> {orderItems.rider.first_name}
+                  <strong>Rider Name:</strong> {orderItems.rider?.first_name}
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
-                  <strong>Rider Phone Number:</strong> {orderItems.rider.phone_number}
+                  <strong>Rider Phone Number:</strong> {orderItems.rider?.phone_number}
                 </Typography>
                 
                 <Typography variant="subtitle1" gutterBottom>
-                  <strong>Rider Vehicle:</strong> {orderItems.rider.vehicle_details}
+                  <strong>Rider Vehicle:</strong> {orderItems.rider?.vehicle_details}
                 </Typography>
                 <Box sx={{ marginTop: 2 }}>
                   <Button
