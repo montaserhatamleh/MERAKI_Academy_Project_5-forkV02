@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -12,78 +12,91 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
 import PersonIcon from "@mui/icons-material/Person";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const TemporaryDrawer = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState("");
+  const { userId, token } = useSelector((state) => ({
+    userId: state.auth.userId,
+  }));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getStatus = async () => {
+      try {
+        const result = await axios.get(`http://localhost:5000/riders/${userId}`, 
+        );
+        setStatus(result.data.result.status);
+      } catch (err) {
+        console.error("Error getting rider status:", err);
+      }
+    };
+
+    getStatus();
+  }, [userId, token]);
+
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-  
-const Profile = () => {
-  navigate("rider/profile");
- };
 
- const handelAllOrderReady = () => {
-    navigate("/rider/ready");
-};
+  const handleNavigation = (path) => {
+    navigate(path);
+    setOpen(false); 
+  };
 
-  const handelAllOnTheWay = () => {
-    navigate("rider/All__order_on_way");
-  };
-  const handelAllDeliveredOrder = () => {
-    navigate("rider/All_delivered_order");
-  };
-  const handelAllCompletedOrder = () => {
-    navigate("rider/All_complete_order");
-  };
   const DrawerList = (
     <Box sx={{ width: 300 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={Profile}>
+          <ListItemButton onClick={() => handleNavigation("rider/profile")}>
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
             <ListItemText primary={"Profile"} />
           </ListItemButton>
         </ListItem>
+        {status === "available" && (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("rider/ready")}>
+                <ListItemIcon>
+                  <TwoWheelerIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Ready to pick up orders"} />
+              </ListItemButton>
+            </ListItem>
 
-        <ListItem disablePadding>
-          <ListItemButton onClick={handelAllOrderReady}>
-            <ListItemIcon>
-              <TwoWheelerIcon />
-            </ListItemIcon>
-            <ListItemText primary={"ready to pick up orders"} />
-          </ListItemButton>
-        </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("rider/All__order_on_way")}>
+                <ListItemIcon>
+                  <RestaurantIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Accepted Orders"} />
+              </ListItemButton>
+            </ListItem>
 
-        <ListItem disablePadding>
-          <ListItemButton onClick={handelAllOnTheWay}>
-            <ListItemIcon>
-              <RestaurantIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Accepted Orders"} />
-          </ListItemButton>
-        </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("rider/All_delivered_order")}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"On the way orders"} />
+              </ListItemButton>
+            </ListItem>
 
-        <ListItem disablePadding>
-          <ListItemButton onClick={handelAllDeliveredOrder}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={"on the way orders"} />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton onClick={handelAllCompletedOrder}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={"orders history"} />
-          </ListItemButton>
-        </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleNavigation("rider/All_complete_order")}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Orders history"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
       <Divider />
     </Box>
@@ -92,16 +105,13 @@ const Profile = () => {
   return (
     <div>
       <Button
-        component={Link}
-        to="/rider"
         sx={{ color: "white" }}
-        compone
         onClick={toggleDrawer(true)}
       >
-        Riders Dashbord
+        Rider's Dashboard
       </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
-       {DrawerList}
+        {DrawerList}
       </Drawer>
     </div>
   );
