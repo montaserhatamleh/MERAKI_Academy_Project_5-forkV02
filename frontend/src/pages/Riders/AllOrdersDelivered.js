@@ -120,16 +120,17 @@ const AllOrdersDelivered = () => {
         <Container maxWidth="la">
           <Paper style={{ padding: "20px", marginBottom: "20px" }}>
             <Typography variant="h5" gutterBottom>
-              All Orders Delivered
-            </Typography>
+On the Way Orders            </Typography>
 
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>Restaurant</TableCell>
-                    <TableCell>Address</TableCell>
+                    <TableCell>delivery_address</TableCell>
                     <TableCell>Total</TableCell>
+                    <TableCell>payment_method</TableCell>
+
                     <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
@@ -141,8 +142,9 @@ const AllOrdersDelivered = () => {
                       hover
                     >
                       <TableCell>{order.name}</TableCell>
-                      <TableCell>{order.address}</TableCell>
+                      <TableCell>{order.delivery_address}</TableCell>
                       <TableCell>{order.total_price}</TableCell>
+                      <TableCell>{order.payment_method}</TableCell>
                       <TableCell>{order.status}</TableCell>
                     </TableRow>
                   ))}
@@ -202,7 +204,7 @@ const AllOrdersDelivered = () => {
               Close
             </Button>
             <Button onClick={accept} color="primary">
-              Accept
+              set to Delivered
             </Button>
           </DialogActions>
         </Dialog>

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, Typography, Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 import axios from 'axios';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import order from "../assets/images/owner.webp"
 
 const BecomePartner = () => {
   const [restaurant, setRestaurant] = useState({
@@ -59,22 +64,35 @@ const BecomePartner = () => {
     }
   };
 
+  const defaultTheme = createTheme();
+
   return (
-    <Container maxWidth="xl">
+    <ThemeProvider theme={defaultTheme}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+       item
+       xs={false}
+       sm={4}
+       md={7}
+       sx={{
+         backgroundImage:
+           `url(${order})`,
+         backgroundColor: (t) =>
+           t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+         backgroundSize: 'cover',
+         backgroundPosition: 'left',
+       }}
+     />
+     <Grid style={{display:"flex" , justifyContent:"center"}} item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <Box
         sx={{
-          width:"100%",
           backgroundColor: "white",
           padding: "20px",
-          margin: "auto",
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-          borderRadius: "8px",
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          maxWidth: "500px", 
-          marginBottom:"50px",
+      
         }}
       >
         <Typography component="h1" variant="h5" color="black">
@@ -82,6 +100,9 @@ const BecomePartner = () => {
         </Typography>
         {message && <Typography color="error">{message}</Typography>}
         <Box component="form" onSubmit={(e) => e.preventDefault()} sx={{ mt: 1 }}>
+         <Box style={{  display: "flex",
+          gap:"10px" ,
+          alignItems: "center",}}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -114,23 +135,10 @@ const BecomePartner = () => {
               style: { color: 'black' }
             }}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            value={restaurant.password}
-            onChange={handleChange}
-            InputProps={{
-              style: { color: 'black' }
-            }}
-            InputLabelProps={{
-              style: { color: 'black' }
-            }}
-          />
+          </Box>
+          <Box style={{  display: "flex",
+          gap:"10px" ,
+          alignItems: "center",}}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -163,6 +171,10 @@ const BecomePartner = () => {
               style: { color: 'black' }
             }}
           />
+          </Box>
+          <Box style={{  display: "flex",
+          gap:"10px" ,
+          alignItems: "center"}}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -195,6 +207,10 @@ const BecomePartner = () => {
               style: { color: 'black' }
             }}
           />
+          </Box>
+          <Box style={{  display: "flex",
+          gap:"10px" ,
+          alignItems: "center"}} >
           <FormControl fullWidth variant="outlined" margin="normal">
             <InputLabel style={{ color: 'black' }}>Category</InputLabel>
             <Select
@@ -230,6 +246,26 @@ const BecomePartner = () => {
               style: { color: 'black' }
             }}
           />
+          </Box>
+
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            value={restaurant.password}
+            onChange={handleChange}
+            InputProps={{
+              style: { color: 'black' }
+            }}
+            InputLabelProps={{
+              style: { color: 'black' }
+            }}
+          />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -303,7 +339,9 @@ const BecomePartner = () => {
           </Button>
         </Box>
       </Box>
-    </Container>
+    </Grid>
+    </Grid>
+    </ThemeProvider>
   );
 };
 

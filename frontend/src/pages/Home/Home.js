@@ -11,12 +11,12 @@ import joinFamilyImage from "../../assets/images/bg_2.jpg";
 
 import Comments from "../Comments";
 
+
 import "./Home.css";
 
 const Home = () => {
   return (
     <div className="home">
-      {/* Carousel Section */}
       <Carousel
         autoPlay
         infiniteLoop
@@ -244,6 +244,8 @@ const Home = () => {
           </Grid>
         </Container>
       </Box>
+
+ 
 
     </div>
   );

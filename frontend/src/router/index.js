@@ -7,7 +7,7 @@ import BecomePartner from "../pages/BecomePartner";
 import BecomeRider from "../pages/BecomeRider";
 
 //Admin
-import GetAllRiderRigertions from "../pages/Admin/getAllRegister";
+import GetAllRiderRegistration from "../pages/Admin/getAllRegister";
 import GetAllRegistrationOwner from "../pages/Admin/getAllOwner";
 import GetAllUsers from "../pages/Admin/getAllUsers";
 import GetAllRiders from "../pages/Admin/getAllRiders";
@@ -93,10 +93,10 @@ export const router = createBrowserRouter([
         element: <PrivateRoute requiredRole={['Admin']}><Admin /></PrivateRoute>,
         children: [
           {
-            path: "get_All_Rider_registretion",
-            element: <GetAllRiderRigertions />,
+            path: "get_All_Rider_Registration",
+            element: <GetAllRiderRegistration />,
           },
-          { path: "", element: <GetAllUsers /> },
+          { path: "get_all_users", element: <GetAllUsers /> },
           {
             path: "get_All_registration_Owner",
             element: <GetAllRegistrationOwner />,
@@ -133,7 +133,7 @@ export const router = createBrowserRouter([
         path: "restaurant_owner",
         element: <PrivateRoute requiredRole={['Restaurant Owner']}><Owner /></PrivateRoute>,
         children: [
-          { path: "view-info", element: <ViewRestaurantInfo /> },
+          { path: "/restaurant_owner", element: <ViewRestaurantInfo /> },
           { path: "update-info", element: <UpdateRestaurantInfo /> },
           { path: "view-item", element: <ViewItems /> },
           { path: "add-item", element: <AddItem /> },
@@ -150,7 +150,7 @@ export const router = createBrowserRouter([
           { path: "All_complete_order", element: <AllCompletedOrders /> },
           { path: "All_delivered_order", element: <AllOrdersDelivered /> },
           { path: "All__order_on_way", element: <AllOrdersOnWay /> },
-          { path: "", element: <AllOrdersReady /> },
+          { path: "ready", element: <AllOrdersReady /> },
           { path: "profile", element: <Profile /> },
         ],
       },

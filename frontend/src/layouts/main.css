@@ -1,0 +1,29 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex-grow: 1;
+    background-color: #f4f4f4;
+    overflow: auto; 
+  }
+  
+  footer {
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    flex-shrink: 0; 
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  

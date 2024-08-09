@@ -65,74 +65,77 @@ const MessageUser = ({ socket, raider_id }) => {
   };
 
   return (
-    <Box
-      p={2}
-      style={{
-        width: 400,
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
-        Messages
-      </Typography>
-      {allMessages.length > 0 && (
-        <Paper style={{ padding: "20px" }}>
-          <Typography variant="h6" gutterBottom>
-            Message History
-          </Typography>
-          <Divider style={{ marginBottom: "10px" }} />
-          <List>
-            {allMessages.map((msg, index) => (
-              <ListItem
-                key={index}
-                alignItems="flex-start"
-                style={{
-                  justifyContent:
-                    msg.from === userId ? "flex-end" : "flex-start",
-                  paddingLeft: msg.from === userId ? "0" : "10px",
-                  paddingRight: msg.from === userId ? "0" : "10px",
-                }}
-              >
-                <ListItemText
-                  primary={` ${msg.from}`}
-                  secondary={msg.message}
-                  style={{
-                    textAlign: msg.from === user ? "right" : "left",
-                    marginLeft: msg.from === user ? "0" : "10px",
-                    marginRight: msg.from === user ? "10px" : "0",
-                  }}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      )}
-      <Paper
-        style={{ padding: "20px", marginBottom: "20px", marginTop: "20px" }}
+    <>
+      <Box
+        sx={{
+          width: "100%",
+          height: "400px",
+          border: "1px solid #ccc",
+          borderRadius: 2,
+          overflow: "scroll",
+          backgroundColor: "#fff",
+          marginTop: 2,
+        }}
       >
-        <Box display="flex" alignItems="center">
-          <TextField
-            fullWidth
-            label="Message"
-            variant="outlined"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-          />
+        <Typography variant="h4" gutterBottom>
+          Messages
+        </Typography>
+        {allMessages.length > 0 && (
+          <Paper style={{ padding: "20px" }}>
+            <Typography variant="h6" gutterBottom>
+              Message History
+            </Typography>
+            <Divider style={{ marginBottom: "10px" }} />
+            <List>
+              {allMessages.map((msg, index) => (
+                <ListItem
+                  key={index}
+                  alignItems="flex-start"
+                  style={{
+                    justifyContent:
+                      msg.from === userId ? "flex-end" : "flex-start",
+                    paddingLeft: msg.from === userId ? "0" : "10px",
+                    paddingRight: msg.from === userId ? "0" : "10px",
+                  }}
+                >
+                  <ListItemText
+                    primary={` ${msg.from}`}
+                    secondary={msg.message}
+                    style={{
+                      textAlign: msg.from === user ? "right" : "left",
+                      marginLeft: msg.from === user ? "0" : "10px",
+                      marginRight: msg.from === user ? "10px" : "0",
+                    }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        )}
+      </Box>
+      <Box display="flex" alignItems="center">
+        <TextField
+          fullWidth
+          label="Message"
+          variant="outlined"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              sendMessage();
+            }
+          }}
+        />
 
-          <IconButton
-            color="primary"
-            onClick={sendMessage}
-            style={{ marginLeft: "10px" }}
-          >
-            <SendIcon />
-          </IconButton>
-        </Box>
-      </Paper>
-    </Box>
+        <IconButton
+          color="primary"
+          onClick={sendMessage}
+          style={{ marginLeft: "10px" }}
+        >
+          <SendIcon />
+        </IconButton>
+      </Box>
+    </>
   );
 };
 

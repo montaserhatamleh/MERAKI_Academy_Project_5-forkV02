@@ -67,6 +67,7 @@ const Header = () => {
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
           {!token ? (
             <>
+<<<<<<< HEAD
               <Button
                 sx={{
                   color: "white",
@@ -113,6 +114,18 @@ const Header = () => {
                 component={Link}
                 to="/become-rider"
               >
+=======
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/signin">
+                Sign In
+              </Button>
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/signup">
+                Sign Up
+              </Button>
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/become-partner">
+                Become a Partner
+              </Button>
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/become-rider">
+>>>>>>> 31fb5c993f6ac0838fd21d0fd94285664c129a94
                 Become a Rider
               </Button>
             </>
@@ -122,6 +135,7 @@ const Header = () => {
               {role === "Restaurant Owner" && <SidBarOwner />}
               {role === "Customer" && (
                 <>
+<<<<<<< HEAD
                   <Button
                     sx={{
                       color: "white",
@@ -150,6 +164,12 @@ const Header = () => {
                     component={Link}
                     to="/profile_user"
                   >
+=======
+                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/userOrders">
+                    My Orders
+                  </Button>
+                  <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} component={Link} to="/profile_user">
+>>>>>>> 31fb5c993f6ac0838fd21d0fd94285664c129a94
                     Profile
                   </Button>
                 </>
@@ -159,6 +179,7 @@ const Header = () => {
                   <SidBarRider />
                 </>
               )}
+<<<<<<< HEAD
               <Button
                 sx={{
                   color: "white",
@@ -168,6 +189,9 @@ const Header = () => {
                 }}
                 onClick={handleLogout}
               >
+=======
+              <Button sx={{ color: 'white', fontWeight: '500', borderRadius: '20px', '&:hover': { backgroundColor: '#D55E32', color: '#ffd700' } }} onClick={handleLogout}>
+>>>>>>> 31fb5c993f6ac0838fd21d0fd94285664c129a94
                 Sign Out
               </Button>
             </>

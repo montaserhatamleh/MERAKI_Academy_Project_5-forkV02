@@ -113,7 +113,7 @@ function Restaurants() {
         justifyContent="space-between"
         mb={3}
         p={1}
-        bgcolor="white"
+        bgcolor=""
         boxShadow={2}
         borderRadius={2}
       >
