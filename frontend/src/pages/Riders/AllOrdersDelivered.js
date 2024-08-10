@@ -120,7 +120,8 @@ const AllOrdersDelivered = () => {
         <Container maxWidth="la">
           <Paper style={{ padding: "20px", marginBottom: "20px" }}>
             <Typography variant="h5" gutterBottom>
-On the Way Orders            </Typography>
+              On the Way Orders{" "}
+            </Typography>
 
             <TableContainer component={Paper}>
               <Table>
@@ -208,7 +209,7 @@ On the Way Orders            </Typography>
             </Button>
           </DialogActions>
         </Dialog>
-        <div style={{ marginTop: "20px", marginLeft:"23px" }}>
+        <div style={{ marginTop: "20px", marginLeft: "23px" }}>
           <Button
             variant="contained"
             color="primary"
